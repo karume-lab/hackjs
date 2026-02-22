@@ -1,0 +1,22 @@
+{
+  "name": "mobile",
+  "main": "expo-router/entry",
+  "version": "1.0.0",
+  "scripts": {
+    "get-ip": "bun run src/scripts/get-ip.ts",
+    "dev": "bun run get-ip && expo start --dev-client",
+    "start": "bun run get-ip && expo start",
+    "android": "bun run get-ip && expo prebuild --clean && expo run:android",
+    "ios": "expo run:ios",
+    "build": "expo prebuild --clean --no-install && ./android/gradlew -p android assembleRelease",
+    "install-apk": "adb install ./android/app/build/outputs/apk/release/app-release.apk",
+    "build:install-apk": "bun run build && bun run install-apk",
+    "doctor": "expo-doctor --verbose"
+  },
+  "private": true,
+  "dependencies": {
+    "expo": "~54.0.33",
+    "react": "19.1.0",
+    "react-native": "0.81.5"
+  }
+}
