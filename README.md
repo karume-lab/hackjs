@@ -1,12 +1,12 @@
 # HackJS
 
-A high-performance, feature-based Turborepo monorepo template for building robust Web and Mobile applications using modern JS/TS tools. It bridges the gap between Next.js on the web and React Native (Expo) on mobile, connected via an optimized end-to-end type-safe RPC (oRPC).
+A fullstack JavaScript/TypeScript monorepo template for rapidly building Web and Mobile MVPs using modern tools. It bridges Next.js on the web and React Native (Expo) on mobile, connected via end-to-end type-safe RPC (oRPC).
 
-## What is HackJS?
+> [!NOTE]
+> This template is designed for **MVPs and prototyping** — it prioritizes developer velocity over production-grade hardening. Use it as a starting point to validate ideas quickly, then harden as needed.
 
-HackJS is a hackathon-winning monorepo template designed for maximum developer velocity without compromising on architecture. It provides a highly optimized starting point for projects requiring both a Web Admin/Dashboard and a Mobile Application with shared business logic, database schemas, and validation rules.
+## Core Stack
 
-### Core Stack
 - **Monorepo:** Turborepo & Bun Workspaces
 - **Web App:** Next.js (App Router)
 - **Mobile App:** React Native (Expo Router)
@@ -34,7 +34,7 @@ HackJS is a hackathon-winning monorepo template designed for maximum developer v
 └── package.json                 # Workspace root & scripts
 ```
 
-## Setup Instructions
+## Setup
 
 ### Prerequisites
 - [Bun](https://bun.sh/) (latest version)
@@ -42,8 +42,6 @@ HackJS is a hackathon-winning monorepo template designed for maximum developer v
 - A Database URL (e.g., local SQLite, or Turso)
 
 ### 1. Installation
-
-Clone the repository and install dependencies at the root level using Bun:
 
 ```bash
 git clone https://github.com/karume-lab/hackjs.git
@@ -53,7 +51,7 @@ bun install
 
 ### 2. Environment Variables
 
-Create an `.env` file in the root directory (or specific apps/packages like `apps/web`) with your required credentials. Based on the tools used, you will likely need:
+Create an `.env` file in `apps/web` with your credentials:
 
 ```env
 DATABASE_URL=libsql://your-turso-db-url.turso.io
@@ -63,57 +61,45 @@ BETTER_AUTH_SECRET=your-random-auth-secret
 
 ### 3. Database Migration
 
-Push your schema directly to your database using Drizzle (assuming `db:push` exists in the db package):
+Push your schema to the database:
 
 ```bash
 bun run turbo run db:push --filter=@repo/db
 ```
 
-## How to Use
+## Usage
 
-HackJS uses Turborepo to efficiently run tasks across the monorepo from the root directory.
+### Development
 
-### Running the Development Servers
-
-To start all development servers (Next.js and Expo) in parallel:
+Start all dev servers (Next.js + Expo) in parallel:
 
 ```bash
 bun run dev
 ```
 
-### Running Apps Individually
+Or run individually:
 
-If you only want to run specific apps without starting the rest of the workspace:
-
-**Web App (Next.js):**
 ```bash
+# Web only
 bun run turbo run dev --filter=web
-```
 
-**Mobile App (Expo):**
-Using the convenience scripts added to the root `package.json`:
-```bash
-# Start the Expo bundler
+# Mobile only
 bun run start
 
-# Run directly on an Android emulator/device
+# Android emulator/device
 bun run android
 
-# Run directly on an iOS simulator
+# iOS simulator
 bun run ios
 ```
-*(Or use `bun run turbo run dev --filter=mobile`)*
 
-### Building for Production
+### Production Build
 
-To build all apps and packages in the workspace:
 ```bash
 bun run build
 ```
 
 ### Code Quality
-
-We use Biome to ensure high code quality and fast formatting.
 
 ```bash
 # Format the entire workspace
@@ -124,8 +110,7 @@ bun run lint
 ```
 
 ## Contributing
+
 1. Create a feature branch (`git checkout -b feature/amazing-feature`)
 2. Commit your changes
 3. Open a Pull Request
-
-*Note: This repository is configured to use Git hooks to automatically run Biome formatting and linting on commit.*
