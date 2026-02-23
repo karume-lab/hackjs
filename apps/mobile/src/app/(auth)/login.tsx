@@ -14,7 +14,7 @@ export default function LoginScreen() {
     if (!email || !password) return;
     setLoading(true);
     try {
-      const { data, error } = await authClient.signIn.email({
+      const { error } = await authClient.signIn.email({
         email,
         password,
       });
@@ -23,8 +23,9 @@ export default function LoginScreen() {
       } else {
         router.replace("/(app)");
       }
-    } catch (e: any) {
-      Alert.alert("Error", e?.message || "An error occurred");
+    } catch (e: unknown) {
+      const message = (e as { message?: string })?.message || "An error occurred";
+      Alert.alert("Error", message);
     } finally {
       setLoading(false);
     }

@@ -1,0 +1,13 @@
+{
+  "name": "@repo/types",
+  "private": true,
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@orpc/server": "^1.13.5",
+    "@repo/api": "workspace:*"
+  }
+}

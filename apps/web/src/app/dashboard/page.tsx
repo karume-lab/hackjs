@@ -43,11 +43,11 @@ export default function DashboardPage() {
 
   const { mutate: toggleTodo } = useMutation(
     orpc.todos.updateTodo.mutationOptions({
-      onSuccess: (_, variables: any) => {
+      onSuccess: (_, variables: { id?: string; completed?: boolean }) => {
         queryClient.invalidateQueries({ queryKey: orpc.todos.getTodos.key() });
         toast.success(variables.completed ? "Todo completed!" : "Todo marked as pending");
       },
-      onError: (e: any) => {
+      onError: (e) => {
         console.error("Failed to toggle todo", e);
         toast.error("Failed to update todo.");
       },
@@ -60,7 +60,7 @@ export default function DashboardPage() {
         queryClient.invalidateQueries({ queryKey: orpc.todos.getTodos.key() });
         toast.success("Todo deleted");
       },
-      onError: (e: any) => {
+      onError: (e) => {
         console.error("Failed to delete todo", e);
         toast.error("Failed to delete todo.");
       },
@@ -121,7 +121,7 @@ export default function DashboardPage() {
                   No todos yet. Add one above!
                 </p>
               ) : (
-                todos.map((todo: any) => (
+                todos.map((todo) => (
                   <div
                     key={todo.id}
                     className={`group flex items-center justify-between rounded-lg border border-zinc-100 bg-zinc-50 p-4 transition hover:bg-zinc-100 dark:border-zinc-800/50 dark:bg-zinc-900/50 dark:hover:bg-zinc-800 ${todo.completed ? "opacity-70" : ""}`}

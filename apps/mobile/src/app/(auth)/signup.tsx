@@ -15,7 +15,7 @@ export default function SignupScreen() {
     if (!email || !password || !name) return;
     setLoading(true);
     try {
-      const { data, error } = await authClient.signUp.email({
+      const { error } = await authClient.signUp.email({
         email,
         password,
         name,
@@ -25,8 +25,9 @@ export default function SignupScreen() {
       } else {
         router.replace("/(app)");
       }
-    } catch (e: any) {
-      Alert.alert("Error", e?.message || "An error occurred");
+    } catch (e: unknown) {
+      const message = (e as { message?: string })?.message || "An error occurred";
+      Alert.alert("Error", message);
     } finally {
       setLoading(false);
     }

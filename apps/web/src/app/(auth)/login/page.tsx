@@ -12,6 +12,7 @@ import {
 } from "@repo/ui/web/components/ui/card";
 import { Input } from "@repo/ui/web/components/ui/input";
 import { Label } from "@repo/ui/web/components/ui/label";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -20,33 +21,33 @@ import { toast } from "sonner";
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const queryClient = useQueryClient();
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
-
-    try {
-      const { data, error: signInError } = await authClient.signIn.email({
+  // 1. Define the Mutation
+  const loginMutation = useMutation({
+    mutationFn: async () => {
+      const { data, error } = await authClient.signIn.email({
         email,
         password,
       });
-      if (signInError) {
-        toast.error(signInError.message || "Failed to log in.");
-        setError(signInError.message || "Failed to log in.");
-      } else {
-        toast.success("Successfully logged in!");
-        router.push("/dashboard");
-      }
-    } catch (err: any) {
-      toast.error(err?.message || "An unexpected error occurred.");
-      setError(err?.message || "An unexpected error occurred.");
-    } finally {
-      setLoading(false);
-    }
+      if (error) throw new Error(error.message || "Invalid credentials");
+      return data;
+    },
+    onSuccess: () => {
+      // Invalidate session queries so the Navbar/Dashboard updates immediately
+      queryClient.invalidateQueries({ queryKey: ["session"] });
+      toast.success("Welcome back!");
+      router.push("/dashboard");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    loginMutation.mutate();
   };
 
   return (
@@ -62,9 +63,12 @@ export default function LoginPage() {
         </CardHeader>
 
         <CardContent>
-          {error && (
+          {/* 2. Use built-in error state from TanStack Query */}
+          {loginMutation.isError && (
             <div className="mb-4 rounded-md bg-red-50 p-4 dark:bg-red-900/30">
-              <p className="text-sm font-medium text-red-800 dark:text-red-300">{error}</p>
+              <p className="text-sm font-medium text-red-800 dark:text-red-300">
+                {loginMutation.error.message}
+              </p>
             </div>
           )}
 
@@ -75,6 +79,7 @@ export default function LoginPage() {
                 <Input
                   id="email"
                   type="email"
+                  autoComplete="email"
                   required
                   placeholder="you@example.com"
                   value={email}
@@ -86,6 +91,7 @@ export default function LoginPage() {
                 <Input
                   id="password"
                   type="password"
+                  autoComplete="current-password"
                   required
                   placeholder="••••••••"
                   value={password}
@@ -94,8 +100,9 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Logging in..." : "Log in"}
+            {/* 3. Use isPending for the loading state */}
+            <Button type="submit" className="w-full" disabled={loginMutation.isPending}>
+              {loginMutation.isPending ? "Logging in..." : "Log in"}
             </Button>
           </form>
         </CardContent>

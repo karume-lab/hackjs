@@ -1,5 +1,6 @@
 import { client } from "@repo/api/client";
 import { authClient } from "@repo/auth/client";
+import { type Todo } from "@repo/types";
 import { router, Stack } from "expo-router";
 import { CheckIcon, TrashIcon } from "lucide-react-native";
 import * as React from "react";
@@ -9,7 +10,7 @@ import { Icon } from "@/components/ui/icon";
 import { Text } from "@/components/ui/text";
 
 export default function DashboardScreen() {
-  const [todos, setTodos] = React.useState<any[]>([]);
+  const [todos, setTodos] = React.useState<Todo[]>([]);
   const [newTodo, setNewTodo] = React.useState("");
 
   React.useEffect(() => {
@@ -99,7 +100,7 @@ export default function DashboardScreen() {
             </Text>
           ) : (
             <View className="gap-3">
-              {todos.map((todo) => (
+              {todos.map((todo: Todo) => (
                 <View
                   key={todo.id}
                   className={`flex-row items-center justify-between p-4 rounded-xl border border-border bg-card \${todo.completed ? 'opacity-60' : ''}`}

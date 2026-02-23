@@ -12,6 +12,7 @@ import {
 } from "@repo/ui/web/components/ui/card";
 import { Input } from "@repo/ui/web/components/ui/input";
 import { Label } from "@repo/ui/web/components/ui/label";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -21,34 +22,32 @@ export default function SignupPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const queryClient = useQueryClient();
 
-  const handleSignup = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
-
-    try {
-      const { data, error: signUpError } = await authClient.signUp.email({
+  const signupMutation = useMutation({
+    mutationFn: async () => {
+      const { data, error } = await authClient.signUp.email({
         email,
         password,
         name,
       });
-      if (signUpError) {
-        toast.error(signUpError.message || "Failed to sign up.");
-        setError(signUpError.message || "Failed to sign up.");
-      } else {
-        toast.success("Account created successfully!");
-        router.push("/dashboard");
-      }
-    } catch (err: any) {
-      toast.error(err?.message || "An unexpected error occurred.");
-      setError(err?.message || "An unexpected error occurred.");
-    } finally {
-      setLoading(false);
-    }
+      if (error) throw new Error(error.message || "Failed to create account");
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["session"] });
+      toast.success("Account created successfully!");
+      router.push("/dashboard");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  const handleSignup = (e: React.FormEvent) => {
+    e.preventDefault();
+    signupMutation.mutate();
   };
 
   return (
@@ -64,9 +63,11 @@ export default function SignupPage() {
         </CardHeader>
 
         <CardContent>
-          {error && (
+          {signupMutation.isError && (
             <div className="mb-4 rounded-md bg-red-50 p-4 dark:bg-red-900/30">
-              <p className="text-sm font-medium text-red-800 dark:text-red-300">{error}</p>
+              <p className="text-sm font-medium text-red-800 dark:text-red-300">
+                {signupMutation.error.message}
+              </p>
             </div>
           )}
 
@@ -79,6 +80,7 @@ export default function SignupPage() {
                   type="text"
                   required
                   placeholder="John Doe"
+                  autoComplete="name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
@@ -90,6 +92,7 @@ export default function SignupPage() {
                   type="email"
                   required
                   placeholder="you@example.com"
+                  autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -101,14 +104,15 @@ export default function SignupPage() {
                   type="password"
                   required
                   placeholder="••••••••"
+                  autoComplete="new-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
             </div>
 
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Signing up..." : "Sign up"}
+            <Button type="submit" className="w-full" disabled={signupMutation.isPending}>
+              {signupMutation.isPending ? "Signing up..." : "Sign up"}
             </Button>
           </form>
         </CardContent>

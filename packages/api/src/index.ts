@@ -1,2 +1,4 @@
-export type { router as AppRouter } from "./routers";
-export { router } from "./routers";
+import { router } from "./routers";
+
+export type AppRouter = typeof router;
+export { router };
