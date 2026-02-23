@@ -1,95 +1,76 @@
 "use client";
 
-import { client } from "@repo/api/client";
+import { orpc } from "@repo/api/client";
 import { authClient } from "@repo/auth/client";
 import { Button } from "@repo/ui/web/components/ui/button";
 import { Card, CardContent } from "@repo/ui/web/components/ui/card";
 import { Input } from "@repo/ui/web/components/ui/input";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export default function DashboardPage() {
-  const [todos, setTodos] = useState<any[]>([]);
   const [newTodo, setNewTodo] = useState("");
-  const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const queryClient = useQueryClient();
 
+  // Redirect if not authenticated
   useEffect(() => {
-    checkAuthAndLoadTodos();
-  }, []);
-
-  const checkAuthAndLoadTodos = async () => {
-    try {
-      const { data: session } = await authClient.getSession();
+    authClient.getSession().then(({ data: session }) => {
       if (!session) {
         router.push("/login");
-        return;
       }
-      await fetchTodos();
-    } catch (e) {
-      console.error(e);
-      router.push("/login");
-    } finally {
-      setLoading(false);
-    }
-  };
+    });
+  }, [router]);
 
-  const fetchTodos = async () => {
-    try {
-      const data = await client.todos.getTodos();
-      setTodos(data);
-    } catch (e) {
-      console.error("Failed to fetch todos", e);
-      toast.error("Failed to load todos.");
-    }
-  };
+  // oRPC TanStack Query hooks integration using standard useQuery/useMutation
+  const { data: todos = [], isLoading: isFetching } = useQuery(orpc.todos.getTodos.queryOptions());
 
-  const handleAddTodo = async (e: React.FormEvent) => {
+  const { mutate: createTodo } = useMutation(
+    orpc.todos.createTodo.mutationOptions({
+      onSuccess: () => {
+        setNewTodo("");
+        queryClient.invalidateQueries({ queryKey: orpc.todos.getTodos.key() });
+        toast.success("Todo added!");
+      },
+      onError: (e) => {
+        console.error("Failed to add todo", e);
+        toast.error("Failed to add todo.");
+      },
+    }),
+  );
+
+  const { mutate: toggleTodo } = useMutation(
+    orpc.todos.updateTodo.mutationOptions({
+      onSuccess: (_, variables: any) => {
+        queryClient.invalidateQueries({ queryKey: orpc.todos.getTodos.key() });
+        toast.success(variables.completed ? "Todo completed!" : "Todo marked as pending");
+      },
+      onError: (e: any) => {
+        console.error("Failed to toggle todo", e);
+        toast.error("Failed to update todo.");
+      },
+    }),
+  );
+
+  const { mutate: deleteTodo } = useMutation(
+    orpc.todos.deleteTodo.mutationOptions({
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: orpc.todos.getTodos.key() });
+        toast.success("Todo deleted");
+      },
+      onError: (e: any) => {
+        console.error("Failed to delete todo", e);
+        toast.error("Failed to delete todo.");
+      },
+    }),
+  );
+
+  const handleAddTodo = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newTodo.trim()) return;
-
-    try {
-      const added = await client.todos.createTodo({
-        title: newTodo,
-        completed: false,
-      });
-      setNewTodo("");
-      setTodos((prev) => [added[0], ...prev]);
-      toast.success("Todo added!");
-    } catch (e) {
-      console.error("Failed to add todo", e);
-      toast.error("Failed to add todo.");
-    }
-  };
-
-  const handleToggleTodo = async (id: string, completed: boolean) => {
-    try {
-      setTodos((prev) => prev.map((t) => (t.id === id ? { ...t, completed: !completed } : t)));
-
-      await client.todos.updateTodo({
-        id,
-        completed: !completed,
-      });
-      toast.success(completed ? "Todo marked as pending" : "Todo completed!");
-    } catch (e) {
-      console.error("Failed to toggle todo", e);
-      toast.error("Failed to update todo.");
-      fetchTodos();
-    }
-  };
-
-  const handleDeleteTodo = async (id: string) => {
-    try {
-      setTodos((prev) => prev.filter((t) => t.id !== id));
-
-      await client.todos.deleteTodo({ id });
-      toast.success("Todo deleted");
-    } catch (e) {
-      console.error("Failed to delete todo", e);
-      toast.error("Failed to delete todo.");
-      fetchTodos();
-    }
+    createTodo({ title: newTodo, completed: false });
   };
 
   const handleSignOut = async () => {
@@ -97,7 +78,7 @@ export default function DashboardPage() {
     router.push("/login");
   };
 
-  if (loading) {
+  if (isFetching) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-zinc-50 dark:bg-black">
         <div className="animate-pulse text-zinc-500">Loading...</div>
@@ -140,16 +121,16 @@ export default function DashboardPage() {
                   No todos yet. Add one above!
                 </p>
               ) : (
-                todos.map((todo) => (
+                todos.map((todo: any) => (
                   <div
                     key={todo.id}
-                    className={`group flex items-center justify-between rounded-lg border border-zinc-100 bg-zinc-50 p-4 transition hover:bg-zinc-100 dark:border-zinc-800/50 dark:bg-zinc-900/50 dark:hover:bg-zinc-800 \${todo.completed ? 'opacity-70' : ''}`}
+                    className={`group flex items-center justify-between rounded-lg border border-zinc-100 bg-zinc-50 p-4 transition hover:bg-zinc-100 dark:border-zinc-800/50 dark:bg-zinc-900/50 dark:hover:bg-zinc-800 ${todo.completed ? "opacity-70" : ""}`}
                   >
                     <div className="flex items-center gap-3">
                       <button
                         type="button"
-                        onClick={() => handleToggleTodo(todo.id, todo.completed)}
-                        className={`flex h-6 w-6 items-center justify-center rounded-full border \${todo.completed ? 'border-blue-600 bg-blue-600' : 'border-zinc-300 dark:border-zinc-600'}`}
+                        onClick={() => toggleTodo({ id: todo.id, completed: !todo.completed })}
+                        className={`flex h-6 w-6 items-center justify-center rounded-full border ${todo.completed ? "border-blue-600 bg-blue-600" : "border-zinc-300 dark:border-zinc-600"}`}
                       >
                         {todo.completed && (
                           <svg
@@ -165,14 +146,14 @@ export default function DashboardPage() {
                         )}
                       </button>
                       <span
-                        className={`text-zinc-800 dark:text-zinc-200 \${todo.completed ? 'line-through text-zinc-500' : ''}`}
+                        className={`text-zinc-800 dark:text-zinc-200 ${todo.completed ? "line-through text-zinc-500" : ""}`}
                       >
                         {todo.title}
                       </span>
                     </div>
                     <button
                       type="button"
-                      onClick={() => handleDeleteTodo(todo.id)}
+                      onClick={() => deleteTodo({ id: todo.id })}
                       className="opacity-0 group-hover:opacity-100 text-zinc-400 hover:text-red-500 transition px-2 py-1"
                       aria-label="Delete todo"
                     >
