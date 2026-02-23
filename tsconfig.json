@@ -33,7 +33,7 @@
 
     // Stricter flags for cleaner code
     "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedParameters": true
   },
   "exclude": ["node_modules"]
 }
