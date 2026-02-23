@@ -7,8 +7,10 @@ import { insertTodoSchema } from "@repo/validators";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Stack, useRouter } from "expo-router";
 import { Check, Plus, Trash2 } from "lucide-react-native";
+import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Alert, ScrollView, TextInput, TouchableOpacity, View } from "react-native";
+import { useCSSVariable } from "uniwind";
 import type { z } from "zod";
 
 type TodoFormValues = z.infer<typeof insertTodoSchema>;
@@ -16,6 +18,8 @@ type TodoFormValues = z.infer<typeof insertTodoSchema>;
 export default function DashboardScreen() {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const mutedForeground = useCSSVariable("--color-muted-foreground");
+  const primaryForeground = useCSSVariable("--color-primary-foreground");
 
   const {
     control,
@@ -32,9 +36,11 @@ export default function DashboardScreen() {
   const { data: todos = [] } = useQuery(orpc.todos.getTodos.queryOptions());
   const { data: session, isPending: isSessionLoading } = authClient.useSession();
 
-  if (!isSessionLoading && !session) {
-    router.replace("/(auth)/login");
-  }
+  useEffect(() => {
+    if (!isSessionLoading && !session) {
+      router.replace("/(auth)/login");
+    }
+  }, [isSessionLoading, session, router]);
 
   const { mutate: createTodo } = useMutation(
     orpc.todos.createTodo.mutationOptions({
@@ -112,7 +118,7 @@ export default function DashboardScreen() {
                     errors.title ? "border-destructive" : "border-input"
                   }`}
                   placeholder="What needs to be done?"
-                  placeholderTextColor="#9CA3AF"
+                  placeholderTextColor={mutedForeground as string}
                   onBlur={onBlur}
                   onChangeText={onChange}
                   value={value}
@@ -125,7 +131,7 @@ export default function DashboardScreen() {
             )}
           </View>
           <Button onPress={handleSubmit(onSubmit)}>
-            <Icon as={Plus} size={20} color="white" />
+            <Icon as={Plus} size={20} color={primaryForeground as string} />
           </Button>
         </View>
 

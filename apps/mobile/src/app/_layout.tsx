@@ -7,7 +7,7 @@ import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import { useUniwind } from "uniwind";
-import { NAV_THEME } from "@/lib/theme";
+import { useNavTheme } from "@/lib/theme";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -18,10 +18,11 @@ export default function RootLayout() {
   const { theme } = useUniwind();
   const [queryClient] = useState(() => new QueryClient());
   const { data: session } = authClient.useSession();
+  const navTheme = useNavTheme();
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider value={NAV_THEME[theme ?? "light"]}>
+      <ThemeProvider value={navTheme}>
         <StatusBar style={theme === "dark" ? "light" : "dark"} />
         <Stack>
           <Stack.Protected guard={!!session}>

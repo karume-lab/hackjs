@@ -7,6 +7,7 @@ import { Link, Stack, useRouter } from "expo-router";
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Alert, TextInput, View } from "react-native";
+import { useCSSVariable } from "uniwind";
 import type { z } from "zod";
 
 type LoginFormValues = z.infer<typeof loginSchema>;
@@ -14,6 +15,7 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 export default function LoginScreen() {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const mutedForeground = useCSSVariable("--color-muted-foreground");
 
   const {
     control,
@@ -78,7 +80,7 @@ export default function LoginScreen() {
                     errors.email ? "border-destructive" : "border-input"
                   }`}
                   placeholder="you@example.com"
-                  placeholderTextColor="#9CA3AF"
+                  placeholderTextColor={mutedForeground as string}
                   autoCapitalize="none"
                   keyboardType="email-address"
                   onBlur={onBlur}
@@ -103,7 +105,7 @@ export default function LoginScreen() {
                     errors.password ? "border-destructive" : "border-input"
                   }`}
                   placeholder="••••••••"
-                  placeholderTextColor="#9CA3AF"
+                  placeholderTextColor={mutedForeground as string}
                   secureTextEntry
                   onBlur={onBlur}
                   onChangeText={onChange}

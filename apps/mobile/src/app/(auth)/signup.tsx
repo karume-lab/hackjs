@@ -7,6 +7,7 @@ import { Link, Stack, useRouter } from "expo-router";
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Alert, TextInput, View } from "react-native";
+import { useCSSVariable } from "uniwind";
 import type { z } from "zod";
 
 type SignupFormValues = z.infer<typeof signupSchema>;
@@ -14,6 +15,7 @@ type SignupFormValues = z.infer<typeof signupSchema>;
 export default function SignupScreen() {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const mutedForeground = useCSSVariable("--color-muted-foreground");
 
   const {
     control,
@@ -80,7 +82,7 @@ export default function SignupScreen() {
                     errors.name ? "border-destructive" : "border-input"
                   }`}
                   placeholder="John Doe"
-                  placeholderTextColor="#9CA3AF"
+                  placeholderTextColor={mutedForeground as string}
                   autoCapitalize="words"
                   onBlur={onBlur}
                   onChangeText={onChange}
@@ -102,7 +104,7 @@ export default function SignupScreen() {
                     errors.email ? "border-destructive" : "border-input"
                   }`}
                   placeholder="you@example.com"
-                  placeholderTextColor="#9CA3AF"
+                  placeholderTextColor={mutedForeground as string}
                   autoCapitalize="none"
                   keyboardType="email-address"
                   onBlur={onBlur}
@@ -127,7 +129,7 @@ export default function SignupScreen() {
                     errors.password ? "border-destructive" : "border-input"
                   }`}
                   placeholder="••••••••"
-                  placeholderTextColor="#9CA3AF"
+                  placeholderTextColor={mutedForeground as string}
                   secureTextEntry
                   onBlur={onBlur}
                   onChangeText={onChange}
