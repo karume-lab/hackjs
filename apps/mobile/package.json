@@ -13,10 +13,5 @@
     "build:install-apk": "bun run build && bun run install-apk",
     "doctor": "expo-doctor --verbose"
   },
-  "private": true,
-  "dependencies": {
-    "expo": "~54.0.33",
-    "react": "19.1.0",
-    "react-native": "0.81.5"
-  }
+  "private": true
 }

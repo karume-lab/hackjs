@@ -1,6 +1,13 @@
 import { schema } from "@repo/db";
-import { createInsertSchema } from "drizzle-zod";
+import { createInsertSchema, createUpdateSchema } from "drizzle-zod";
 
-export const insertItemSchema = createInsertSchema(schema.items).omit({
+export const insertTodoSchema = createInsertSchema(schema.todos).omit({
   id: true,
+  createdAt: true,
+  userId: true,
+});
+
+export const updateTodoSchema = createUpdateSchema(schema.todos).omit({
+  createdAt: true,
+  userId: true,
 });
