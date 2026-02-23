@@ -30,6 +30,9 @@
     }
   },
   "css": {
+    "parser": {
+      "tailwindDirectives": true
+    },
     "formatter": {
       "enabled": false
     }
@@ -47,6 +50,15 @@
         "enabled": false
       },
       "assist": {
+        "enabled": false
+      }
+    },
+    {
+      "includes": ["**/global.css", "**/globals.css"],
+      "linter": {
+        "enabled": false
+      },
+      "formatter": {
         "enabled": false
       }
     }

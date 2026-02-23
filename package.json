@@ -30,7 +30,8 @@
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
     "@libsql/client": "^0.17.0",
-    "@orpc/client": "latest",
+    "@orpc/client": "^1.13.5",
+    "@orpc/react": "^1.13.5",
     "@orpc/react-query": "^1.13.5",
     "@orpc/server": "^1.13.5",
     "@orpc/tanstack-query": "^1.13.5",

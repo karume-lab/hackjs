@@ -15,6 +15,13 @@
   },
   "private": true,
   "dependencies": {
-    "@repo/types": "workspace:*"
+    "@hookform/resolvers": "^5.2.2",
+    "@repo/types": "workspace:*",
+    "@repo/validators": "workspace:*",
+    "expo": "~54.0.33",
+    "react": "19.1.0",
+    "react-hook-form": "^7.71.2",
+    "react-native": "0.81.5",
+    "zod": "^4.3.6"
   }
 }

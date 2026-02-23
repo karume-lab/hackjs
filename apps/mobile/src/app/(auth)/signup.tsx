@@ -1,36 +1,62 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { authClient } from "@repo/auth/client";
-import { Link, router, Stack } from "expo-router";
+import { Button, Text } from "@repo/ui/mobile";
+import { signupSchema } from "@repo/validators";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Link, Stack, useRouter } from "expo-router";
 import * as React from "react";
+import { Controller, useForm } from "react-hook-form";
 import { Alert, TextInput, View } from "react-native";
-import { Button } from "@/components/ui/button";
-import { Text } from "@/components/ui/text";
+import type { z } from "zod";
+
+type SignupFormValues = z.infer<typeof signupSchema>;
 
 export default function SignupScreen() {
-  const [name, setName] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [loading, setLoading] = React.useState(false);
+  const router = useRouter();
+  const queryClient = useQueryClient();
 
-  const handleSignup = async () => {
-    if (!email || !password || !name) return;
-    setLoading(true);
-    try {
-      const { error } = await authClient.signUp.email({
-        email,
-        password,
-        name,
-      });
-      if (error) {
-        Alert.alert("Signup Failed", error.message || "Could not create account");
-      } else {
-        router.replace("/(app)");
-      }
-    } catch (e: unknown) {
-      const message = (e as { message?: string })?.message || "An error occurred";
-      Alert.alert("Error", message);
-    } finally {
-      setLoading(false);
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignupFormValues>({
+    resolver: zodResolver(signupSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+    },
+  });
+
+  const { data: session } = authClient.useSession();
+
+  React.useEffect(() => {
+    if (session) {
+      router.replace("/(app)");
     }
+  }, [session, router]);
+
+  const signupMutation = useMutation({
+    mutationFn: async (values: SignupFormValues) => {
+      const { data, error } = await authClient.signUp.email({
+        email: values.email,
+        password: values.password,
+        name: values.name,
+      });
+      if (error) throw new Error(error.message || "Could not create account");
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["session"] });
+      router.replace("/(app)");
+    },
+    onError: (error) => {
+      Alert.alert("Signup Failed", error.message);
+    },
+  });
+
+  const onSubmit = (values: SignupFormValues) => {
+    signupMutation.mutate(values);
   };
 
   return (
@@ -45,43 +71,81 @@ export default function SignupScreen() {
         <View className="gap-4">
           <View className="gap-2">
             <Text className="text-sm font-medium text-foreground">Full Name</Text>
-            <TextInput
-              className="h-12 w-full rounded-md border border-input bg-background px-3 text-foreground"
-              placeholder="John Doe"
-              placeholderTextColor="#9CA3AF"
-              autoCapitalize="words"
-              value={name}
-              onChangeText={setName}
+            <Controller
+              control={control}
+              name="name"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  className={`h-12 w-full rounded-md border bg-background px-3 text-foreground ${
+                    errors.name ? "border-destructive" : "border-input"
+                  }`}
+                  placeholder="John Doe"
+                  placeholderTextColor="#9CA3AF"
+                  autoCapitalize="words"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              )}
             />
+            {errors.name && <Text className="text-xs text-destructive">{errors.name.message}</Text>}
           </View>
 
           <View className="gap-2">
             <Text className="text-sm font-medium text-foreground">Email</Text>
-            <TextInput
-              className="h-12 w-full rounded-md border border-input bg-background px-3 text-foreground"
-              placeholder="you@example.com"
-              placeholderTextColor="#9CA3AF"
-              autoCapitalize="none"
-              keyboardType="email-address"
-              value={email}
-              onChangeText={setEmail}
+            <Controller
+              control={control}
+              name="email"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  className={`h-12 w-full rounded-md border bg-background px-3 text-foreground ${
+                    errors.email ? "border-destructive" : "border-input"
+                  }`}
+                  placeholder="you@example.com"
+                  placeholderTextColor="#9CA3AF"
+                  autoCapitalize="none"
+                  keyboardType="email-address"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              )}
             />
+            {errors.email && (
+              <Text className="text-xs text-destructive">{errors.email.message}</Text>
+            )}
           </View>
 
           <View className="gap-2">
             <Text className="text-sm font-medium text-foreground">Password</Text>
-            <TextInput
-              className="h-12 w-full rounded-md border border-input bg-background px-3 text-foreground"
-              placeholder="••••••••"
-              placeholderTextColor="#9CA3AF"
-              secureTextEntry
-              value={password}
-              onChangeText={setPassword}
+            <Controller
+              control={control}
+              name="password"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  className={`h-12 w-full rounded-md border bg-background px-3 text-foreground ${
+                    errors.password ? "border-destructive" : "border-input"
+                  }`}
+                  placeholder="••••••••"
+                  placeholderTextColor="#9CA3AF"
+                  secureTextEntry
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              )}
             />
+            {errors.password && (
+              <Text className="text-xs text-destructive">{errors.password.message}</Text>
+            )}
           </View>
 
-          <Button onPress={handleSignup} disabled={loading} className="mt-4">
-            <Text>{loading ? "Creating..." : "Sign Up"}</Text>
+          <Button
+            onPress={handleSubmit(onSubmit)}
+            disabled={signupMutation.isPending}
+            className="mt-4"
+          >
+            <Text>{signupMutation.isPending ? "Creating..." : "Sign Up"}</Text>
           </Button>
 
           <View className="mt-4 flex-row justify-center gap-1">

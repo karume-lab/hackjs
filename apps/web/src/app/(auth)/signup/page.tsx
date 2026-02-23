@@ -1,5 +1,6 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { authClient } from "@repo/auth/client";
 import { Button } from "@repo/ui/web/components/ui/button";
 import {
@@ -12,25 +13,39 @@ import {
 } from "@repo/ui/web/components/ui/card";
 import { Input } from "@repo/ui/web/components/ui/input";
 import { Label } from "@repo/ui/web/components/ui/label";
+import { signupSchema } from "@repo/validators";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import type { z } from "zod";
+
+type SignupFormValues = z.infer<typeof signupSchema>;
 
 export default function SignupPage() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const router = useRouter();
   const queryClient = useQueryClient();
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignupFormValues>({
+    resolver: zodResolver(signupSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+    },
+  });
+
   const signupMutation = useMutation({
-    mutationFn: async () => {
+    mutationFn: async (values: SignupFormValues) => {
       const { data, error } = await authClient.signUp.email({
-        email,
-        password,
-        name,
+        email: values.email,
+        password: values.password,
+        name: values.name,
       });
       if (error) throw new Error(error.message || "Failed to create account");
       return data;
@@ -45,9 +60,8 @@ export default function SignupPage() {
     },
   });
 
-  const handleSignup = (e: React.FormEvent) => {
-    e.preventDefault();
-    signupMutation.mutate();
+  const onSubmit = (values: SignupFormValues) => {
+    signupMutation.mutate(values);
   };
 
   return (
@@ -71,43 +85,46 @@ export default function SignupPage() {
             </div>
           )}
 
-          <form className="space-y-6" onSubmit={handleSignup}>
+          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="name">Full Name</Label>
                 <Input
                   id="name"
                   type="text"
-                  required
                   placeholder="John Doe"
                   autoComplete="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  {...register("name")}
                 />
+                {errors.name && (
+                  <p className="text-xs font-medium text-red-500">{errors.name.message}</p>
+                )}
               </div>
               <div className="space-y-2">
                 <Label htmlFor="email">Email address</Label>
                 <Input
                   id="email"
                   type="email"
-                  required
                   placeholder="you@example.com"
                   autoComplete="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  {...register("email")}
                 />
+                {errors.email && (
+                  <p className="text-xs font-medium text-red-500">{errors.email.message}</p>
+                )}
               </div>
               <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
                 <Input
                   id="password"
                   type="password"
-                  required
                   placeholder="••••••••"
                   autoComplete="new-password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  {...register("password")}
                 />
+                {errors.password && (
+                  <p className="text-xs font-medium text-red-500">{errors.password.message}</p>
+                )}
               </div>
             </div>
 

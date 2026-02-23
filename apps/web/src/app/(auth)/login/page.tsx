@@ -1,5 +1,6 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { authClient } from "@repo/auth/client";
 import { Button } from "@repo/ui/web/components/ui/button";
 import {
@@ -12,30 +13,42 @@ import {
 } from "@repo/ui/web/components/ui/card";
 import { Input } from "@repo/ui/web/components/ui/input";
 import { Label } from "@repo/ui/web/components/ui/label";
+import { loginSchema } from "@repo/validators";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import type { z } from "zod";
+
+type LoginFormValues = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  // 1. Define the Mutation
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
   const loginMutation = useMutation({
-    mutationFn: async () => {
+    mutationFn: async (values: LoginFormValues) => {
       const { data, error } = await authClient.signIn.email({
-        email,
-        password,
+        email: values.email,
+        password: values.password,
       });
       if (error) throw new Error(error.message || "Invalid credentials");
       return data;
     },
     onSuccess: () => {
-      // Invalidate session queries so the Navbar/Dashboard updates immediately
       queryClient.invalidateQueries({ queryKey: ["session"] });
       toast.success("Welcome back!");
       router.push("/dashboard");
@@ -45,9 +58,8 @@ export default function LoginPage() {
     },
   });
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    loginMutation.mutate();
+  const onSubmit = (values: LoginFormValues) => {
+    loginMutation.mutate(values);
   };
 
   return (
@@ -72,7 +84,7 @@ export default function LoginPage() {
             </div>
           )}
 
-          <form className="space-y-6" onSubmit={handleLogin}>
+          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email address</Label>
@@ -80,11 +92,12 @@ export default function LoginPage() {
                   id="email"
                   type="email"
                   autoComplete="email"
-                  required
                   placeholder="you@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  {...register("email")}
                 />
+                {errors.email && (
+                  <p className="text-xs font-medium text-red-500">{errors.email.message}</p>
+                )}
               </div>
               <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
@@ -92,15 +105,15 @@ export default function LoginPage() {
                   id="password"
                   type="password"
                   autoComplete="current-password"
-                  required
                   placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  {...register("password")}
                 />
+                {errors.password && (
+                  <p className="text-xs font-medium text-red-500">{errors.password.message}</p>
+                )}
               </div>
             </div>
 
-            {/* 3. Use isPending for the loading state */}
             <Button type="submit" className="w-full" disabled={loginMutation.isPending}>
               {loginMutation.isPending ? "Logging in..." : "Log in"}
             </Button>

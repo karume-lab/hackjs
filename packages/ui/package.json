@@ -3,6 +3,8 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./web/*": "./src/web/*"
+    "./web/*": "./src/web/*",
+    "./mobile/*": "./src/mobile/*",
+    "./mobile/global.css": "./src/mobile/global.css"
   }
 }

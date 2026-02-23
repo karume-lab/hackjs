@@ -1,36 +1,42 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { orpc } from "@repo/api/client";
 import { authClient } from "@repo/auth/client";
 import { Button } from "@repo/ui/web/components/ui/button";
 import { Card, CardContent } from "@repo/ui/web/components/ui/card";
 import { Input } from "@repo/ui/web/components/ui/input";
+import { insertTodoSchema } from "@repo/validators";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import type { z } from "zod";
+
+type TodoFormValues = z.infer<typeof insertTodoSchema>;
 
 export default function DashboardPage() {
-  const [newTodo, setNewTodo] = useState("");
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  // Redirect if not authenticated
-  useEffect(() => {
-    authClient.getSession().then(({ data: session }) => {
-      if (!session) {
-        router.push("/login");
-      }
-    });
-  }, [router]);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<TodoFormValues>({
+    resolver: zodResolver(insertTodoSchema),
+    defaultValues: {
+      title: "",
+    },
+  });
 
-  // oRPC TanStack Query hooks integration using standard useQuery/useMutation
   const { data: todos = [], isLoading: isFetching } = useQuery(orpc.todos.getTodos.queryOptions());
 
   const { mutate: createTodo } = useMutation(
     orpc.todos.createTodo.mutationOptions({
       onSuccess: () => {
-        setNewTodo("");
+        reset();
         queryClient.invalidateQueries({ queryKey: orpc.todos.getTodos.key() });
         toast.success("Todo added!");
       },
@@ -43,7 +49,7 @@ export default function DashboardPage() {
 
   const { mutate: toggleTodo } = useMutation(
     orpc.todos.updateTodo.mutationOptions({
-      onSuccess: (_, variables: { id?: string; completed?: boolean }) => {
+      onSuccess: (_, variables) => {
         queryClient.invalidateQueries({ queryKey: orpc.todos.getTodos.key() });
         toast.success(variables.completed ? "Todo completed!" : "Todo marked as pending");
       },
@@ -67,10 +73,8 @@ export default function DashboardPage() {
     }),
   );
 
-  const handleAddTodo = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newTodo.trim()) return;
-    createTodo({ title: newTodo, completed: false });
+  const onSubmit = (values: TodoFormValues) => {
+    createTodo({ title: values.title, completed: false });
   };
 
   const handleSignOut = async () => {
@@ -102,17 +106,20 @@ export default function DashboardPage() {
       <main className="mx-auto mt-8 max-w-4xl px-4 sm:px-6 lg:px-8">
         <Card className="shadow-sm border-zinc-200 dark:border-zinc-800">
           <CardContent className="p-6">
-            <form onSubmit={handleAddTodo} className="flex gap-2">
-              <Input
-                type="text"
-                className="flex-1"
-                placeholder="What needs to be done?"
-                value={newTodo}
-                onChange={(e) => setNewTodo(e.target.value)}
-              />
-              <Button type="submit" className="px-6">
-                Add
-              </Button>
+            <form className="mb-8" onSubmit={handleSubmit(onSubmit)}>
+              <div className="flex gap-2">
+                <div className="flex-1">
+                  <Input
+                    placeholder="What needs to be done?"
+                    {...register("title")}
+                    className={errors.title ? "border-red-500" : ""}
+                  />
+                  {errors.title && (
+                    <p className="mt-1 text-xs text-red-500">{errors.title.message}</p>
+                  )}
+                </div>
+                <Button type="submit">Add Task</Button>
+              </div>
             </form>
 
             <div className="mt-8 space-y-3">

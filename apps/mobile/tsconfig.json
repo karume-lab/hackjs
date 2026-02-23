@@ -3,9 +3,12 @@
   "compilerOptions": {
     "strict": true,
     "baseUrl": ".",
+    "moduleResolution": "bundler",
     "paths": {
-      "@/*": ["*"]
+      "@/*": ["src/*"],
+      "@repo/ui/mobile": ["../../packages/ui/src/mobile/index.ts"],
+      "@repo/ui/mobile/*": ["../../packages/ui/src/mobile/*"]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]
+  "include": ["**/*.ts", "**/*.tsx", "uniwind-types.d.ts", ".expo/types/**/*.ts", "expo-env.d.ts"]
 }
