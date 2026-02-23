@@ -1,9 +1,10 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalPassThroughEnv": ["ANDROID_HOME", "JAVA_HOME", "PATH", "USER", "HOME"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "dist/**"]
+      "outputs": [".next/**", "dist/**", "android/app/build/outputs/apk/**", "ios/build/**"]
     },
     "dev": {
       "cache": false,
