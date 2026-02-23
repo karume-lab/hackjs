@@ -10,7 +10,7 @@
     "dev": "turbo watch dev",
     "build": "turbo build",
     "lint": "turbo lint",
-    "format": "biome format . --write",
+    "clean": "biome check --write",
     "start": "turbo start --filter=mobile",
     "android": "turbo android --filter=mobile",
     "ios": "turbo ios --filter=mobile"
@@ -25,6 +25,7 @@
     "@types/react-dom": "^19",
     "drizzle-kit": "^0.31.9",
     "expo-doctor": "^1.17.14",
+    "lefthook": "^2.1.1",
     "turbo": "latest",
     "typescript": "^5.0.0"
   },
