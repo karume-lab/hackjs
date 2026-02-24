@@ -12,6 +12,7 @@ import { Controller, useForm } from "react-hook-form";
 import { Alert, ScrollView, TextInput, TouchableOpacity, View } from "react-native";
 import { useCSSVariable } from "uniwind";
 import type { z } from "zod";
+import { ThemeSwitch } from "@/components/ThemeSwitch";
 
 type TodoFormValues = z.infer<typeof insertTodoSchema>;
 
@@ -100,9 +101,12 @@ export default function DashboardScreen() {
         options={{
           title: "Dashboard",
           headerRight: () => (
-            <Button variant="ghost" onPress={handleSignout}>
-              <Text className="text-primary font-medium">Log Out</Text>
-            </Button>
+            <>
+              <Button variant="ghost" onPress={handleSignout}>
+                <Text className="text-primary font-medium">Log Out</Text>
+              </Button>
+              <ThemeSwitch />
+            </>
           ),
         }}
       />
