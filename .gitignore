@@ -33,6 +33,7 @@ ios
 # IntelliJ based IDEs
 .idea
 .next
+next-env.d.ts
 *.db
 # Finder (MacOS) folder config
 .DS_Store
@@ -52,6 +53,7 @@ yarn-debug.*
 yarn-error.*
 *.pem
 expo-env.d.ts
+uniwind-types.d.ts
 
 # --- Android ---
 build/
