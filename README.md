@@ -7,16 +7,16 @@ A fullstack JavaScript/TypeScript monorepo template for rapidly building Web and
 
 ## Core Stack
 
-- **Monorepo:** Turborepo & Bun Workspaces
-- **Web App:** Next.js (App Router)
-- **Mobile App:** React Native (Expo Router)
-- **Database & ORM:** Drizzle ORM + SQLite (LibSQL/Turso)
-- **Authentication:** Better Auth
-- **Communication:** oRPC (Optimized Remote Procedure Call)
+- **Monorepo:** Turborepo & Bun Workspaces -> ease of management and code sharing
+- **Web App:** Next.js (App Router) -> ai knows this best, 
+- **Mobile App:** React Native (Expo Router) -> Javascript, cross platform
+- **Database & ORM:** Drizzle ORM + SQLite (LibSQL/Turso) -> fast and len
+- **Authentication:** Better Auth -> better auth
+- **Communication:** oRPC (Optimized Remote Procedure Call) -> FULL type safety, and i mean end to end
 - **State Management:** TanStack Query, React Context, & nuqs
 - **Validation:** Zod & drizzle-zod
-- **UI & Styling:** Tailwind CSS, shadcn/ui (Web), RN Reusables (Mobile)
-- **Linting & Formatting:** Biome
+- **UI & Styling:** Tailwind CSS, shadcn/ui (Web), RN Reusables (Mobile) ->  you can never go wrong with this
+- **Linting & Formatting:** Biome -> minimal config, max performance
 
 ## Project Structure
 
