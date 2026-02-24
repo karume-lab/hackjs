@@ -35,8 +35,8 @@ const updateEnvFile = (backendUrl: string): void => {
     console.warn(".env not found, a new one will be created.");
   }
 
-  const variableName = "EXPO_PUBLIC_SEIYUU_BACKEND_API_URL";
-  const newValue = `${backendUrl}/api/v1`;
+  const variableName = "EXPO_PUBLIC_APP_URL";
+  const newValue = backendUrl;
   const envVarRegex = new RegExp(`^${variableName}=.*`, "m");
 
   const updatedEnv = envContent.match(envVarRegex)
