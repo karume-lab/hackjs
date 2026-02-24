@@ -18,14 +18,14 @@ export const auth = betterAuth({
     process.env.EXPO_PUBLIC_APP_URL ?? "",
     "exp://",
     ...getLocalIPs().flatMap((ip) => [`http://${ip}:3000`, `http://${ip}:8081`]),
-  ].filter(Boolean),
+  ],
   advanced: {
     crossSubDomainCookies: {
       enabled: false,
     },
     defaultCookieAttributes: {
-      sameSite: "none",
-      secure: true,
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      secure: process.env.NODE_ENV === "production",
     },
   },
 });

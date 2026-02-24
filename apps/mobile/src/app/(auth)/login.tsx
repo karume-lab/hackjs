@@ -23,8 +23,8 @@ export default function LoginScreen() {
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: "danielkarume@outlook.com",
+      password: "#Default123",
     },
   });
 
@@ -47,7 +47,6 @@ export default function LoginScreen() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["session"] });
-      console.log("logged in");
       router.replace("/(app)");
     },
     onError: (error) => {
