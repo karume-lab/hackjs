@@ -47,6 +47,7 @@ export default function LoginScreen() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["session"] });
+      console.log("logged in");
       router.replace("/(app)");
     },
     onError: (error) => {

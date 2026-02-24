@@ -1,30 +1,13 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
-import { networkInterfaces } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { getLocalIP } from "@repo/utils/get-ip";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const envPath = join(__dirname, "../../.env");
 const PORT = 3000;
-
-const getLocalIP = (): string | null => {
-  const interfaces = networkInterfaces();
-
-  for (const name of Object.keys(interfaces)) {
-    const networkInterface = interfaces[name];
-    if (!networkInterface) continue;
-
-    for (const info of networkInterface) {
-      if (info.family === "IPv4" && !info.internal) {
-        return info.address;
-      }
-    }
-  }
-
-  return null;
-};
 
 const updateEnvFile = (backendUrl: string): void => {
   let envContent = "";

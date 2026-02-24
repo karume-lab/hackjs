@@ -1,4 +1,5 @@
 import { db, schema } from "@repo/db";
+import { getLocalIPs } from "@repo/utils/get-ip";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 
@@ -16,6 +17,7 @@ export const auth = betterAuth({
     process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000",
     process.env.EXPO_PUBLIC_APP_URL ?? "",
     "exp://",
+    ...getLocalIPs().flatMap((ip) => [`http://${ip}:3000`, `http://${ip}:8081`]),
   ].filter(Boolean),
   advanced: {
     crossSubDomainCookies: {
