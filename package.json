@@ -15,7 +15,7 @@
     "android": "turbo android --filter=mobile",
     "ios": "turbo ios --filter=mobile",
     "postinstall": "lefthook install",
-    "reinstall-packages": "pkill -9 bun && find . -name 'node_modules' -type d -prune -exec rm -rf '{}' + && rm -f bun.lock && bun install"
+    "reinstall-packages": "pkill -f turbo; pkill -f bun; find . -name 'node_modules' -type d -prune -exec rm -rf '{}' + || true; rm -f bun.lock; bun install"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
@@ -47,6 +47,7 @@
     "@repo/db": "workspace:*",
     "@repo/types": "workspace:*",
     "@repo/ui": "workspace:*",
+    "@repo/utils": "workspace:*",
     "@repo/validators": "workspace:*",
     "@rn-primitives/accordion": "^1.2.0",
     "@rn-primitives/alert-dialog": "^1.2.0",
@@ -82,6 +83,7 @@
     "drizzle-zod": "^0.8.3",
     "expo": "~54.0.33",
     "expo-constants": "~18.0.12",
+    "expo-font": "~14.0.11",
     "expo-haptics": "~15.0.8",
     "expo-linking": "~8.0.10",
     "expo-router": "~6.0.19",
@@ -115,6 +117,11 @@
     "zod": "^4.3.6"
   },
   "overrides": {
-    "expo": "~54.0.33"
+    "expo": "~54.0.33",
+    "expo-font": "~14.0.11",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-native": "0.81.5",
+    "@types/react": "~19.1.10"
   }
 }

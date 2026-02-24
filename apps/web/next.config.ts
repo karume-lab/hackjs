@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
     "@repo/ui",
     "@repo/validators",
     "@repo/types",
+    "@repo/utils",
   ],
 };
 
