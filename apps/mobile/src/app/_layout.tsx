@@ -28,7 +28,9 @@ export default function RootLayout() {
           <Stack.Protected guard={!!session}>
             <Stack.Screen name="(app)" options={{ headerShown: false }} />
           </Stack.Protected>
-          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+          <Stack.Protected guard={!session}>
+            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+          </Stack.Protected>
           <Stack.Screen name="index" options={{ headerShown: false }} />
         </Stack>
         <PortalHost />

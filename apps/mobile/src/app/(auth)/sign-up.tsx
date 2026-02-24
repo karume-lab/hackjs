@@ -4,7 +4,6 @@ import { Button, Text } from "@repo/ui/mobile";
 import { signUpSchema } from "@repo/validators";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link, Stack, useRouter } from "expo-router";
-import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Alert, TextInput, View } from "react-native";
 import { useCSSVariable } from "uniwind";
@@ -29,14 +28,6 @@ export default function SignUpScreen() {
       password: "",
     },
   });
-
-  const { data: session } = authClient.useSession();
-
-  React.useEffect(() => {
-    if (session) {
-      router.replace("/(app)");
-    }
-  }, [session, router]);
 
   const signUpMutation = useMutation({
     mutationFn: async (values: SignUpFormValues) => {

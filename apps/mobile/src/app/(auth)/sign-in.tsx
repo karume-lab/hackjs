@@ -4,7 +4,6 @@ import { Button, Input, Label, Text } from "@repo/ui/mobile";
 import { signInSchema } from "@repo/validators";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link, Stack, useRouter } from "expo-router";
-import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Alert, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -27,14 +26,6 @@ export default function SignInScreen() {
       password: "",
     },
   });
-
-  const { data: session } = authClient.useSession();
-
-  React.useEffect(() => {
-    if (session) {
-      router.replace("/(app)");
-    }
-  }, [session, router]);
 
   const signInMutation = useMutation({
     mutationFn: async (values: SignInFormValues) => {
