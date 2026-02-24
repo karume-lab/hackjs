@@ -2,7 +2,6 @@
 @import "uniwind";
 
 @theme static {
-  /* Make these available to useCSSVariable() - actual values come from @variant light/dark */
   --color-background: oklch(1 0 0);
   --color-foreground: oklch(0.145 0 0);
   --color-card: oklch(1 0 0);
