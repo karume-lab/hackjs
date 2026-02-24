@@ -14,7 +14,8 @@
     "start": "turbo start --filter=mobile",
     "android": "turbo android --filter=mobile",
     "ios": "turbo ios --filter=mobile",
-    "postinstall": "lefthook install"
+    "postinstall": "lefthook install",
+    "reinstall-packages": "pkill -9 bun && find . -name 'node_modules' -type d -prune -exec rm -rf '{}' + && rm -f bun.lock && bun install"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
