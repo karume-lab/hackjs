@@ -83,3 +83,5 @@ DerivedData
 project.xcworkspace
 .xcode.env.local
 /Pods/
+
+.agent

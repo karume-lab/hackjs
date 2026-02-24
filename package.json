@@ -10,7 +10,7 @@
     "dev": "turbo watch dev",
     "build": "turbo build",
     "lint": "turbo lint",
-    "clean": "biome check --write",
+    "clean": "biome check --write --no-errors-on-unmatched",
     "start": "turbo start --filter=mobile",
     "android": "turbo android --filter=mobile",
     "ios": "turbo ios --filter=mobile",
