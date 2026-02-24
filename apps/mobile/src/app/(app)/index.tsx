@@ -87,7 +87,7 @@ export default function DashboardScreen() {
     deleteTodo({ id });
   };
 
-  const handleSignout = async () => {
+  const handleSignOut = async () => {
     await authClient.signOut();
     router.replace("/(auth)/sign-in");
   };
@@ -101,9 +101,7 @@ export default function DashboardScreen() {
           headerShadowVisible: false,
           headerRight: () => (
             <>
-              <Button variant="ghost" size="sm" onPress={handleSignout}>
-                <Text className="text-primary font-semibold">Log Out</Text>
-              </Button>
+              <Button onPress={handleSignOut}>Sign Out</Button>
               <ThemeSwitch />
             </>
           ),

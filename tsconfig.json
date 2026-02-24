@@ -21,6 +21,7 @@
       "@repo/validators": ["./packages/validators/src/index.ts"],
       "@repo/types": ["./packages/types/src/index.ts"],
       "@repo/utils": ["./packages/utils/src/index.ts"],
+      "@repo/assets/*": ["./packages/assets/*"],
       "@repo/ui/*": ["./packages/ui/src/*"]
     },
     // Best practices

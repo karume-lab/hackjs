@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
     "@repo/validators",
     "@repo/types",
     "@repo/utils",
+    "@repo/assets",
   ],
 };
 

@@ -1,11 +1,11 @@
 "use client";
 
+import NotFoundIllustration from "@repo/assets/not-found.svg";
 import { Button } from "@repo/ui/web/components/ui/button";
 import { Card, CardContent } from "@repo/ui/web/components/ui/card";
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import NotFoundIllustration from "~/public/not-found.svg";
 
 const NotFound = () => {
   const router = useRouter();
