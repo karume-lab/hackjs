@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authClient } from "@repo/auth/client";
 import { Button, Text } from "@repo/ui/mobile";
-import { signupSchema } from "@repo/validators";
+import { signUpSchema } from "@repo/validators";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link, Stack, useRouter } from "expo-router";
 import * as React from "react";
@@ -10,9 +10,9 @@ import { Alert, TextInput, View } from "react-native";
 import { useCSSVariable } from "uniwind";
 import type { z } from "zod";
 
-type SignupFormValues = z.infer<typeof signupSchema>;
+type SignUpFormValues = z.infer<typeof signUpSchema>;
 
-export default function SignupScreen() {
+export default function SignUpScreen() {
   const router = useRouter();
   const queryClient = useQueryClient();
   const mutedForeground = useCSSVariable("--color-muted-foreground");
@@ -21,8 +21,8 @@ export default function SignupScreen() {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignupFormValues>({
-    resolver: zodResolver(signupSchema),
+  } = useForm<SignUpFormValues>({
+    resolver: zodResolver(signUpSchema),
     defaultValues: {
       name: "",
       email: "",
@@ -38,8 +38,8 @@ export default function SignupScreen() {
     }
   }, [session, router]);
 
-  const signupMutation = useMutation({
-    mutationFn: async (values: SignupFormValues) => {
+  const signUpMutation = useMutation({
+    mutationFn: async (values: SignUpFormValues) => {
       const { data, error } = await authClient.signUp.email({
         email: values.email,
         password: values.password,
@@ -57,8 +57,8 @@ export default function SignupScreen() {
     },
   });
 
-  const onSubmit = (values: SignupFormValues) => {
-    signupMutation.mutate(values);
+  const onSubmit = (values: SignUpFormValues) => {
+    signUpMutation.mutate(values);
   };
 
   return (
@@ -144,15 +144,15 @@ export default function SignupScreen() {
 
           <Button
             onPress={handleSubmit(onSubmit)}
-            disabled={signupMutation.isPending}
+            disabled={signUpMutation.isPending}
             className="mt-4"
           >
-            <Text>{signupMutation.isPending ? "Creating..." : "Sign Up"}</Text>
+            <Text>{signUpMutation.isPending ? "Creating..." : "Sign Up"}</Text>
           </Button>
 
           <View className="mt-4 flex-row justify-center gap-1">
             <Text className="text-muted-foreground">Already have an account?</Text>
-            <Link href="/(auth)/login" asChild>
+            <Link href="/(auth)/sign-in" asChild>
               <Text className="font-semibold text-primary">Sign in</Text>
             </Link>
           </View>

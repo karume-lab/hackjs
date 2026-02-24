@@ -36,7 +36,7 @@ export default function DashboardScreen() {
 
   useEffect(() => {
     if (!isSessionLoading && !session) {
-      router.replace("/(auth)/login");
+      router.replace("/(auth)/sign-in");
     }
   }, [isSessionLoading, session, router]);
 
@@ -89,7 +89,7 @@ export default function DashboardScreen() {
 
   const handleSignout = async () => {
     await authClient.signOut();
-    router.replace("/(auth)/login");
+    router.replace("/(auth)/sign-in");
   };
 
   return (

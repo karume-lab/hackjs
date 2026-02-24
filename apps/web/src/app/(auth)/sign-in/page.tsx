@@ -13,7 +13,7 @@ import {
 } from "@repo/ui/web/components/ui/card";
 import { Input } from "@repo/ui/web/components/ui/input";
 import { Label } from "@repo/ui/web/components/ui/label";
-import { loginSchema } from "@repo/validators";
+import { signInSchema } from "@repo/validators";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -21,9 +21,9 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
 
-type LoginFormValues = z.infer<typeof loginSchema>;
+type SignInFormValues = z.infer<typeof signInSchema>;
 
-export default function LoginPage() {
+export default function SignInPage() {
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -31,16 +31,16 @@ export default function LoginPage() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
+  } = useForm<SignInFormValues>({
+    resolver: zodResolver(signInSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  const loginMutation = useMutation({
-    mutationFn: async (values: LoginFormValues) => {
+  const signInMutation = useMutation({
+    mutationFn: async (values: SignInFormValues) => {
       const { data, error } = await authClient.signIn.email({
         email: values.email,
         password: values.password,
@@ -58,8 +58,8 @@ export default function LoginPage() {
     },
   });
 
-  const onSubmit = (values: LoginFormValues) => {
-    loginMutation.mutate(values);
+  const onSubmit = (values: SignInFormValues) => {
+    signInMutation.mutate(values);
   };
 
   return (
@@ -76,10 +76,10 @@ export default function LoginPage() {
 
         <CardContent>
           {/* 2. Use built-in error state from TanStack Query */}
-          {loginMutation.isError && (
+          {signInMutation.isError && (
             <div className="mb-4 rounded-md bg-red-50 p-4 dark:bg-red-900/30">
               <p className="text-sm font-medium text-red-800 dark:text-red-300">
-                {loginMutation.error.message}
+                {signInMutation.error.message}
               </p>
             </div>
           )}
@@ -114,8 +114,8 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <Button type="submit" className="w-full" disabled={loginMutation.isPending}>
-              {loginMutation.isPending ? "Signing in..." : "Sign in"}
+            <Button type="submit" className="w-full" disabled={signInMutation.isPending}>
+              {signInMutation.isPending ? "Signing in..." : "Sign in"}
             </Button>
           </form>
         </CardContent>

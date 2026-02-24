@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authClient } from "@repo/auth/client";
 import { Button, Input, Label, Text } from "@repo/ui/mobile";
-import { loginSchema } from "@repo/validators";
+import { signInSchema } from "@repo/validators";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link, Stack, useRouter } from "expo-router";
 import * as React from "react";
@@ -10,9 +10,9 @@ import { Alert, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import type { z } from "zod";
 
-type LoginFormValues = z.infer<typeof loginSchema>;
+type SignInFormValues = z.infer<typeof signInSchema>;
 
-export default function LoginScreen() {
+export default function SignInScreen() {
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -20,8 +20,8 @@ export default function LoginScreen() {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
+  } = useForm<SignInFormValues>({
+    resolver: zodResolver(signInSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -36,8 +36,8 @@ export default function LoginScreen() {
     }
   }, [session, router]);
 
-  const loginMutation = useMutation({
-    mutationFn: async (values: LoginFormValues) => {
+  const signInMutation = useMutation({
+    mutationFn: async (values: SignInFormValues) => {
       const { data, error } = await authClient.signIn.email({
         email: values.email,
         password: values.password,
@@ -50,12 +50,12 @@ export default function LoginScreen() {
       router.replace("/(app)");
     },
     onError: (error) => {
-      Alert.alert("Login Failed", error.message);
+      Alert.alert("Sign In Failed", error.message);
     },
   });
 
-  const onSubmit = (values: LoginFormValues) => {
-    loginMutation.mutate(values);
+  const onSubmit = (values: SignInFormValues) => {
+    signInMutation.mutate(values);
   };
 
   return (
@@ -127,16 +127,16 @@ export default function LoginScreen() {
 
             <Button
               onPress={handleSubmit(onSubmit)}
-              disabled={loginMutation.isPending}
+              disabled={signInMutation.isPending}
               className="mt-6"
             >
-              <Text>{loginMutation.isPending ? "Signing in..." : "Sign In"}</Text>
+              <Text>{signInMutation.isPending ? "Signing in..." : "Sign In"}</Text>
             </Button>
           </View>
 
           <View className="mt-8 flex-row justify-center gap-2 items-center">
             <Text className="text-muted-foreground text-base">Don't have an account?</Text>
-            <Link href="/(auth)/signup" asChild>
+            <Link href="/(auth)/sign-up" asChild>
               <Text className="font-bold text-primary text-base">Sign up</Text>
             </Link>
           </View>
