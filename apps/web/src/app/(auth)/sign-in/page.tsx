@@ -13,7 +13,7 @@ import {
 } from "@repo/ui/web/components/ui/card";
 import { Input } from "@repo/ui/web/components/ui/input";
 import { Label } from "@repo/ui/web/components/ui/label";
-import { signupSchema } from "@repo/validators";
+import { loginSchema } from "@repo/validators";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -21,9 +21,9 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
 
-type SignupFormValues = z.infer<typeof signupSchema>;
+type LoginFormValues = z.infer<typeof loginSchema>;
 
-export default function SignupPage() {
+export default function LoginPage() {
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -31,28 +31,26 @@ export default function SignupPage() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignupFormValues>({
-    resolver: zodResolver(signupSchema),
+  } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
-      name: "",
       email: "",
       password: "",
     },
   });
 
-  const signupMutation = useMutation({
-    mutationFn: async (values: SignupFormValues) => {
-      const { data, error } = await authClient.signUp.email({
+  const loginMutation = useMutation({
+    mutationFn: async (values: LoginFormValues) => {
+      const { data, error } = await authClient.signIn.email({
         email: values.email,
         password: values.password,
-        name: values.name,
       });
-      if (error) throw new Error(error.message || "Failed to create account");
+      if (error) throw new Error(error.message || "Invalid credentials");
       return data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["session"] });
-      toast.success("Account created successfully!");
+      toast.success("Welcome back!");
       router.push("/dashboard");
     },
     onError: (error) => {
@@ -60,8 +58,8 @@ export default function SignupPage() {
     },
   });
 
-  const onSubmit = (values: SignupFormValues) => {
-    signupMutation.mutate(values);
+  const onSubmit = (values: LoginFormValues) => {
+    loginMutation.mutate(values);
   };
 
   return (
@@ -69,18 +67,19 @@ export default function SignupPage() {
       <Card className="w-full max-w-md shadow-xl dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800">
         <CardHeader className="text-center space-y-2">
           <CardTitle className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
-            Create an account
+            Sign in to Ease
           </CardTitle>
           <CardDescription className="text-sm text-zinc-600 dark:text-zinc-400">
-            Join Ease to start managing your tasks today.
+            Welcome back! Please enter your details.
           </CardDescription>
         </CardHeader>
 
         <CardContent>
-          {signupMutation.isError && (
+          {/* 2. Use built-in error state from TanStack Query */}
+          {loginMutation.isError && (
             <div className="mb-4 rounded-md bg-red-50 p-4 dark:bg-red-900/30">
               <p className="text-sm font-medium text-red-800 dark:text-red-300">
-                {signupMutation.error.message}
+                {loginMutation.error.message}
               </p>
             </div>
           )}
@@ -88,25 +87,12 @@ export default function SignupPage() {
           <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Full Name</Label>
-                <Input
-                  id="name"
-                  type="text"
-                  placeholder="John Doe"
-                  autoComplete="name"
-                  {...register("name")}
-                />
-                {errors.name && (
-                  <p className="text-xs font-medium text-red-500">{errors.name.message}</p>
-                )}
-              </div>
-              <div className="space-y-2">
                 <Label htmlFor="email">Email address</Label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="you@example.com"
                   autoComplete="email"
+                  placeholder="you@example.com"
                   {...register("email")}
                 />
                 {errors.email && (
@@ -118,8 +104,8 @@ export default function SignupPage() {
                 <Input
                   id="password"
                   type="password"
+                  autoComplete="current-password"
                   placeholder="••••••••"
-                  autoComplete="new-password"
                   {...register("password")}
                 />
                 {errors.password && (
@@ -128,20 +114,20 @@ export default function SignupPage() {
               </div>
             </div>
 
-            <Button type="submit" className="w-full" disabled={signupMutation.isPending}>
-              {signupMutation.isPending ? "Signing up..." : "Sign up"}
+            <Button type="submit" className="w-full" disabled={loginMutation.isPending}>
+              {loginMutation.isPending ? "Signing in..." : "Sign in"}
             </Button>
           </form>
         </CardContent>
 
         <CardFooter className="flex justify-center border-t border-zinc-100 p-6 dark:border-zinc-800/50">
           <p className="text-sm text-zinc-600 dark:text-zinc-400">
-            Already have an account?{" "}
+            Don't have an account?{" "}
             <Link
-              href="/login"
+              href="/sign-up"
               className="font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 transition-colors"
             >
-              Log in
+              Sign up
             </Link>
           </p>
         </CardFooter>

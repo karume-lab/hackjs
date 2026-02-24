@@ -2,22 +2,22 @@ import { auth } from "@repo/auth";
 import { type NextRequest, NextResponse } from "next/server";
 
 export default async function proxy(request: NextRequest) {
+  const { pathname, searchParams } = request.nextUrl;
+
   const session = await auth.api.getSession({
     headers: request.headers,
   });
 
-  const { pathname } = request.nextUrl;
+  const isDashboard = pathname.startsWith("/dashboard");
+  const isAuthPage = pathname.startsWith("/sign-in") || pathname.startsWith("/sign-up");
+  const isRoot = pathname === "/";
 
-  // Protected routes
-  const isProtectedRoute = pathname.startsWith("/dashboard") || pathname.startsWith("/settings");
-  // Auth routes (login/signup)
-  const isAuthRoute = pathname.startsWith("/login") || pathname.startsWith("/signup");
-
-  if (!session && isProtectedRoute) {
-    return NextResponse.redirect(new URL("/login", request.url));
+  if (!session && isDashboard) {
+    const callbackUrl = encodeURIComponent(pathname + searchParams.toString());
+    return NextResponse.redirect(new URL(`/sign-in?callbackUrl=${callbackUrl}`, request.url));
   }
 
-  if (session && isAuthRoute) {
+  if (session && (isAuthPage || isRoot)) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
@@ -25,5 +25,5 @@ export default async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/settings/:path*", "/login", "/signup"],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
 };

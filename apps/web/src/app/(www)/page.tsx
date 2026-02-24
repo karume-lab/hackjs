@@ -14,7 +14,7 @@ export default function Home() {
         </p>
         <div className="flex flex-col gap-4 w-full sm:w-auto sm:flex-row">
           <Button asChild size="lg" className="rounded-full px-8 text-base font-medium">
-            <Link href="/signup">Get Started</Link>
+            <Link href="/sign-up">Get Started</Link>
           </Button>
           <Button
             asChild
@@ -22,7 +22,7 @@ export default function Home() {
             size="lg"
             className="rounded-full px-8 text-base font-medium"
           >
-            <Link href="/login">Log in</Link>
+            <Link href="/sign-in">Sign in</Link>
           </Button>
         </div>
       </main>
