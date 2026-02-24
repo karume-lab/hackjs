@@ -15,8 +15,9 @@ import { Input } from "@repo/ui/web/components/ui/input";
 import { Label } from "@repo/ui/web/components/ui/label";
 import { signUpSchema } from "@repo/validators";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import type { Route } from "next";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
@@ -25,6 +26,7 @@ type SignUpFormValues = z.infer<typeof signUpSchema>;
 
 export default function SignUpPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const queryClient = useQueryClient();
 
   const {
@@ -53,7 +55,8 @@ export default function SignUpPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["session"] });
       toast.success("Account created successfully!");
-      router.push("/dashboard");
+      const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
+      router.push(callbackUrl as Route);
     },
     onError: (error) => {
       toast.error(error.message);

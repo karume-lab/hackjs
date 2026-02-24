@@ -2,7 +2,7 @@ import { auth } from "@repo/auth";
 import { type NextRequest, NextResponse } from "next/server";
 
 export default async function proxy(request: NextRequest) {
-  const { pathname, searchParams } = request.nextUrl;
+  const { pathname } = request.nextUrl;
 
   const session = await auth.api.getSession({
     headers: request.headers,
@@ -13,7 +13,7 @@ export default async function proxy(request: NextRequest) {
   const isRoot = pathname === "/";
 
   if (!session && isDashboard) {
-    const callbackUrl = encodeURIComponent(pathname + searchParams.toString());
+    const callbackUrl = encodeURIComponent(request.nextUrl.pathname + request.nextUrl.search);
     return NextResponse.redirect(new URL(`/sign-in?callbackUrl=${callbackUrl}`, request.url));
   }
 
