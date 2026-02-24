@@ -5,8 +5,6 @@ export function useNavTheme(): Theme {
   const { theme } = useUniwind();
   const isDark = theme === "dark";
 
-  // Ensure Tailwind generates these variables by mentioning them in classes:
-  // bg-background text-foreground bg-card border-border bg-primary bg-destructive
   const background = useCSSVariable("--color-background");
   const foreground = useCSSVariable("--color-foreground");
   const card = useCSSVariable("--color-card");
