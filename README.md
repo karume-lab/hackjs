@@ -7,16 +7,16 @@ A fullstack JavaScript/TypeScript monorepo template for rapidly building Web and
 
 ## Core Stack
 
-- **Monorepo:** Turborepo & Bun Workspaces -> ease of management and code sharing
-- **Web App:** Next.js (App Router) -> ai knows this best, 
-- **Mobile App:** React Native (Expo Router) -> Javascript, cross platform
-- **Database & ORM:** Drizzle ORM + SQLite (LibSQL/Turso) -> fast and len
-- **Authentication:** Better Auth -> better auth
-- **Communication:** oRPC (Optimized Remote Procedure Call) -> FULL type safety, and i mean end to end
-- **State Management:** TanStack Query, React Context, & nuqs
-- **Validation:** Zod & drizzle-zod
-- **UI & Styling:** Tailwind CSS, shadcn/ui (Web), RN Reusables (Mobile) ->  you can never go wrong with this
-- **Linting & Formatting:** Biome -> minimal config, max performance
+- **Monorepo:** Turborepo & Bun Workspaces — Efficient management of shared packages and apps with high-performance dependency resolution.
+- **Web App:** Next.js (App Router) — Modern React framework optimized for performance, SEO, and developer productivity.
+- **Mobile App:** React Native (Expo Router) — Native mobile development with shared logic and file-based routing.
+- **Database & ORM:** Drizzle ORM + SQLite (LibSQL/Turso) — Lightweight, edge-ready database with a type-safe, developer-friendly ORM.
+- **Authentication:** Better Auth — A comprehensive authentication framework designed for safety and ease of integration.
+- **Communication:** oRPC — Optimized Remote Procedure Call for seamless, end-to-end type safety between services.
+- **State Management:** TanStack Query & nuqs — Robust server-state synchronization and type-safe URL search params.
+- **Validation:** Zod & drizzle-zod — Schema-first validation for runtime safety and database schema inference.
+- **UI & Styling:** Tailwind CSS & shadcn/ui — Utility-first styling with high-quality, accessible component primitives for Web and Mobile.
+- **Linting & Formatting:** Biome — Ultra-fast, unified toolchain for maintaining code quality and consistent formatting.
 
 ## Project Structure
 
