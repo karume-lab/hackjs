@@ -44,7 +44,10 @@ export default function AdminTodoCreatePage() {
     },
   });
 
-  const { data: users, isLoading: usersLoading } = useQuery(orpc.admin.getUsers.queryOptions());
+  const { data: usersResponse, isLoading: usersLoading } = useQuery(
+    orpc.admin.getUsers.queryOptions({ input: { limit: 1000 } }),
+  );
+  const users = usersResponse?.data || [];
 
   const createTodoMutation = useMutation(
     orpc.admin.createTodo.mutationOptions({

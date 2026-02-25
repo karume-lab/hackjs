@@ -1,17 +1,47 @@
 import { auth } from "@repo/auth";
 import { db, schema } from "@repo/db";
 import { insertTodoSchema, updateTodoSchema } from "@repo/validators";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { z } from "zod";
 import { adminOS } from "../os";
 
 export const adminRouter = adminOS.router({
   // ---> Users <---
-  getUsers: adminOS.handler(async () => {
-    return await db.query.user.findMany({
-      orderBy: (users, { desc }) => [desc(users.createdAt)],
-    });
-  }),
+  getUsers: adminOS
+    .input(
+      z
+        .object({
+          limit: z.number().min(1).max(100).default(10),
+          page: z.number().min(1).default(1),
+        })
+        .optional()
+        .default({ limit: 10, page: 1 }),
+    )
+    .handler(async ({ input }) => {
+      const { limit, page } = input;
+      const offset = (page - 1) * limit;
+
+      const data = await db.query.user.findMany({
+        orderBy: (users, { desc }) => [desc(users.createdAt)],
+        limit,
+        offset,
+      });
+
+      const countResult = await db
+        .select({ count: sql<number>`cast(count(*) as int)` })
+        .from(schema.user);
+      const totalCount = countResult[0]?.count || 0;
+      const totalPages = Math.ceil(totalCount / limit);
+
+      return {
+        data,
+        metadata: {
+          totalCount,
+          page,
+          totalPages,
+        },
+      };
+    }),
   getUser: adminOS.input(z.object({ id: z.string() })).handler(async ({ input }) => {
     const u = await db.query.user.findFirst({
       where: eq(schema.user.id, input.id),
@@ -70,12 +100,41 @@ export const adminRouter = adminOS.router({
   }),
 
   // ---> Todos <---
-  getTodos: adminOS.handler(async () => {
-    // Admins can see ALL todos in the system
-    return await db.query.todos.findMany({
-      orderBy: (todos, { desc }) => [desc(todos.createdAt)],
-    });
-  }),
+  getTodos: adminOS
+    .input(
+      z
+        .object({
+          limit: z.number().min(1).max(100).default(10),
+          page: z.number().min(1).default(1),
+        })
+        .optional()
+        .default({ limit: 10, page: 1 }),
+    )
+    .handler(async ({ input }) => {
+      const { limit, page } = input;
+      const offset = (page - 1) * limit;
+
+      const data = await db.query.todos.findMany({
+        orderBy: (todos, { desc }) => [desc(todos.createdAt)],
+        limit,
+        offset,
+      });
+
+      const countResult = await db
+        .select({ count: sql<number>`cast(count(*) as int)` })
+        .from(schema.todos);
+      const totalCount = countResult[0]?.count || 0;
+      const totalPages = Math.ceil(totalCount / limit);
+
+      return {
+        data,
+        metadata: {
+          totalCount,
+          page,
+          totalPages,
+        },
+      };
+    }),
   getTodo: adminOS.input(z.object({ id: z.string() })).handler(async ({ input }) => {
     const t = await db.query.todos.findFirst({
       where: eq(schema.todos.id, input.id),
