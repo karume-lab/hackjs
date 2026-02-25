@@ -2,21 +2,19 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { orpc } from "@repo/api/client";
-import { authClient } from "@repo/auth/client";
 import { Button } from "@repo/ui/web/components/ui/button";
 import { Card, CardContent } from "@repo/ui/web/components/ui/card";
 import { Input } from "@repo/ui/web/components/ui/input";
 import { insertTodoSchema } from "@repo/validators";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
+import { SignOutButton } from "@/components/sign-out-button";
 
 type TodoFormValues = z.infer<typeof insertTodoSchema>;
 
 export default function DashboardPage() {
-  const router = useRouter();
   const queryClient = useQueryClient();
 
   const {
@@ -77,11 +75,6 @@ export default function DashboardPage() {
     createTodo({ title: values.title, completed: false });
   };
 
-  const handleSignOut = async () => {
-    await authClient.signOut();
-    router.push("/sign-in");
-  };
-
   if (isFetching) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-zinc-50 dark:bg-black">
@@ -97,9 +90,7 @@ export default function DashboardPage() {
           <h1 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
             Ease Dashboard
           </h1>
-          <Button variant="secondary" size="sm" onClick={handleSignOut}>
-            Sign out
-          </Button>
+          <SignOutButton />
         </div>
       </nav>
 

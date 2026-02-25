@@ -16,3 +16,12 @@ export const protectedOS = pubOS.use(async ({ context, next }) => {
     },
   });
 });
+
+export const adminOS = protectedOS.use(async ({ context, next }) => {
+  if (context.user.role !== "admin") {
+    throw new Error("FORBIDDEN: Admin access required");
+  }
+  return next({
+    context,
+  });
+});

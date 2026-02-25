@@ -41,7 +41,7 @@ export default function SignUpScreen() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["session"] });
-      router.replace("/dashboard" as any);
+      router.replace("/dashboard");
     },
     onError: (error) => {
       Alert.alert("Signup Failed", error.message);
