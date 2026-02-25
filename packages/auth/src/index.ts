@@ -2,6 +2,7 @@ import { db, schema } from "@repo/db";
 import { getLocalIPs } from "@repo/utils/get-ip";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { admin } from "better-auth/plugins";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -28,6 +29,7 @@ export const auth = betterAuth({
       secure: process.env.NODE_ENV === "production",
     },
   },
+  plugins: [admin()],
 });
 
 export type Auth = typeof auth;
