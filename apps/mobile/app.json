@@ -1,35 +1,35 @@
 {
   "expo": {
-    "name": "minimal",
-    "slug": "minimal",
+    "name": "Taskly",
+    "slug": "taskly",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./src/assets/images/icon.png",
-    "scheme": "minimal",
+    "icon": "../../packages/assets/mobile/icon.png",
+    "scheme": "taskly",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
-      "image": "./src/assets/images/splash.png",
+      "image": "../../packages/assets/mobile/splash-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.minimal"
+      "bundleIdentifier": "com.taskly.app"
     },
     "android": {
       "edgeToEdgeEnabled": true,
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/images/adaptive-icon.png",
+        "foregroundImage": "../../packages/assets/mobile/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.minimal"
+      "package": "com.taskly.app"
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./src/assets/images/favicon.png"
+      "favicon": "../../packages/assets/favicon.ico"
     },
     "plugins": ["expo-router", "expo-font"],
     "experiments": {

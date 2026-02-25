@@ -16,8 +16,8 @@ import {
 import { CheckSquare, LayoutDashboard, Users } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { SignOutButton } from "@/components/sign-out-button";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { SignOutButton } from "@/components/SignOutButton";
+import { ThemeSwitch } from "@/components/ThemeSwitch";
 
 const navGroups = [
   {
@@ -91,7 +91,7 @@ export function AppSidebar() {
       <SidebarFooter className="border-t border-sidebar-border p-4 space-y-2">
         <div className="flex items-center justify-between">
           <span className="text-sm font-medium text-sidebar-foreground">Theme</span>
-          <ThemeToggle />
+          <ThemeSwitch />
         </div>
         <SignOutButton
           variant="outline"

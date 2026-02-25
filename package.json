@@ -1,5 +1,5 @@
 {
-  "name": "hack-js",
+  "name": "taskly",
   "private": true,
   "packageManager": "bun@1.3.5",
   "workspaces": [

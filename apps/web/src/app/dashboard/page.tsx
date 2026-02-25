@@ -10,8 +10,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
-import { SignOutButton } from "@/components/sign-out-button";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { SignOutButton } from "@/components/SignOutButton";
+import { ThemeSwitch } from "@/components/ThemeSwitch";
 
 type TodoFormValues = z.infer<typeof insertTodoSchema>;
 
@@ -88,9 +88,11 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-background">
       <nav className="border-b border-border bg-card px-4 py-4 sm:px-6 lg:px-8">
         <div className="mx-auto flex max-w-4xl items-center justify-between gap-4">
-          <h1 className="text-xl font-bold tracking-tight text-card-foreground">Ease Dashboard</h1>
+          <h1 className="text-xl font-bold tracking-tight text-card-foreground">
+            Taskly Dashboard
+          </h1>
           <div className="flex items-center gap-2">
-            <ThemeToggle />
+            <ThemeSwitch />
             <SignOutButton />
           </div>
         </div>

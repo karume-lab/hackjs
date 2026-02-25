@@ -70,7 +70,7 @@ export default function SignInPage() {
       <Card className="w-full max-w-md shadow-xl dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800">
         <CardHeader className="text-center space-y-2">
           <CardTitle className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
-            Sign in to Ease
+            Sign in to Taskly
           </CardTitle>
           <CardDescription className="text-sm text-zinc-600 dark:text-zinc-400">
             Welcome back! Please enter your details.
