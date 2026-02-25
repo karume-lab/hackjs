@@ -11,8 +11,8 @@ const NotFound = () => {
   const router = useRouter();
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 dark:bg-black px-4">
-      <Card className="w-full max-w-md shadow-xl dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800">
+    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+      <Card className="w-full max-w-md shadow-xl border-border">
         <CardContent className="flex flex-col items-center gap-6 pt-6 sm:p-8 sm:pt-10">
           <Image
             alt="Not found illustration"
@@ -23,10 +23,10 @@ const NotFound = () => {
             priority
           />
           <div className="space-y-2 text-center">
-            <h2 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 sm:text-3xl">
+            <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
               404 - Page Not Found
             </h2>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400 sm:text-base px-2">
+            <p className="text-sm text-muted-foreground sm:text-base px-2">
               Oops! The page you're looking for doesn't exist or has been moved.
             </p>
           </div>

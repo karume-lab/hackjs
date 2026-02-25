@@ -11,6 +11,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
 import { SignOutButton } from "@/components/sign-out-button";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 type TodoFormValues = z.infer<typeof insertTodoSchema>;
 
@@ -77,25 +78,26 @@ export default function DashboardPage() {
 
   if (isFetching) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-zinc-50 dark:bg-black">
-        <div className="animate-pulse text-zinc-500">Loading...</div>
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <div className="animate-pulse text-muted-foreground">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
-      <nav className="border-b border-zinc-200 bg-white px-4 py-4 dark:border-zinc-800 dark:bg-zinc-900 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-background">
+      <nav className="border-b border-border bg-card px-4 py-4 sm:px-6 lg:px-8">
         <div className="mx-auto flex max-w-4xl items-center justify-between gap-4">
-          <h1 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
-            Ease Dashboard
-          </h1>
-          <SignOutButton />
+          <h1 className="text-xl font-bold tracking-tight text-card-foreground">Ease Dashboard</h1>
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <SignOutButton />
+          </div>
         </div>
       </nav>
 
       <main className="mx-auto mt-8 max-w-4xl px-4 sm:px-6 lg:px-8">
-        <Card className="shadow-sm border-zinc-200 dark:border-zinc-800">
+        <Card className="shadow-sm border-border">
           <CardContent className="p-6">
             <form className="mb-8" onSubmit={handleSubmit(onSubmit)}>
               <div className="flex gap-2">
@@ -115,24 +117,24 @@ export default function DashboardPage() {
 
             <div className="mt-8 space-y-3">
               {todos.length === 0 ? (
-                <p className="text-center text-zinc-500 dark:text-zinc-400 py-6">
+                <p className="text-center text-muted-foreground py-6">
                   No todos yet. Add one above!
                 </p>
               ) : (
                 todos.map((todo) => (
                   <div
                     key={todo.id}
-                    className={`group flex items-center justify-between rounded-lg border border-zinc-100 bg-zinc-50 p-4 transition hover:bg-zinc-100 dark:border-zinc-800/50 dark:bg-zinc-900/50 dark:hover:bg-zinc-800 ${todo.completed ? "opacity-70" : ""}`}
+                    className={`group flex items-center justify-between rounded-lg border border-border bg-muted/50 p-4 transition hover:bg-muted ${todo.completed ? "opacity-70" : ""}`}
                   >
                     <div className="flex items-center gap-3">
                       <button
                         type="button"
                         onClick={() => toggleTodo({ id: todo.id, completed: !todo.completed })}
-                        className={`flex h-6 w-6 items-center justify-center rounded-full border ${todo.completed ? "border-blue-600 bg-blue-600" : "border-zinc-300 dark:border-zinc-600"}`}
+                        className={`flex h-6 w-6 items-center justify-center rounded-full border ${todo.completed ? "border-primary bg-primary" : "border-border"}`}
                       >
                         {todo.completed && (
                           <svg
-                            className="h-3.5 w-3.5 text-white"
+                            className="h-3.5 w-3.5 text-primary-foreground"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
@@ -144,7 +146,7 @@ export default function DashboardPage() {
                         )}
                       </button>
                       <span
-                        className={`text-zinc-800 dark:text-zinc-200 ${todo.completed ? "line-through text-zinc-500" : ""}`}
+                        className={`text-foreground ${todo.completed ? "line-through text-muted-foreground" : ""}`}
                       >
                         {todo.title}
                       </span>
@@ -152,7 +154,7 @@ export default function DashboardPage() {
                     <button
                       type="button"
                       onClick={() => deleteTodo({ id: todo.id })}
-                      className="opacity-0 group-hover:opacity-100 text-zinc-400 hover:text-red-500 transition px-2 py-1"
+                      className="opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-destructive transition px-2 py-1"
                       aria-label="Delete todo"
                     >
                       <svg

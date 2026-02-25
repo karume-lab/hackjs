@@ -77,9 +77,7 @@ export default function AdminDashboardPage() {
   return (
     <div className="flex-1 space-y-4 p-8 pt-6 max-w-7xl mx-auto">
       <div className="flex items-center justify-between space-y-2">
-        <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
-          Admin Dashboard
-        </h2>
+        <h2 className="text-3xl font-bold tracking-tight text-foreground">Admin Dashboard</h2>
       </div>
       <Tabs defaultValue="overview" className="space-y-4">
         <TabsList>
@@ -160,7 +158,7 @@ export default function AdminDashboardPage() {
                             className={
                               user.role === "admin"
                                 ? "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-500 px-2 py-1 rounded-full text-xs font-semibold"
-                                : "bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 px-2 py-1 rounded-full text-xs font-medium"
+                                : "bg-muted text-muted-foreground px-2 py-1 rounded-full text-xs font-medium"
                             }
                           >
                             {user.role || "user"}
@@ -189,7 +187,7 @@ export default function AdminDashboardPage() {
                             <Button
                               variant="outline"
                               size="sm"
-                              className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/50"
+                              className="text-destructive hover:text-destructive hover:bg-destructive/10"
                               onClick={() => banUserMutation.mutate(user.id)}
                               disabled={user.role === "admin" || banUserMutation.isPending}
                             >
