@@ -2,6 +2,9 @@
   "name": "@repo/db",
   "main": "src/index.ts",
   "module": "src/index.ts",
+  "devDependencies": {
+    "better-auth": "^1.4.19"
+  },
   "exports": {
     ".": "./src/index.ts",
     "./schema": "./src/schema/index.ts"
@@ -13,8 +16,5 @@
     "db:migrate": "drizzle-kit migrate",
     "db:seed": "bun src/seed.ts"
   },
-  "type": "module",
-  "devDependencies": {
-    "better-auth": "^1.4.19"
-  }
+  "type": "module"
 }

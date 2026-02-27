@@ -23,6 +23,7 @@ import {
 } from "@repo/ui/web/components/ui/select";
 import { updateUserSchema } from "@repo/validators";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import dayjs from "dayjs";
 import { ArrowLeft, Loader2, ShieldAlert } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -133,7 +134,7 @@ export default function AdminUserEditPage({ params }: { params: Promise<{ id: st
                   <div className="space-y-2">
                     <Label>Joined Platform</Label>
                     <Input
-                      value={new Date(user.createdAt).toLocaleDateString()}
+                      value={dayjs(user.createdAt).format("MM/DD/YYYY")}
                       disabled
                       className="bg-zinc-50 dark:bg-zinc-900/50"
                     />

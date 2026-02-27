@@ -81,6 +81,7 @@
     "better-auth": "^1.1.20",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dayjs": "^1.11.19",
     "drizzle-orm": "^0.45.1",
     "drizzle-zod": "^0.8.3",
     "expo": "~54.0.33",
