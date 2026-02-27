@@ -10,12 +10,12 @@ A fullstack JavaScript/TypeScript monorepo template for rapidly building Web and
 - **Monorepo:** Turborepo & Bun Workspaces — Efficient management of shared packages and apps with high-performance dependency resolution.
 - **Web App:** Next.js (App Router) — Modern React framework optimized for performance, SEO, and developer productivity.
 - **Mobile App:** React Native (Expo Router) — Native mobile development with shared logic and file-based routing.
-- **Database & ORM:** Drizzle ORM + SQLite (LibSQL/Turso) — Lightweight, edge-ready database with a type-safe, developer-friendly ORM.
+- **Database & ORM:** Drizzle ORM + SQLite — Lightweight, local-first database with a type-safe, developer-friendly ORM.
 - **Authentication:** Better Auth — A comprehensive authentication framework designed for safety and ease of integration.
 - **Communication:** oRPC — Optimized Remote Procedure Call for seamless, end-to-end type safety between services.
 - **State Management:** TanStack Query & nuqs — Robust server-state synchronization and type-safe URL search params.
 - **Validation:** Zod & drizzle-zod — Schema-first validation for runtime safety and database schema inference.
-- **UI & Styling:** Tailwind CSS & shadcn/ui — Utility-first styling with high-quality, accessible component primitives for Web and Mobile.
+- **UI & Styling:** Tailwind CSS & shadcn/ui — Utility-first styling with high-quality, accessible component primitives.
 - **Linting & Formatting:** Biome — Ultra-fast, unified toolchain for maintaining code quality and consistent formatting.
 
 ## Project Structure
@@ -23,15 +23,18 @@ A fullstack JavaScript/TypeScript monorepo template for rapidly building Web and
 ```text
 .
 ├── apps/
-│   ├── web/                     # Next.js App Router (Web Dashboard & API)
-│   └── mobile/                  # React Native / Expo (Mobile Client)
+│   ├── web/                     # Next.js App Router (Dashboard & API)
+│   └── mobile/                  # React Native / Expo (Native Client)
 ├── packages/
-│   ├── api/                     # oRPC (The Bridge between Web & Mobile)
-│   ├── auth/                    # Better Auth (Authentication Gatekeeper)
-│   ├── db/                      # Drizzle ORM (Database connection & schema)
-│   ├── ui/                      # Shared design system & Tailwind configuration
-│   └── validators/              # Shared Zod schemas for forms and types
-└── package.json                 # Workspace root & scripts
+│   ├── api/                     # oRPC (End-to-end type-safety bridge)
+│   ├── auth/                    # Better Auth (Authentication logic)
+│   ├── db/                      # Drizzle ORM + SQLite (Database layer)
+│   ├── types/                   # Shared TypeScript interfaces
+│   ├── ui/                      # Shared UI system (Tailwind & Components)
+│   ├── validators/              # Common Zod schemas
+│   ├── utils/                   # Shared helper functions
+│   └── assets/                  # Shared images and icons
+└── package.json                 # Monorepo root & scripts
 ```
 
 ## Setup
@@ -39,7 +42,7 @@ A fullstack JavaScript/TypeScript monorepo template for rapidly building Web and
 ### Prerequisites
 - [Bun](https://bun.sh/) (latest version)
 - Node.js (v20+ recommended)
-- A Database URL (e.g., local SQLite, or Turso)
+- ADB
 
 ### 1. Installation
 
@@ -51,11 +54,20 @@ bun install
 
 ### 2. Environment Variables
 
-Create an `.env` file in `apps/web` with your credentials:
+For every `.env.example` file in the project, copy it to a `.env` file and edit as needed:
+
+```bash
+# Example for the Web app
+cp apps/web/.env.example apps/web/.env
+```
+
+The core configuration is in `apps/web/.env`:
 
 ```env
 DATABASE_URL="file:../../local.db"
 BETTER_AUTH_SECRET=your-random-auth-secret
+# For Mobile Local Development
+EXPO_PUBLIC_APP_URL="http://[your-local-ip]:3000"
 ```
 
 ### 3. Database Migration
@@ -63,7 +75,7 @@ BETTER_AUTH_SECRET=your-random-auth-secret
 Push your schema to the database:
 
 ```bash
-bun turbo run db:push --filter=@repo/db
+bun --cwd packages/db db:push
 ```
 
 ## Usage
@@ -80,9 +92,9 @@ Or run individually:
 
 ```bash
 # Web only
-bun turbo run dev --filter=web
+bun --cwd apps/web dev
 
-# Mobile only
+# Mobile (Expo development server)
 bun start
 
 # Android emulator/device
@@ -92,63 +104,42 @@ bun android
 bun ios
 ```
 
-### Production Build
+### UI Component Management
+
+Add components to your workspace using unified scripts:
 
 ```bash
-bun build
+# Web (shadcn/ui)
+bun ui:web [component-name]
+
+# Mobile (react-native-reusables)
+bun ui:mobile [component-name]
 ```
 
 ### Code Quality
 
 ```bash
 # Format the entire workspace
-bun format
+bun clean
 
 # Run linter
 bun lint
 ```
 
-## Workflow
- 
-### Adding UI Components
- 
-We provide unified scripts at the root to add components from their respective registries:
- 
-```bash
-# Web (shadcn/ui)
-bun ui:web [component-name]
- 
-# Mobile (react-native-reusables)
-bun ui:mobile [component-name]
-```
- 
-### Package Management
- 
+## Package Management
+
 Manage dependencies across the monorepo from the root:
- 
-#### 1. Global Development Tools
-For tools that apply to the entire workspace (e.g., `turbo`, `biome`).
+
 ```bash
+# Add a dependency to a specific package/app
+bun add [package] --filter @repo/db
+bun add [package] --filter web
+bun add [package] --filter mobile
+
+# Add a dev dependency globally
 bun add -d [package]
 ```
- 
-#### 2. App-Specific Dependencies
-To install a package only for the Web or Mobile application.
-```bash
-# Web
-bun add [package] --filter web
- 
-# Mobile
-bun add [package] --filter mobile
-```
- 
-#### 3. Shared Package Dependencies
-To install a package for a shared library (e.g., `db`, `api`).
-```bash
-bun add [package] --filter @repo/db
-bun add [package] --filter @repo/api
-```
- 
+
 ## Contributing
 
 1. Create a feature branch (`git checkout -b feature/amazing-feature`)
