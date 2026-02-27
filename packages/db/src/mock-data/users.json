@@ -1,0 +1,38 @@
+[
+  {
+    "id": "76953f93-1811-4999-9e8c-572242133e38",
+    "name": "Admin User",
+    "email": "admin@mail.com",
+    "emailVerified": true,
+    "image": "https://api.dicebear.com/7.x/avataaars/svg?seed=admin",
+    "role": "admin",
+    "banned": false,
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z",
+    "password": "#Default123"
+  },
+  {
+    "id": "96fd54e2-a0b4-47fd-864c-f72439c2789f",
+    "name": "Jane Doe",
+    "email": "jane@mail.com",
+    "emailVerified": true,
+    "image": "https://api.dicebear.com/7.x/avataaars/svg?seed=jane",
+    "role": "user",
+    "banned": false,
+    "createdAt": "2024-02-01T00:00:00.000Z",
+    "updatedAt": "2024-02-01T00:00:00.000Z",
+    "password": "#Default123"
+  },
+  {
+    "id": "c1f7b8a9-4567-4a12-8901-23456789abcd",
+    "name": "John Smith",
+    "email": "john@smith.com",
+    "emailVerified": false,
+    "image": "https://api.dicebear.com/7.x/avataaars/svg?seed=john",
+    "role": "user",
+    "banned": true,
+    "createdAt": "2024-02-15T00:00:00.000Z",
+    "updatedAt": "2024-02-20T00:00:00.000Z",
+    "password": "#Default123"
+  }
+]

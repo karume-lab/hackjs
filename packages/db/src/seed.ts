@@ -1,40 +1,48 @@
-import { faker } from "@faker-js/faker";
+import { hashPassword } from "better-auth/crypto";
 import { db, schema } from "./index";
+import todosData from "./mock-data/todos.json";
+import usersData from "./mock-data/users.json";
 
 async function seed() {
   console.log("Starting database seeding process...");
 
-  const usersToInsert = Array.from({ length: 50 }).map(() => {
-    const isVerified = faker.datatype.boolean({ probability: 0.8 });
-    return {
-      id: faker.string.uuid(),
-      name: faker.person.fullName(),
-      email: faker.internet.email().toLowerCase(),
-      emailVerified: isVerified,
-      image: faker.image.avatar(),
-      createdAt: faker.date.past({ years: 1 }),
-      updatedAt: faker.date.recent(),
-      role: faker.helpers.arrayElement(["user", "user", "user", "admin"]),
-      banned: faker.datatype.boolean({ probability: 0.05 }),
-    };
-  });
+  console.log("Cleaning up existing data...");
+  await db.delete(schema.todos);
+  await db.delete(schema.account);
+  await db.delete(schema.session);
+  await db.delete(schema.user);
 
-  console.log(`Inserting ${usersToInsert.length} mock users...`);
-  await db.insert(schema.user).values(usersToInsert);
-  console.log("Users successfully seeded.");
+  console.log(`Inserting ${usersData.length} mock users...`);
 
-  const todosToInsert = Array.from({ length: 200 }).map(() => {
-    const user = faker.helpers.arrayElement(usersToInsert);
-    return {
-      id: faker.string.uuid(),
+  for (const userData of usersData) {
+    const { password, ...user } = userData;
+
+    await db.insert(schema.user).values({
+      ...user,
+      createdAt: new Date(user.createdAt),
+      updatedAt: new Date(user.updatedAt),
+    });
+
+    const hashedPassword = await hashPassword(password);
+    await db.insert(schema.account).values({
+      id: crypto.randomUUID(),
       userId: user.id,
-      title: faker.lorem.sentence({ min: 3, max: 8 }),
-      completed: faker.datatype.boolean({ probability: 0.4 }),
-      createdAt: faker.date.between({ from: user.createdAt, to: new Date() }),
-    };
-  });
+      accountId: user.id,
+      providerId: "credential",
+      password: hashedPassword,
+      createdAt: new Date(user.createdAt),
+      updatedAt: new Date(user.updatedAt),
+    });
+  }
 
-  console.log(`Inserting ${todosToInsert.length} mock todos...`);
+  console.log("Users and accounts successfully seeded.");
+
+  console.log(`Inserting ${todosData.length} mock todos...`);
+  const todosToInsert = todosData.map((todo) => ({
+    ...todo,
+    createdAt: new Date(todo.createdAt),
+  }));
+
   await db.insert(schema.todos).values(todosToInsert);
   console.log("Todos successfully seeded.");
 
