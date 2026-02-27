@@ -87,3 +87,5 @@ project.xcworkspace
 .agent
 migrations/
 *.fuse
+
+TODO.md
