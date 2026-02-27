@@ -54,8 +54,7 @@ bun install
 Create an `.env` file in `apps/web` with your credentials:
 
 ```env
-DATABASE_URL=libsql://your-turso-db-url.turso.io
-DATABASE_AUTH_TOKEN=your-turso-auth-token
+DATABASE_URL="file:../../local.db"
 BETTER_AUTH_SECRET=your-random-auth-secret
 ```
 
@@ -64,7 +63,7 @@ BETTER_AUTH_SECRET=your-random-auth-secret
 Push your schema to the database:
 
 ```bash
-bun run turbo run db:push --filter=@repo/db
+bun turbo run db:push --filter=@repo/db
 ```
 
 ## Usage
@@ -74,41 +73,82 @@ bun run turbo run db:push --filter=@repo/db
 Start all dev servers (Next.js + Expo) in parallel:
 
 ```bash
-bun run dev
+bun dev
 ```
 
 Or run individually:
 
 ```bash
 # Web only
-bun run turbo run dev --filter=web
+bun turbo run dev --filter=web
 
 # Mobile only
-bun run start
+bun start
 
 # Android emulator/device
-bun run android
+bun android
 
 # iOS simulator
-bun run ios
+bun ios
 ```
 
 ### Production Build
 
 ```bash
-bun run build
+bun build
 ```
 
 ### Code Quality
 
 ```bash
 # Format the entire workspace
-bun run format
+bun format
 
 # Run linter
-bun run lint
+bun lint
 ```
 
+## Workflow
+ 
+### Adding UI Components
+ 
+We provide unified scripts at the root to add components from their respective registries:
+ 
+```bash
+# Web (shadcn/ui)
+bun ui:web [component-name]
+ 
+# Mobile (react-native-reusables)
+bun ui:mobile [component-name]
+```
+ 
+### Package Management
+ 
+Manage dependencies across the monorepo from the root:
+ 
+#### 1. Global Development Tools
+For tools that apply to the entire workspace (e.g., `turbo`, `biome`).
+```bash
+bun add -d [package]
+```
+ 
+#### 2. App-Specific Dependencies
+To install a package only for the Web or Mobile application.
+```bash
+# Web
+bun add [package] --filter web
+ 
+# Mobile
+bun add [package] --filter mobile
+```
+ 
+#### 3. Shared Package Dependencies
+To install a package for a shared library (e.g., `db`, `api`).
+```bash
+bun add [package] --filter @repo/db
+bun add [package] --filter @repo/api
+```
+ 
 ## Contributing
 
 1. Create a feature branch (`git checkout -b feature/amazing-feature`)

@@ -5,8 +5,8 @@ Misc
 - create hackjs docs and landing page
 - know how to install new packages
   - add components
-    - web: `bun run ui:web [COMPONENT_NAME]`
-    - mobile: `bun run ui:mobile [COMPONENT_NAME]`
+    - web: `bun ui:web [COMPONENT_NAME]`
+    - mobile: `bun ui:mobile [COMPONENT_NAME]`
   - install in web: `bun add [package]`
   - install in mobile: `bun install [package] --cwd apps/mobile`
   - update the readme docs
