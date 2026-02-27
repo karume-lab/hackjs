@@ -61,15 +61,6 @@ For every `.env.example` file in the project, copy it to a `.env` file and edit 
 cp apps/web/.env.example apps/web/.env
 ```
 
-The core configuration is in `apps/web/.env`:
-
-```env
-DATABASE_URL="file:../../local.db"
-BETTER_AUTH_SECRET=your-random-auth-secret
-# For Mobile Local Development
-EXPO_PUBLIC_APP_URL="http://[your-local-ip]:3000"
-```
-
 ### 3. Database Migration
 
 Push your schema to the database:
