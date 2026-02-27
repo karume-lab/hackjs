@@ -53,11 +53,10 @@ const badgeTextVariants = cva("text-xs font-medium", {
 type BadgeProps = ViewProps &
   React.RefAttributes<View> & {
     asChild?: boolean;
-    className?: string;
   } & VariantProps<typeof badgeVariants>;
 
 function Badge({ className, variant, asChild, ...props }: BadgeProps) {
-  const Component = (asChild ? Slot.View : View) as React.ElementType;
+  const Component = asChild ? Slot.View : View;
   return (
     <TextClassContext.Provider value={badgeTextVariants({ variant })}>
       <Component className={cn(badgeVariants({ variant }), className)} {...props} />
