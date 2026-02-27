@@ -1,0 +1,7 @@
+{
+  "name": "@repo/ui-mobile",
+  "private": true,
+  "dependencies": {
+    "@rn-primitives/slot": "^1.2.0"
+  }
+}

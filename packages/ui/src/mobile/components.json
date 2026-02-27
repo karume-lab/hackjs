@@ -4,17 +4,17 @@
   "rsc": false,
   "tsx": true,
   "tailwind": {
-    "config": "",
+    "config": "tailwind.config.ts",
     "css": "global.css",
     "baseColor": "zinc",
     "cssVariables": true
   },
   "aliases": {
-    "components": "./components",
-    "utils": "./lib/utils",
-    "ui": "./components/ui",
-    "lib": "./lib",
-    "hooks": "./hooks"
+    "components": "@repo/ui/mobile/components",
+    "utils": "@repo/ui/mobile/lib/utils",
+    "ui": "@repo/ui/mobile/components/ui",
+    "lib": "@repo/ui/mobile/lib",
+    "hooks": "@repo/ui/mobile/hooks"
   },
   "iconLibrary": "lucide"
 }

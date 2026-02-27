@@ -1,5 +1,5 @@
+import { cn } from "@repo/ui/mobile/lib/utils";
 import { View, type ViewProps } from "react-native";
-import { cn } from "../../lib/utils";
 import { Text, TextClassContext } from "./text";
 
 function Card({ className, ...props }: ViewProps & React.RefAttributes<View>) {

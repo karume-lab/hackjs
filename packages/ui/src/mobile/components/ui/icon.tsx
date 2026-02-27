@@ -1,6 +1,6 @@
+import { cn } from "@repo/ui/mobile/lib/utils";
 import type { LucideIcon, LucideProps } from "lucide-react-native";
 import { withUniwind } from "uniwind";
-import { cn } from "../../lib/utils";
 
 type IconProps = LucideProps & {
   as: LucideIcon;

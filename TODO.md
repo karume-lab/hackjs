@@ -5,8 +5,8 @@ Misc
 - create hackjs docs and landing page
 - know how to install new packages
   - add components
-    - web: `bunx shadcn@latest add --cwd packages/ui/src/web [component]`
-    - mobile: `bunx shadcn@latest add --cwd packages/ui/src/mobile [component]`
+    - web: `bunx shadcn@latest add [COMPONENT_NAME] --cwd packages/ui/src/web`
+    - mobile: `bunx @react-native-reusables/cli@latest add [COMPONENT_NAME] --cwd packages/ui/src/mobile`
   - install in web: `bun add [package]`
   - install in mobile: `bun install [package] --cwd apps/mobile`
   - update the readme docs
