@@ -7,7 +7,6 @@
     "icon": "../../packages/assets/mobile/icon.png",
     "scheme": "taskly",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "splash": {
       "image": "../../packages/assets/mobile/splash-icon.png",
       "resizeMode": "contain",
@@ -19,17 +18,11 @@
       "bundleIdentifier": "com.taskly.app"
     },
     "android": {
-      "edgeToEdgeEnabled": true,
       "adaptiveIcon": {
         "foregroundImage": "../../packages/assets/mobile/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.taskly.app"
-    },
-    "web": {
-      "bundler": "metro",
-      "output": "static",
-      "favicon": "../../packages/assets/favicon.ico"
     },
     "plugins": ["expo-router", "expo-font"],
     "experiments": {
