@@ -1,5 +1,4 @@
 "use client";
-
 import {
   Sidebar,
   SidebarContent,
@@ -13,13 +12,26 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@repo/ui/web/components/ui/sidebar";
-import { CheckSquare, LayoutDashboard, Users } from "lucide-react";
+import { CheckSquare, LayoutDashboard, type LucideIcon, Users } from "lucide-react";
+import type { Route } from "next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SignOutButton } from "@/components/SignOutButton";
 import { ThemeSwitch } from "@/components/ThemeSwitch";
 
-const navGroups = [
+type NavItem<T extends string = string> = {
+  title: string;
+  href: Route<T>;
+  icon: LucideIcon;
+  exact?: boolean;
+};
+
+type NavGroup = {
+  label: string;
+  items: NavItem[];
+};
+
+const navGroups: NavGroup[] = [
   {
     label: "Core Assets",
     items: [

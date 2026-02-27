@@ -3,17 +3,24 @@
 Misc
 <!-- - dev build apk has errors -->
 - create hackjs docs and landing page
-- know how to install new packages
+<!-- - know how to install new packages
   - add components
     - web: `bun ui:web [COMPONENT_NAME]`
     - mobile: `bun ui:mobile [COMPONENT_NAME]`
   - install in web: `bun add [package]`
   - install in mobile: `bun install [package] --cwd apps/mobile`
-  - update the readme docs
+  - update the readme docs -->
+
+
+
 - fix sidebar hiding content
 - make sidebar collapsible
 - sidebar in the web app
 - shared sidebar component that you pass sidebar elements
+
+
+
+
 - some shared components should be moved eg ThemeSwitch(both), QueryProvider(one), Sidebar(web), SiteLogo(both)
 
 - split taskly and hackjs by removing taskly from hackjs and creating it as a separate project in a different repository
