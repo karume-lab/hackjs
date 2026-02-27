@@ -9,6 +9,8 @@
   "scripts": {
     "dev": "turbo watch dev",
     "build": "turbo build",
+    "ui:mobile": "cd packages/ui/src/mobile && bunx @react-native-reusables/cli@latest add",
+    "ui:web": "bunx shadcn@latest add --cwd packages/ui/src/web",
     "lint": "turbo lint",
     "clean": "biome check --write --no-errors-on-unmatched",
     "start": "turbo start --filter=mobile",
