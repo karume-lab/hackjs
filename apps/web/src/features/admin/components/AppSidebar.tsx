@@ -16,8 +16,8 @@ import { CheckSquare, LayoutDashboard, type LucideIcon, Users } from "lucide-rea
 import type { Route } from "next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { SignOutButton } from "@/components/SignOutButton";
-import { ThemeSwitch } from "@/components/ThemeSwitch";
+import { ThemeSwitch } from "@/components/common/ThemeSwitch";
+import { SignOutButton } from "@/features/auth/components/SignOutButton";
 
 type NavItem<T extends string = string> = {
   title: string;

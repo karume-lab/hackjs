@@ -1,6 +1,6 @@
 import { Button } from "@repo/ui/web/components/ui/button";
 import Link from "next/link";
-import { ThemeSwitch } from "@/components/ThemeSwitch";
+import { ThemeSwitch } from "@/components/common/ThemeSwitch";
 
 export default function Home() {
   return (

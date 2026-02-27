@@ -3,7 +3,7 @@
 import { Separator } from "@repo/ui/web/components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@repo/ui/web/components/ui/sidebar";
 import type { ReactNode } from "react";
-import { AppSidebar } from "@/components/admin/AppSidebar";
+import { AppSidebar } from "@/features/admin/components/AppSidebar";
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
   return (
