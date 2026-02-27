@@ -12,8 +12,10 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@repo/db": ["./src/index.ts"],
-      "@repo/db/*": ["./src/*"]
+      "@repo/validators": ["./src/index.ts"],
+      "@repo/validators/*": ["./src/*"],
+      "@repo/db": ["../db/src/index.ts"],
+      "@repo/db/*": ["../db/src/*"]
     }
   },
   "include": ["src"]

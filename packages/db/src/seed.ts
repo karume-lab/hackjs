@@ -1,7 +1,7 @@
+import { db, schema } from "@repo/db";
+import todosData from "@repo/db/mock-data/todos.json";
+import usersData from "@repo/db/mock-data/users.json";
 import { hashPassword } from "better-auth/crypto";
-import { db, schema } from "./index";
-import todosData from "./mock-data/todos.json";
-import usersData from "./mock-data/users.json";
 
 async function seed() {
   console.log("Starting database seeding process...");

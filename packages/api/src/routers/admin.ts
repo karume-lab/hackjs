@@ -1,9 +1,9 @@
+import { adminOS } from "@repo/api/os";
 import { auth } from "@repo/auth";
 import { db, schema } from "@repo/db";
 import { insertTodoSchema, updateTodoSchema } from "@repo/validators";
 import { eq, sql } from "drizzle-orm";
 import { z } from "zod";
-import { adminOS } from "../os";
 
 export const adminRouter = adminOS.router({
   // ---> Users <---

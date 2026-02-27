@@ -1,2 +1,2 @@
-export * from "./auth";
-export * from "./todos";
+export * from "@repo/types/auth";
+export * from "@repo/types/todos";

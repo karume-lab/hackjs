@@ -1,11 +1,12 @@
 import { Button, Icon } from "@repo/ui/mobile";
+import type { LucideIcon } from "lucide-react-native";
 import { MoonStarIcon, SunIcon } from "lucide-react-native";
 import { Uniwind, useUniwind } from "uniwind";
 
 export function ThemeSwitch() {
   const { theme } = useUniwind();
 
-  const THEME_ICONS = {
+  const THEME_ICONS: Record<string, LucideIcon> = {
     light: SunIcon,
     dark: MoonStarIcon,
   };

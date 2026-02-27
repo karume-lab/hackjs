@@ -2,7 +2,7 @@
 
 import { orpc } from "@repo/api/client";
 import { useQuery } from "@tanstack/react-query";
-import { TodoItem } from "./TodoItem";
+import { TodoItem } from "@/features/todos/components/TodoItem";
 
 export function TodoList() {
   const { data: todos = [], isLoading: isFetching } = useQuery(orpc.todos.getTodos.queryOptions());

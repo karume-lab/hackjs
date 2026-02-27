@@ -1,8 +1,8 @@
-export * as schema from "./schema";
+export * as schema from "@repo/db/schema";
 
 import { createClient } from "@libsql/client/node";
+import * as schema from "@repo/db/schema";
 import { drizzle } from "drizzle-orm/libsql";
-import * as schema from "./schema";
 
 export function createDbClient() {
   let defaultDbUrl = "file:local.db";

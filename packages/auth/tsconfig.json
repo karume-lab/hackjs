@@ -12,8 +12,12 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@repo/db": ["./src/index.ts"],
-      "@repo/db/*": ["./src/*"]
+      "@repo/auth": ["./src/index.ts"],
+      "@repo/auth/*": ["./src/*"],
+      "@repo/db": ["../db/src/index.ts"],
+      "@repo/db/*": ["../db/src/*"],
+      "@repo/types": ["../types/src/index.ts"],
+      "@repo/types/*": ["../types/src/*"]
     }
   },
   "include": ["src"]

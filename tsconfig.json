@@ -16,11 +16,17 @@
     "baseUrl": ".",
     "paths": {
       "@repo/db": ["./packages/db/src/index.ts"],
+      "@repo/db/*": ["./packages/db/src/*"],
       "@repo/api": ["./packages/api/src/index.ts"],
+      "@repo/api/*": ["./packages/api/src/*"],
       "@repo/auth": ["./packages/auth/src/index.ts"],
+      "@repo/auth/*": ["./packages/auth/src/*"],
       "@repo/validators": ["./packages/validators/src/index.ts"],
+      "@repo/validators/*": ["./packages/validators/src/*"],
       "@repo/types": ["./packages/types/src/index.ts"],
+      "@repo/types/*": ["./packages/types/src/*"],
       "@repo/utils": ["./packages/utils/src/index.ts"],
+      "@repo/utils/*": ["./packages/utils/src/*"],
       "@repo/assets/*": ["./packages/assets/*"],
       "@repo/ui/*": ["./packages/ui/src/*"]
     },

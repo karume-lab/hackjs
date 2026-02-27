@@ -3,7 +3,7 @@ import type { Todo } from "@repo/types";
 import { Text } from "@repo/ui/mobile";
 import { useQuery } from "@tanstack/react-query";
 import { ScrollView, View } from "react-native";
-import { TodoItem } from "./TodoItem";
+import { TodoItem } from "@/features/todos/components/TodoItem";
 
 export function TodoList() {
   const { data: todos = [] } = useQuery(orpc.todos.getTodos.queryOptions());

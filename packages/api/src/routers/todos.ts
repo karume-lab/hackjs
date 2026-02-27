@@ -1,8 +1,8 @@
+import { protectedOS } from "@repo/api/os";
 import { db, schema } from "@repo/db";
 import { insertTodoSchema, updateTodoSchema } from "@repo/validators";
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
-import { protectedOS } from "../os";
 
 export const todosRouter = protectedOS.router({
   getTodos: protectedOS.handler(async ({ context }) => {

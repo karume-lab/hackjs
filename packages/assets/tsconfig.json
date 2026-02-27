@@ -2,18 +2,17 @@
   "compilerOptions": {
     "lib": ["ESNext"],
     "target": "ESNext",
-    "module": "esnext",
+    "module": "Preserve",
     "moduleDetection": "force",
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "noEmit": true,
     "strict": true,
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@repo/db": ["./src/index.ts"],
-      "@repo/db/*": ["./src/*"]
+      "@repo/assets": ["./src/index.ts"],
+      "@repo/assets/*": ["./src/*"]
     }
   },
   "include": ["src"]

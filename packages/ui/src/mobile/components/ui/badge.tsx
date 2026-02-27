@@ -1,9 +1,9 @@
+import { TextClassContext } from "@repo/ui/mobile/components/ui/text";
 import { cn } from "@repo/ui/mobile/lib/utils";
 import * as Slot from "@rn-primitives/slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import type * as React from "react";
 import { Platform, View, type ViewProps } from "react-native";
-import { TextClassContext } from "./text";
 
 const badgeVariants = cva(
   cn(

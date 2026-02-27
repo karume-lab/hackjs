@@ -1,2 +1,2 @@
-export * from "./auth";
-export * from "./todos";
+export * from "@repo/db/schema/auth";
+export * from "@repo/db/schema/todos";
