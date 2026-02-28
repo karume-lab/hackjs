@@ -2,8 +2,12 @@
   "name": "@repo/db",
   "main": "src/index.ts",
   "module": "src/index.ts",
-  "devDependencies": {
-    "better-auth": "^1.4.19"
+  "dependencies": {
+    "better-auth": "^1.4.19",
+    "drizzle-orm": "^0.45.1",
+    "@libsql/client": "^0.17.0",
+    "drizzle-zod": "^0.8.3",
+    "zod": "^4.3.6"
   },
   "exports": {
     ".": "./src/index.ts",

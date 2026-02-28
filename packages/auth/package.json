@@ -7,6 +7,10 @@
     ".": "./src/index.ts",
     "./client": "./src/client.ts"
   },
+  "dependencies": {
+    "better-auth": "^1.1.20",
+    "zod": "^4.3.6"
+  },
   "scripts": {
     "typecheck": "tsc --noEmit"
   }
