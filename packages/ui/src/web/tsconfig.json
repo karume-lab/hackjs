@@ -3,7 +3,12 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@repo/ui/web/*": ["./*"]
+      "@repo/ui/web/*": [
+        "./*"
+      ]
     }
-  }
+  },
+  "include": [
+    "."
+  ]
 }

@@ -10,11 +10,14 @@
   "scripts": {
     "lint": "biome check .",
     "clean": "biome check --write --no-errors-on-unmatched .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc -p src/web/tsconfig.json --noEmit && tsc -p src/mobile/tsconfig.json --noEmit"
   },
   "dependencies": {
     "@tanstack/react-table": "^8.21.3",
-    "radix-ui": "^1.4.3"
+    "embla-carousel-react": "^8.6.0",
+    "input-otp": "^1.4.2",
+    "radix-ui": "^1.4.3",
+    "react-day-picker": "^9.14.0"
   },
   "devDependencies": {
     "tailwindcss": "^4.1.17",
