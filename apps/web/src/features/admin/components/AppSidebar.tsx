@@ -24,7 +24,6 @@ import {
   SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSub,
@@ -38,10 +37,8 @@ import {
   ChevronRight,
   ChevronsUpDown,
   Code2,
-  Globe,
   LayoutDashboard,
   LogOut,
-  MoreHorizontal,
   Settings2,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -56,8 +53,6 @@ export function NavProjects({
     icon: React.ElementType;
   }[];
 }) {
-  const { isMobile } = useSidebar();
-
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>Resources</SidebarGroupLabel>
@@ -70,29 +65,6 @@ export function NavProjects({
                 <span>{item.name}</span>
               </a>
             </SidebarMenuButton>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuAction showOnHover>
-                  <MoreHorizontal />
-                  <span className="sr-only">More</span>
-                </SidebarMenuAction>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                className="w-48 rounded-lg"
-                side={isMobile ? "bottom" : "right"}
-                align={isMobile ? "end" : "start"}
-              >
-                <DropdownMenuItem>
-                  <Globe className="text-muted-foreground" />
-                  <span>View Site</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <SiGithub className="text-muted-foreground mr-2 size-4" />
-                  <span>View Repository</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
           </SidebarMenuItem>
         ))}
       </SidebarMenu>
@@ -264,6 +236,11 @@ const data = {
     },
   ],
   projects: [
+    {
+      name: "Quick Start Tutorial",
+      url: "https://code2tutorial.com/tutorial/926b939b-24c9-487a-a3f9-359877d46087/index.md",
+      icon: BookOpen,
+    },
     {
       name: "Documentation",
       url: "https://hackjs.org/docs",

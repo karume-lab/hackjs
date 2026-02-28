@@ -13,6 +13,10 @@ A fullstack JavaScript/TypeScript monorepo template for rapidly building Web and
 >
 > For those seeking a more comprehensive and production-hardened template, consider <a href="https://www.better-t-stack.dev/" target="_blank" rel="noopener noreferrer">Better T-Stack</a>.
 
+## Quick Start Tutorial
+
+Learn how to build with HackJS by following the <a href="https://code2tutorial.com/tutorial/926b939b-24c9-487a-a3f9-359877d46087/index.md" target="_blank" rel="noopener noreferrer">Quick Start Tutorial</a>.
+
 ## Core Stack
 
 - **Monorepo:** Turborepo & Bun Workspaces — Efficient management of shared packages and apps with high-performance dependency resolution.
