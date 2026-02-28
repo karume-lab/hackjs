@@ -1,5 +1,6 @@
 import { Button } from "@repo/ui/web/components/ui/button";
 import Link from "next/link";
+import SiteLogo from "@/components/common/SiteLogo";
 import { ThemeSwitch } from "@/components/common/ThemeSwitch";
 
 export default function Home() {
@@ -9,6 +10,9 @@ export default function Home() {
         <ThemeSwitch />
       </div>
       <main className="flex w-full max-w-4xl flex-col items-center justify-center p-8 text-center sm:p-24">
+        <div className="mb-8 flex justify-center">
+          <SiteLogo />
+        </div>
         <h1 className="mb-6 text-5xl font-extrabold tracking-tight text-foreground sm:text-7xl">
           Build faster with <span className="text-primary">HackJS</span>.
         </h1>

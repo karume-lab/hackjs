@@ -15,10 +15,9 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Taskly",
-  description: "A task app like every other!",
-};
+import SEOConfig, { metadataConfig } from "@/components/common/SEOConfig";
+
+export const metadata: Metadata = metadataConfig;
 
 export default function RootLayout({
   children,
@@ -35,6 +34,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <QueryProvider>
+            <SEOConfig />
             {children}
             <Toaster richColors />
           </QueryProvider>
