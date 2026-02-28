@@ -1,9 +1,17 @@
 # HackJS
 
+<p align="center">
+  <img src="packages/assets/logo.png" alt="HackJS Logo" width="200" />
+  <br />
+  <em>This is an image of a hacksaw</em>
+</p>
+
 A fullstack JavaScript/TypeScript monorepo template for rapidly building Web and Mobile MVPs using modern tools. It bridges Next.js on the web and React Native (Expo) on mobile, connected via end-to-end type-safe RPC (oRPC).
 
 > [!NOTE]
 > This template is designed for **MVPs and prototyping** — it prioritizes developer velocity over production-grade hardening. Use it as a starting point to validate ideas quickly, then harden as needed.
+>
+> For those seeking a more comprehensive and production-hardened template, consider <a href="https://www.better-t-stack.dev/" target="_blank" rel="noopener noreferrer">Better T-Stack</a>.
 
 ## Core Stack
 
