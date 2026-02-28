@@ -11,7 +11,8 @@
     "build": "expo prebuild --clean --no-install && ./android/gradlew -p android assembleRelease",
     "install-apk": "adb install ./android/app/build/outputs/apk/release/app-release.apk",
     "build:install-apk": "bun build && bun install-apk",
-    "doctor": "expo-doctor --verbose"
+    "doctor": "expo-doctor --verbose",
+    "typecheck": "tsc --noEmit"
   },
   "private": true,
   "dependencies": {

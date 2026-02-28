@@ -10,10 +10,10 @@ export default function Home() {
       </div>
       <main className="flex w-full max-w-4xl flex-col items-center justify-center p-8 text-center sm:p-24">
         <h1 className="mb-6 text-5xl font-extrabold tracking-tight text-foreground sm:text-7xl">
-          Manage your tasks with <span className="text-primary">Taskly</span>.
+          Build faster with <span className="text-primary">HackJS</span>.
         </h1>
         <p className="mb-10 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
-          The simple, fast, and secure way to keep track of your daily tasks.
+          The ultimate monorepo template for fullstack JavaScript and TypeScript development.
         </p>
         <div className="flex flex-col gap-4 w-full sm:w-auto sm:flex-row">
           <Button asChild size="lg" className="rounded-full px-8 text-base font-medium">

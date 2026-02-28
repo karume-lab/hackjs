@@ -7,13 +7,12 @@
     "./mobile/*": "./src/mobile/*",
     "./mobile/global.css": "./src/mobile/global.css"
   },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
   "dependencies": {
-    "@radix-ui/react-dialog": "^1.1.4",
-    "@radix-ui/react-select": "^2.1.2",
-    "@radix-ui/react-separator": "^1.1.1",
-    "@radix-ui/react-tabs": "^1.1.13",
-    "@radix-ui/react-tooltip": "^1.1.6",
-    "@tanstack/react-table": "^8.21.3"
+    "@tanstack/react-table": "^8.21.3",
+    "radix-ui": "^1.4.3"
   },
   "devDependencies": {
     "tailwindcss": "^4.1.17",

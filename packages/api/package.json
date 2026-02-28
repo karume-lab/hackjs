@@ -7,6 +7,9 @@
     ".": "./src/index.ts",
     "./client": "./src/client.ts"
   },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
   "dependencies": {
     "@orpc/openapi": "^1.13.5"
   }
