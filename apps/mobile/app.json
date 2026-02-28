@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "Taskly",
-    "slug": "taskly",
+    "name": "HackJS",
+    "slug": "hackjs",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "../../packages/assets/mobile/icon.png",
-    "scheme": "taskly",
+    "scheme": "hackjs",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "../../packages/assets/mobile/splash-icon.png",
@@ -15,14 +15,14 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.taskly.app"
+      "bundleIdentifier": "com.hackjs.app"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "../../packages/assets/mobile/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.taskly.app"
+      "package": "com.hackjs.app"
     },
     "plugins": ["expo-router", "expo-font"],
     "experiments": {

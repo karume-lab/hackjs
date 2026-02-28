@@ -24,11 +24,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Breadcrumb>
                 <BreadcrumbList>
                   <BreadcrumbItem className="hidden md:block">
-                    <BreadcrumbLink href="#">Build Your Application</BreadcrumbLink>
+                    <BreadcrumbLink href="/admin">Admin</BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator className="hidden md:block" />
                   <BreadcrumbItem>
-                    <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                    <BreadcrumbPage>Dashboard</BreadcrumbPage>
                   </BreadcrumbItem>
                 </BreadcrumbList>
               </Breadcrumb>
