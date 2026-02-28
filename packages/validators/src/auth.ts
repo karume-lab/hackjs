@@ -1,6 +1,14 @@
 import * as schema from "@repo/db/schema";
-import { createInsertSchema } from "drizzle-zod";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
+
+export const selectUserSchema = createSelectSchema(schema.user).extend({
+  image: z.string().nullish(),
+  role: z.string().nullish(),
+  banned: z.boolean().nullish(),
+  banReason: z.string().nullish(),
+  banExpires: z.date().nullish(),
+});
 
 export const signInSchema = z.object({
   email: z.email("Invalid email address"),

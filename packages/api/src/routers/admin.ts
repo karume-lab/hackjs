@@ -1,7 +1,12 @@
 import { adminOS } from "@repo/api/os";
 import { auth } from "@repo/auth";
 import { db, schema } from "@repo/db";
-import { insertTodoSchema, updateTodoSchema } from "@repo/validators";
+import {
+  insertTodoSchema,
+  selectTodoSchema,
+  selectUserSchema,
+  updateTodoSchema,
+} from "@repo/validators";
 import { eq, sql } from "drizzle-orm";
 import { z } from "zod";
 
@@ -16,6 +21,16 @@ export const adminRouter = adminOS.router({
         })
         .optional()
         .default({ limit: 10, page: 1 }),
+    )
+    .output(
+      z.object({
+        data: z.array(selectUserSchema),
+        metadata: z.object({
+          totalCount: z.number(),
+          page: z.number(),
+          totalPages: z.number(),
+        }),
+      }),
     )
     .route({ description: "Get a paginated list of all users", tags: ["Admin"] })
     .handler(async ({ input }) => {
@@ -45,6 +60,7 @@ export const adminRouter = adminOS.router({
     }),
   getUser: adminOS
     .input(z.object({ id: z.string() }))
+    .output(selectUserSchema.nullable())
     .route({ description: "Get a single user by ID", tags: ["Admin"] })
     .handler(async ({ input }) => {
       const u = await db.query.user.findFirst({
@@ -55,6 +71,7 @@ export const adminRouter = adminOS.router({
     }),
   updateUserRole: adminOS
     .input(z.object({ id: z.string(), role: z.enum(["admin", "user"]) }))
+    .output(z.array(selectUserSchema))
     .route({ description: "Update a user's role", tags: ["Admin"] })
     .handler(async ({ input }) => {
       return await db
@@ -64,7 +81,6 @@ export const adminRouter = adminOS.router({
         .returning();
     }),
   createUser: adminOS
-    .route({ description: "Create a new user with a specific role", tags: ["Admin"] })
     .input(
       z.object({
         name: z.string().min(2),
@@ -73,6 +89,8 @@ export const adminRouter = adminOS.router({
         role: z.enum(["admin", "user"]).default("user"),
       }),
     )
+    .output(selectUserSchema)
+    .route({ description: "Create a new user with a specific role", tags: ["Admin"] })
     .handler(async ({ input }) => {
       // Use BetterAuth to properly hash the new password and run internal user creation routines
       const result = await auth.api.signUpEmail({
@@ -97,8 +115,9 @@ export const adminRouter = adminOS.router({
       return createdUser;
     }),
   deleteUser: adminOS
-    .route({ description: "Delete a user and all their associated data", tags: ["Admin"] })
     .input(z.object({ id: z.string() }))
+    .output(z.array(selectUserSchema))
+    .route({ description: "Delete a user and all their associated data", tags: ["Admin"] })
     .handler(async ({ input }) => {
       // Must also clear their sessions/accounts to avoid orphans
       await db.delete(schema.session).where(eq(schema.session.userId, input.id));
@@ -118,6 +137,16 @@ export const adminRouter = adminOS.router({
         })
         .optional()
         .default({ limit: 10, page: 1 }),
+    )
+    .output(
+      z.object({
+        data: z.array(selectTodoSchema),
+        metadata: z.object({
+          totalCount: z.number(),
+          page: z.number(),
+          totalPages: z.number(),
+        }),
+      }),
     )
     .route({ description: "Get a paginated list of all todos in the system", tags: ["Admin"] })
     .handler(async ({ input }) => {
@@ -146,8 +175,9 @@ export const adminRouter = adminOS.router({
       };
     }),
   getTodo: adminOS
-    .route({ description: "Get any todo by ID", tags: ["Admin"] })
     .input(z.object({ id: z.string() }))
+    .output(selectTodoSchema.nullable())
+    .route({ description: "Get any todo by ID", tags: ["Admin"] })
     .handler(async ({ input }) => {
       const t = await db.query.todos.findFirst({
         where: eq(schema.todos.id, input.id),
@@ -156,15 +186,17 @@ export const adminRouter = adminOS.router({
       return t;
     }),
   createTodo: adminOS
-    .route({ description: "Create a todo for any user", tags: ["Admin"] })
     .input(insertTodoSchema.extend({ userId: z.string() }))
+    .output(z.array(selectTodoSchema))
+    .route({ description: "Create a todo for any user", tags: ["Admin"] })
     .handler(async ({ input }) => {
       // Admins can create a todo for ANY user ID
       return await db.insert(schema.todos).values(input).returning();
     }),
   updateTodo: adminOS
-    .route({ description: "Update any todo", tags: ["Admin"] })
     .input(updateTodoSchema.extend({ id: z.string() }))
+    .output(z.array(selectTodoSchema))
+    .route({ description: "Update any todo", tags: ["Admin"] })
     .handler(async ({ input }) => {
       return await db
         .update(schema.todos)
@@ -173,8 +205,9 @@ export const adminRouter = adminOS.router({
         .returning();
     }),
   deleteTodo: adminOS
-    .route({ description: "Delete any todo", tags: ["Admin"] })
     .input(z.object({ id: z.string() }))
+    .output(z.array(selectTodoSchema))
+    .route({ description: "Delete any todo", tags: ["Admin"] })
     .handler(async ({ input }) => {
       return await db.delete(schema.todos).where(eq(schema.todos.id, input.id)).returning();
     }),

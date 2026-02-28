@@ -1,5 +1,5 @@
 import * as schema from "@repo/db/schema";
-import { createInsertSchema, createUpdateSchema } from "drizzle-zod";
+import { createInsertSchema, createSelectSchema, createUpdateSchema } from "drizzle-zod";
 import { z } from "zod";
 
 export const insertTodoSchema = createInsertSchema(schema.todos).omit({
@@ -16,3 +16,5 @@ export const updateTodoSchema = createUpdateSchema(schema.todos).omit({
 export const adminCreateTodoSchema = insertTodoSchema.extend({
   userId: z.string().min(1, "You must select a user to assign this Todo to"),
 });
+
+export const selectTodoSchema = createSelectSchema(schema.todos);

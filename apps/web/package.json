@@ -18,6 +18,7 @@
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
     "@orpc/openapi": "^1.13.5",
+    "@orpc/zod": "^1.13.5",
     "@repo/api": "workspace:*",
     "@repo/assets": "workspace:*",
     "@repo/auth": "workspace:*",
