@@ -16,7 +16,7 @@ export const adminRouter = adminOS.router({
     .input(
       z
         .object({
-          limit: z.number().min(1).max(100).default(10),
+          limit: z.number().min(1).max(1000).default(10),
           page: z.number().min(1).default(1),
         })
         .optional()
@@ -132,7 +132,7 @@ export const adminRouter = adminOS.router({
     .input(
       z
         .object({
-          limit: z.number().min(1).max(100).default(10),
+          limit: z.number().min(1).max(1000).default(10),
           page: z.number().min(1).default(1),
         })
         .optional()
