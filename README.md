@@ -153,6 +153,13 @@ bunx eas build -p ios
 
 ## Contributing
 
-1. Create a feature branch (`git checkout -b feature/amazing-feature`)
-2. Commit your changes
-3. Open a Pull Request
+Contributions are welcome! Please read our [CONTRIBUTING.md](CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) before getting started.
+
+1.  **Create a Branch**: Create a new branch for your changes (`git checkout -b feature/[FEATURE_NAME]`).
+2.  **Make Changes**: Implement your changes and ensure they follow the project's coding standards.
+3.  **Run Tests**: Ensure all tests pass (`bun lint` and `bun typecheck`).
+4.  **Submit a Pull Request**: Submit a pull request to the main repository.
+
+---
+
+Thank you for your interest in HackJS and remember to star the repo!

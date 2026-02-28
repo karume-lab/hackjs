@@ -1,14 +1,6 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "target": "ESNext",
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
-    "noEmit": true,
-    "strict": true,
-    "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
       "@repo/utils": ["./src/index.ts"],

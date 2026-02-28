@@ -1,18 +1,22 @@
 {
   "compilerOptions": {
-    // Environment setup & latest features
-    "lib": ["ESNext", "DOM", "DOM.Iterable"], // Added DOM for Next.js support
     "target": "ESNext",
-    "module": "ESNext", // Changed from Preserve for better cross-package compatibility
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
     "moduleDetection": "force",
     "jsx": "react-jsx",
     "allowJs": true,
-    // Bundler mode
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "noEmit": true,
-    // Path Aliases (The Monorepo Secret Sauce)
+    "strict": true,
+    "skipLibCheck": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "baseUrl": ".",
     "paths": {
       "@repo/db": ["./packages/db/src/index.ts"],
@@ -29,16 +33,7 @@
       "@repo/utils/*": ["./packages/utils/src/*"],
       "@repo/assets/*": ["./packages/assets/*"],
       "@repo/ui/*": ["./packages/ui/src/*"]
-    },
-    // Best practices
-    "strict": true,
-    "skipLibCheck": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedIndexedAccess": true,
-    "noImplicitOverride": true,
-    // Stricter flags for cleaner code
-    "noUnusedLocals": true,
-    "noUnusedParameters": true
+    }
   },
   "exclude": ["node_modules"]
 }

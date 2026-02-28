@@ -3,7 +3,6 @@
   "compilerOptions": {
     "strict": true,
     "baseUrl": ".",
-    "moduleResolution": "bundler",
     "paths": {
       "@/*": ["src/*"],
       "@repo/api": ["../../packages/api/src/index.ts"],
