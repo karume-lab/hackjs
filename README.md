@@ -57,12 +57,9 @@ bun install
 
 Each app and package may require environment variables. Copy the `.env.example` files to `.env` in the following locations:
 
+- `.env`
 - `apps/web/.env`
-
-**Key Variables:**
-- `DATABASE_URL`: Location of your SQLite database (default: `file:../../local.db`).
-- `BETTER_AUTH_SECRET`: A secure secret for authentication.
-- `BETTER_AUTH_URL`: The URL where your web app is hosted (e.g., `http://localhost:3000`).
+- `apps/mobile/.env`
 
 ### 3. Database Initialization
 

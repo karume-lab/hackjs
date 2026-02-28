@@ -7,7 +7,7 @@ import { drizzle } from "drizzle-orm/libsql";
 export function createDbClient() {
   let defaultDbUrl = "file:local.db";
   const path = require("node:path");
-  const dbPath = path.resolve(__dirname, "../../..", "local.db");
+  const dbPath = path.resolve(__dirname, "..", "local.db");
   defaultDbUrl = `file:${dbPath}`;
 
   const client = createClient({
