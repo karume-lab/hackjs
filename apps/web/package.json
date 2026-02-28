@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "clean": "biome check --write --no-errors-on-unmatched .",
+    "lint": "biome check .",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

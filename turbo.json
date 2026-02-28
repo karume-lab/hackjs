@@ -35,6 +35,9 @@
       "cache": false
     },
     "lint": {},
-    "typecheck": {}
+    "typecheck": {},
+    "clean": {
+      "cache": false
+    }
   }
 }

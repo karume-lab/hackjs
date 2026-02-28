@@ -14,6 +14,8 @@
     "./schema": "./src/schema/index.ts"
   },
   "scripts": {
+    "lint": "biome check .",
+    "clean": "biome check --write --no-errors-on-unmatched .",
     "db:generate": "drizzle-kit generate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",

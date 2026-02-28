@@ -14,7 +14,7 @@
     "ui:web": "bunx shadcn@latest add --cwd packages/ui/src/web",
     "lint": "turbo lint",
     "typecheck": "turbo typecheck",
-    "clean": "biome check --write --no-errors-on-unmatched",
+    "clean": "turbo clean",
     "start": "turbo start --filter=mobile",
     "android": "turbo android --filter=mobile",
     "ios": "turbo ios --filter=mobile",
