@@ -13,6 +13,7 @@ A fullstack JavaScript/TypeScript monorepo template for rapidly building Web and
 - **Database & ORM:** Drizzle ORM + SQLite — Lightweight, local-first database with a type-safe, developer-friendly ORM.
 - **Authentication:** Better Auth — A comprehensive authentication framework designed for safety and ease of integration.
 - **Communication:** oRPC — Optimized Remote Procedure Call for seamless, end-to-end type safety between services.
+- **API Documentation:** OpenAPI & Scalar — Automatically generated API schema and a beautiful developer-friendly reference UI.
 - **State Management:** TanStack Query & nuqs — Robust server-state synchronization and type-safe URL search params.
 - **Validation:** Zod & drizzle-zod — Schema-first validation for runtime safety and database schema inference.
 - **UI & Styling:** Tailwind CSS & shadcn/ui — Utility-first styling with high-quality, accessible component primitives.
@@ -42,7 +43,7 @@ A fullstack JavaScript/TypeScript monorepo template for rapidly building Web and
 ### Prerequisites
 - [Bun](https://bun.sh/) (latest version)
 - Node.js (v20+ recommended)
-- ADB
+- ADB (for Android development)
 
 ### 1. Installation
 
@@ -54,19 +55,25 @@ bun install
 
 ### 2. Environment Variables
 
-For every `.env.example` file in the project, copy it to a `.env` file and edit as needed:
+Each app and package may require environment variables. Copy the `.env.example` files to `.env` in the following locations:
+
+- `apps/web/.env`
+
+**Key Variables:**
+- `DATABASE_URL`: Location of your SQLite database (default: `file:../../local.db`).
+- `BETTER_AUTH_SECRET`: A secure secret for authentication.
+- `BETTER_AUTH_URL`: The URL where your web app is hosted (e.g., `http://localhost:3000`).
+
+### 3. Database Initialization
+
+Push your schema to the database and start the database studio:
 
 ```bash
-# Example for the Web app
-cp apps/web/.env.example apps/web/.env
-```
-
-### 3. Database Migration
-
-Push your schema to the database:
-
-```bash
+# Push schema changes
 bun --cwd packages/db db:push
+
+# Open Drizzle Studio to inspect data
+bun --cwd packages/db db:studio
 ```
 
 ## Usage
@@ -95,10 +102,21 @@ bun android
 bun ios
 ```
 
-### UI Component Management
+### API Documentation
 
-Add components to your workspace using unified scripts:
+The API documentation is automatically generated from your oRPC procedures.
 
+- **OpenAPI Schema:** `http://localhost:3000/api/openapi.json`
+- **Interactive Reference:** `http://localhost:3000/reference`
+
+### Adding New Features
+
+#### New API Procedure
+1. Define your Zod schema in `packages/validators`.
+2. Implement the procedure in `packages/api/src/routers/`.
+3. The type-safe client will be automatically available to both `web` and `mobile`.
+
+#### New UI Component
 ```bash
 # Web (shadcn/ui)
 bun ui:web [component-name]
@@ -110,25 +128,30 @@ bun ui:mobile [component-name]
 ### Code Quality
 
 ```bash
-# Format the entire workspace
+# Format and lint fix the entire workspace
 bun clean
 
-# Run linter
+# Run linter checks
 bun lint
 ```
 
-## Package Management
+## Deployment
 
-Manage dependencies across the monorepo from the root:
+### Web (Next.js)
+Deploy to [Vercel](https://vercel.com/) by connecting your repository. Ensure you set all environment variables in the Vercel dashboard.
+
+### Mobile (React Native)
+Use [Expo Application Services (EAS)](https://expo.dev/eas) for builds and submissions:
 
 ```bash
-# Add a dependency to a specific package/app
-bun add [package] --filter @repo/db
-bun add [package] --filter web
-bun add [package] --filter mobile
+# Login to Expo
+bunx eas login
 
-# Add a dev dependency globally
-bun add -d [package]
+# Build for Android
+bunx eas build -p android
+
+# Build for iOS
+bunx eas build -p ios
 ```
 
 ## Contributing
