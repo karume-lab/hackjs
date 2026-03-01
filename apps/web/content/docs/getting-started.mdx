@@ -1,0 +1,112 @@
+---
+title: Getting Started
+description: How to run the hackjs monorepo locally
+---
+
+# Getting Started
+
+Welcome to the hackjs monorepo! Follow this guide to get the full stack up and running locally.
+
+<Alert>
+  <AlertTitle>Prerequisites</AlertTitle>
+  <AlertDescription>
+    Make sure you have **Bun** installed. If you don't, you can install it via: \`curl -fsSL https://bun.sh/install | bash\`
+  </AlertDescription>
+</Alert>
+
+<Steps>
+### Clone the Repository
+
+Clone the project to your local machine and navigate into the directory:
+
+\`\`\`bash
+git clone https://github.com/your-username/hackjs.git
+cd hackjs
+\`\`\`
+
+### Install Dependencies
+
+Since we use Turborepo and Bun, you can install all dependencies across all apps and packages in one command via your preferred package manager (though **Bun** is the standard for this repo).
+
+<Tabs defaultValue="bun">
+  <TabsList>
+    <TabsTrigger value="bun">bun</TabsTrigger>
+    <TabsTrigger value="npm">npm</TabsTrigger>
+    <TabsTrigger value="pnpm">pnpm</TabsTrigger>
+  </TabsList>
+  <TabsContent value="bun">
+\`\`\`bash
+bun install
+\`\`\`
+  </TabsContent>
+  <TabsContent value="npm">
+\`\`\`bash
+npm install
+\`\`\`
+  </TabsContent>
+  <TabsContent value="pnpm">
+\`\`\`bash
+pnpm install
+\`\`\`
+  </TabsContent>
+</Tabs>
+
+### Environment Variables
+
+You need to set up environment variables for the root and the apps before running the stack.
+
+First, copy the root example file:
+
+\`\`\`bash
+cp .env.example .env
+\`\`\`
+
+Next, copy the environment file for the Next.js web app:
+
+\`\`\`bash
+cp apps/web/.env.example apps/web/.env
+\`\`\`
+
+<Alert variant="destructive">
+  <AlertTitle>Database Credentials</AlertTitle>
+  <AlertDescription>
+    Update your \`.env\` files with your actual database credentials and Better Auth secrets before proceeding to the next step.
+  </AlertDescription>
+</Alert>
+
+### Run the Development Server
+
+Finally, use Turborepo to start the entire stack in development mode:
+
+<Tabs defaultValue="bun">
+  <TabsList>
+    <TabsTrigger value="bun">bun</TabsTrigger>
+    <TabsTrigger value="npm">npm</TabsTrigger>
+    <TabsTrigger value="pnpm">pnpm</TabsTrigger>
+  </TabsList>
+  <TabsContent value="bun">
+\`\`\`bash
+bun run dev
+\`\`\`
+  </TabsContent>
+  <TabsContent value="npm">
+\`\`\`bash
+npm run dev
+\`\`\`
+  </TabsContent>
+  <TabsContent value="pnpm">
+\`\`\`bash
+pnpm dev
+\`\`\`
+  </TabsContent>
+</Tabs>
+
+This will spin up both the Next.js web app and the Expo bundler for the mobile app concurrently!
+</Steps>
+
+<Alert>
+  <AlertTitle>What's Next?</AlertTitle>
+  <AlertDescription>
+    Check out the [Architecture](/docs/architecture) guide to understand the "Shared Core" philosophy, or look at the [API Reference](/docs/api/reference) to explore the oRPC endpoints.
+  </AlertDescription>
+</Alert>

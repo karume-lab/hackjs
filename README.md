@@ -116,7 +116,7 @@ bun ios
 The API documentation is automatically generated from your oRPC procedures.
 
 - **OpenAPI Schema:** `http://localhost:3000/api/openapi.json`
-- **Interactive Reference:** `http://localhost:3000/reference`
+- **Interactive Reference:** `http://localhost:3000/docs/api/reference`
 
 ### Adding New Features
 

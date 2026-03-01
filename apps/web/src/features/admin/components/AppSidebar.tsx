@@ -230,7 +230,7 @@ const data = {
       items: [
         {
           title: "API Reference",
-          url: "/reference",
+          url: "/docs/api/reference",
         },
       ],
     },

@@ -13,6 +13,7 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
+      "fumadocs-mdx:collections/*": [".source/*"],
       "~/*": ["./*"],
       "@repo/api": ["../../packages/api/src/index.ts"],
       "@repo/api/*": ["../../packages/api/src/*"],

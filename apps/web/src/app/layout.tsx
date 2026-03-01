@@ -1,3 +1,5 @@
+import { RootProvider } from "fumadocs-ui/provider/next";
+import "fumadocs-ui/style.css";
 import "@repo/ui/web/globals.css";
 import { Toaster } from "@repo/ui/web/components/ui/sonner";
 import type { Metadata } from "next";
@@ -35,7 +37,7 @@ export default function RootLayout({
         >
           <QueryProvider>
             <SEOConfig />
-            {children}
+            <RootProvider>{children}</RootProvider>
             <Toaster richColors />
           </QueryProvider>
         </ThemeProvider>
