@@ -1,11 +1,11 @@
 {
   "expo": {
     "name": "HackJS",
-    "slug": "hackjs",
+    "slug": "HackJS",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "../../packages/assets/mobile/icon.png",
-    "scheme": "hackjs",
+    "scheme": "HackJS",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "../../packages/assets/mobile/splash-icon.png",
@@ -15,14 +15,14 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.hackjs.app"
+      "bundleIdentifier": "com.HackJS.app"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "../../packages/assets/mobile/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.hackjs.app"
+      "package": "com.HackJS.app"
     },
     "plugins": ["expo-router", "expo-font"],
     "experiments": {

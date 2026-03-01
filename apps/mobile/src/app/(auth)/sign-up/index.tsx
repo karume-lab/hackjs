@@ -58,7 +58,7 @@ export default function SignUpScreen() {
       <View className="flex-1 justify-center p-6 bg-background">
         <View className="items-center mb-10">
           <Text className="text-3xl font-bold text-foreground">Create Account</Text>
-          <Text className="text-muted-foreground mt-2">Join Taskly to organize your life</Text>
+          <Text className="text-muted-foreground mt-2">Join HackJS to organize your life</Text>
         </View>
 
         <View className="gap-4">

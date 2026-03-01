@@ -2,7 +2,7 @@ import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
 
 export const baseOptions: BaseLayoutProps = {
   nav: {
-    title: <span className="font-bold tracking-tight md:[header_&]:hidden">hackjs</span>,
+    title: <span className="font-bold tracking-tight md:[header_&]:hidden">HackJS</span>,
     transparentMode: "none",
   },
   links: [

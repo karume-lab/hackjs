@@ -74,7 +74,7 @@ export function SignUpForm() {
           Create an account
         </CardTitle>
         <CardDescription className="text-sm text-zinc-600 dark:text-zinc-400">
-          Join Taskly to start managing your tasks today.
+          Join HackJS to start managing your tasks today.
         </CardDescription>
       </CardHeader>
 

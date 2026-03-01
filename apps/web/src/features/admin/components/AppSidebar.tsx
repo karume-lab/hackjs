@@ -196,7 +196,7 @@ export function NavMain({
 const data = {
   user: {
     name: "Daniel Karume",
-    email: "daniel@hackjs.org",
+    email: "daniel@HackJS.org",
     avatar: "/avatars/shadcn.jpg",
   },
   navMain: [
@@ -243,12 +243,12 @@ const data = {
     },
     {
       name: "Documentation",
-      url: "https://hackjs.org/docs",
+      url: "https://HackJS.org/docs",
       icon: BookOpen,
     },
     {
       name: "GitHub",
-      url: "https://github.com/karume-lab/hackjs",
+      url: "https://github.com/karume-lab/HackJS",
       icon: SiGithub,
     },
   ],

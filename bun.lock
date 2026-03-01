@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "hackjs",
+      "name": "HackJS",
       "dependencies": {
         "@orpc/client": "^1.13.5",
         "@orpc/react": "^1.13.5",

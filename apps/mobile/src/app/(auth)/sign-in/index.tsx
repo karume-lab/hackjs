@@ -55,7 +55,7 @@ export default function SignInScreen() {
       <SafeAreaView className="flex-1 bg-background">
         <View className="flex-1 justify-center p-6 sm:p-12 w-full max-w-md mx-auto">
           <View className="mb-12">
-            <Text className="text-4xl font-extrabold tracking-tight mb-2">Welcome to Taskly</Text>
+            <Text className="text-4xl font-extrabold tracking-tight mb-2">Welcome to HackJS</Text>
             <Text className="text-muted-foreground text-lg">Sign in to manage your tasks</Text>
           </View>
 

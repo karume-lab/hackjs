@@ -105,7 +105,7 @@ export default function Home() {
               Build faster with
               <br className="hidden sm:block" />
               <span className="text-primary bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">
-                hackjs
+                HackJS
               </span>
             </h1>
 
@@ -233,7 +233,7 @@ export default function Home() {
               <div className="h-10 w-10 flex items-center justify-center">
                 <SiteLogo className="h-full w-auto" />
               </div>
-              <span className="font-bold text-2xl tracking-tight">hackjs</span>
+              <span className="font-bold text-2xl tracking-tight">HackJS</span>
             </div>
             <p className="text-sm text-muted-foreground max-w-xs">
               Empowering developers to build incredible fullstack applications without the

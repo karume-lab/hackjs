@@ -60,8 +60,8 @@ Learn how to build with HackJS by following the <a href="https://code2tutorial.c
 ### 1. Installation
 
 ```bash
-git clone https://github.com/karume-lab/hackjs.git
-cd hackjs
+git clone https://github.com/karume-lab/HackJS.git
+cd HackJS
 bun install
 ```
 
@@ -113,10 +113,28 @@ bun ios
 
 ### API Documentation
 
-The API documentation is automatically generated from your oRPC procedures.
+The API documentation is automatically generated from your oRPC procedures. HackJS uses Fumadocs for a beautiful, interactive documentation experience.
 
 - **OpenAPI Schema:** `http://localhost:3000/api/openapi.json`
 - **Interactive Reference:** `http://localhost:3000/docs/api/reference`
+
+## Documentation & ADRs
+
+HackJS maintains Architecture Decision Records (ADRs) to document key technical decisions. These can be found in the `/docs` directory:
+
+- [ADR 001: oRPC for Type Safety](docs/adr-001-orpc.md)
+- [ADR 002: Better Auth](docs/adr-002-better-auth.md)
+- [ADR 003: Drizzle ORM](docs/adr-003-drizzle-orm.md)
+- [ADR 004: Turborepo & Bun](docs/adr-004-turborepo-bun.md)
+- [ADR 005: Next.js App Router](docs/adr-005-nextjs.md)
+- [ADR 006: Expo Router](docs/adr-006-expo-router.md)
+- [ADR 007: Scalar & OpenAPI](docs/adr-007-scalar-openapi.md)
+- [ADR 008: State Management](docs/adr-008-state-management.md)
+- [ADR 009: Zod Validation](docs/adr-009-zod-validation.md)
+- [ADR 010: UI Architecture](docs/adr-010-tailwind-shadcn.md)
+- [ADR 011: Biome](docs/adr-011-biome.md)
+
+Explore the `/docs` folder for more detailed architectural insights.
 
 ### Adding New Features
 
