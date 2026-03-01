@@ -1,4 +1,4 @@
-import { SiGithub, SiX } from "@icons-pack/react-simple-icons";
+import { SiGithub } from "@icons-pack/react-simple-icons";
 import { Avatar, AvatarFallback } from "@repo/ui/web/components/ui/avatar";
 import { Button } from "@repo/ui/web/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/web/components/ui/card";
@@ -10,7 +10,7 @@ import {
   CarouselPrevious,
 } from "@repo/ui/web/components/ui/carousel";
 import dayjs from "dayjs";
-import { Globe, Layers, Linkedin, Rocket, ShieldCheck, Smartphone, Zap } from "lucide-react";
+import { Globe, Layers, Rocket, ShieldCheck, Smartphone, Zap } from "lucide-react";
 import type { Route } from "next";
 import Link from "next/link";
 import SiteLogo from "@/components/common/SiteLogo";
@@ -87,13 +87,11 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen flex-col bg-background font-sans text-foreground">
-      {/* Navbar Minimal Helper */}
       <div className="absolute top-4 right-4 sm:top-8 sm:right-8 z-50">
         <ThemeSwitch />
       </div>
 
       <main className="flex-1 w-full mx-auto">
-        {/* --- Hero Section --- */}
         <section className="relative overflow-hidden pt-24 pb-16 sm:pt-32 sm:pb-24 lg:pb-32 px-6">
           <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/20 via-background to-background"></div>
           <div className="mx-auto max-w-5xl flex flex-col items-center text-center">
@@ -134,7 +132,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* --- Features Grid Section --- */}
         <section className="py-20 px-6 sm:py-32 bg-secondary/30 relative border-t border-b border-border/50">
           <div className="mx-auto max-w-7xl">
             <div className="text-center max-w-2xl mx-auto mb-16">
@@ -168,7 +165,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* --- Testimonials Carousel Section --- */}
         <section className="py-20 px-6 sm:py-32 text-center relative max-w-7xl mx-auto overflow-hidden">
           <h2 className="text-3xl font-bold tracking-tight sm:text-5xl mb-16">
             Loved by developers
@@ -225,12 +221,11 @@ export default function Home() {
         </section>
       </main>
 
-      {/* --- Footer Section --- */}
       <footer className="border-t border-border/50 bg-card py-12 px-6">
         <div className="mx-auto max-w-7xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
           <div className="space-y-4 col-span-1 sm:col-span-2">
             <div className="flex flex-row items-center gap-3">
-              <div className="h-10 w-10 flex items-center justify-center">
+              <div className="size-16 flex items-center justify-center">
                 <SiteLogo className="h-full w-auto" />
               </div>
               <span className="font-bold text-2xl tracking-tight">HackJS</span>
@@ -241,31 +236,15 @@ export default function Home() {
             </p>
             <div className="flex gap-4 pt-2">
               <Link
-                href="#"
+                href="https://github.com/karume-lab/hackjs"
                 aria-label="GitHub"
+                target="_blank"
+                rel="noopener noreferrer"
                 title="GitHub"
                 className="text-muted-foreground hover:text-primary transition-colors"
               >
                 <SiGithub className="size-5" />
                 <span className="sr-only">GitHub</span>
-              </Link>
-              <Link
-                href="#"
-                aria-label="X (formerly Twitter)"
-                title="X (formerly Twitter)"
-                className="text-muted-foreground hover:text-primary transition-colors"
-              >
-                <SiX className="size-5" />
-                <span className="sr-only">X (formerly Twitter)</span>
-              </Link>
-              <Link
-                href="#"
-                aria-label="LinkedIn"
-                title="LinkedIn"
-                className="text-muted-foreground hover:text-primary transition-colors"
-              >
-                <Linkedin className="size-5" />
-                <span className="sr-only">LinkedIn</span>
               </Link>
             </div>
           </div>
@@ -284,7 +263,11 @@ export default function Home() {
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-primary transition-colors">
+                <Link
+                  href="https://karume.vercel.app/blogs"
+                  target="_blank"
+                  className="hover:text-primary transition-colors"
+                >
                   Blog
                 </Link>
               </li>
@@ -297,26 +280,42 @@ export default function Home() {
           </div>
 
           <div className="space-y-4">
-            <h3 className="font-semibold text-foreground">Company</h3>
+            <h3 className="font-semibold text-foreground">Developer</h3>
             <ul className="space-y-3 text-sm text-muted-foreground">
               <li>
-                <Link href="#" className="hover:text-primary transition-colors">
-                  About
+                <Link
+                  href="https://github.com/karume-lab"
+                  target="_blank"
+                  className="hover:text-primary transition-colors"
+                >
+                  GitHub
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-primary transition-colors">
-                  Contact
+                <Link
+                  href="https://karume.vercel.app/core/daniel-karume-resume.pdf"
+                  target="_blank"
+                  className="hover:text-primary transition-colors"
+                >
+                  Resume
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-primary transition-colors">
-                  Privacy Policy
+                <Link
+                  href="https://karume.vercel.app/"
+                  target="_blank"
+                  className="hover:text-primary transition-colors"
+                >
+                  Portfolio
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-primary transition-colors">
-                  Terms of Service
+                <Link
+                  href="https://karume.vercel.app/#reach-out"
+                  target="_blank"
+                  className="hover:text-primary transition-colors"
+                >
+                  Reach out
                 </Link>
               </li>
             </ul>
