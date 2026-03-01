@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "../../packages/assets/mobile/icon.png",
-    "scheme": "HackJS",
+    "scheme": "hackjs",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "../../packages/assets/mobile/splash-icon.png",
