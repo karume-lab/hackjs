@@ -10,7 +10,7 @@ Welcome to the HackJS monorepo! Follow this guide to get the full stack up and r
 <Alert>
   <AlertTitle>Prerequisites</AlertTitle>
   <AlertDescription>
-    Make sure you have **Bun** installed. If you don't, you can install it via: \`curl -fsSL https://bun.sh/install | bash\`
+    Make sure you have **Bun** installed. If you don't, you can install it via: `curl -fsSL https://bun.sh/install | bash`
   </AlertDescription>
 </Alert>
 
@@ -19,10 +19,10 @@ Welcome to the HackJS monorepo! Follow this guide to get the full stack up and r
 
 Clone the project to your local machine and navigate into the directory:
 
-\`\`\`bash
+```bash
 git clone https://github.com/your-username/HackJS.git
 cd HackJS
-\`\`\`
+```
 
 ### Install Dependencies
 
@@ -35,19 +35,19 @@ Since we use Turborepo and Bun, you can install all dependencies across all apps
     <TabsTrigger value="pnpm">pnpm</TabsTrigger>
   </TabsList>
   <TabsContent value="bun">
-\`\`\`bash
+```bash
 bun install
-\`\`\`
+```
   </TabsContent>
   <TabsContent value="npm">
-\`\`\`bash
+```bash
 npm install
-\`\`\`
+```
   </TabsContent>
   <TabsContent value="pnpm">
-\`\`\`bash
+```bash
 pnpm install
-\`\`\`
+```
   </TabsContent>
 </Tabs>
 
@@ -57,20 +57,20 @@ You need to set up environment variables for the root and the apps before runnin
 
 First, copy the root example file:
 
-\`\`\`bash
+```bash
 cp .env.example .env
-\`\`\`
+```
 
 Next, copy the environment file for the Next.js web app:
 
-\`\`\`bash
+```bash
 cp apps/web/.env.example apps/web/.env
-\`\`\`
+```
 
 <Alert variant="destructive">
   <AlertTitle>Database Credentials</AlertTitle>
   <AlertDescription>
-    Update your \`.env\` files with your actual database credentials and Better Auth secrets before proceeding to the next step.
+    Update your `.env` files with your actual database credentials and Better Auth secrets before proceeding to the next step.
   </AlertDescription>
 </Alert>
 
@@ -85,19 +85,19 @@ Finally, use Turborepo to start the entire stack in development mode:
     <TabsTrigger value="pnpm">pnpm</TabsTrigger>
   </TabsList>
   <TabsContent value="bun">
-\`\`\`bash
+```bash
 bun run dev
-\`\`\`
+```
   </TabsContent>
   <TabsContent value="npm">
-\`\`\`bash
+```bash
 npm run dev
-\`\`\`
+```
   </TabsContent>
   <TabsContent value="pnpm">
-\`\`\`bash
+```bash
 pnpm dev
-\`\`\`
+```
   </TabsContent>
 </Tabs>
 

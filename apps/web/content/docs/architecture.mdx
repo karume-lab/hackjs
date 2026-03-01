@@ -8,7 +8,7 @@ description: Overview of the shared core philosophy and turborepo setup
 <Alert>
   <AlertTitle>The Shared Core Philosophy</AlertTitle>
   <AlertDescription>
-    The core principle of this Turborepo is **"write once, use everywhere."** We decouple our business logic, database schema, APIs, and even UI definitions from the clients. This allows \`apps/web\` (Next.js) and \`apps/mobile\` (Expo) to remain incredibly thin, acting simply as presentation endpoints for the robust shared packages.
+    The core principle of this Turborepo is **"write once, use everywhere."** We decouple our business logic, database schema, APIs, and even UI definitions from the clients. This allows `apps/web` (Next.js) and `apps/mobile` (Expo) to remain incredibly thin, acting simply as presentation endpoints for the robust shared packages.
   </AlertDescription>
 </Alert>
 
@@ -35,20 +35,20 @@ HackJS/
 
 ## How the Shared Core Works
 
-By isolating our domains into \`packages/*\`, we ensure end-to-end type safety and rapid iteration without duplication.
+By isolating our domains into `packages/*`, we ensure end-to-end type safety and rapid iteration without duplication.
 
-### \`packages/api\` (oRPC)
-We leverage oRPC as our API layer. Instead of redefining routes and types in both clients, we maintain a single source of truth in \`packages/api\`. Both \`apps/web\` and \`apps/mobile\` consume the oRPC client, giving us immediate IDE autocomplete and compile-time guarantees that our mobile app won't break when a server route changes.
+### `packages/api` (oRPC)
+We leverage oRPC as our API layer. Instead of redefining routes and types in both clients, we maintain a single source of truth in `packages/api`. Both `apps/web` and `apps/mobile` consume the oRPC client, giving us immediate IDE autocomplete and compile-time guarantees that our mobile app won't break when a server route changes.
 
-### \`packages/db\` (Drizzle ORM)
-Using Drizzle ORM allows us to define our SQL schema in TypeScript. The database logic is abstracted entirely into \`packages/db\`. When \`packages/api\` needs to query the database, it imports directly from \`packages/db\`, ensuring the API layer always queries against the most up-to-date schema definitions.
+### `packages/db` (Drizzle ORM)
+Using Drizzle ORM allows us to define our SQL schema in TypeScript. The database logic is abstracted entirely into `packages/db`. When `packages/api` needs to query the database, it imports directly from `packages/db`, ensuring the API layer always queries against the most up-to-date schema definitions.
 
-### \`packages/validators\` (Zod)
-We use Zod for structural validation. \`packages/validators\` contains all our DTOs (Data Transfer Objects). These same validators are used to strongly type our oRPC routes in \`packages/api\`, our React Hook Form schemas in \`apps/web\`, and our native forms in \`apps/mobile\`.
+### `packages/validators` (Zod)
+We use Zod for structural validation. `packages/validators` contains all our DTOs (Data Transfer Objects). These same validators are used to strongly type our oRPC routes in `packages/api`, our React Hook Form schemas in `apps/web`, and our native forms in `apps/mobile`.
 
 <Alert variant="destructive">
   <AlertTitle>Consistency matters</AlertTitle>
   <AlertDescription>
-    Always define your domain models in \`packages/validators\` and your database schema in \`packages/db\`. Do not define ad-hoc interfaces inside the web or mobile applications.
+    Always define your domain models in `packages/validators` and your database schema in `packages/db`. Do not define ad-hoc interfaces inside the web or mobile applications.
   </AlertDescription>
 </Alert>
