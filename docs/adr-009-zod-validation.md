@@ -18,7 +18,7 @@ We adopted **Zod** as our core validation and parsing engine, augmented by **dri
 
 - **Schema-First Types**: We define a Zod object and extract inferences (`z.infer<typeof schema>`). We use this single source of truth for all Data Transfer Objects (DTOs) in `packages/validators`.
 - **drizzle-zod**: We utilize this integration to automatically map our typed SQL Database constraints defined in `packages/db` up into Zod schemas. This ensures constraints like max string lengths in SQL instantly match form validations in the UI.
-- **Fullstack Pipeline**: The same exact Zod schema validates user input via `react-hook-form` in `apps/web/mobile`, validates the incoming payload inside the `packages/api` oRPC handlers, and constructs the eventual API OpenAPI definitions.
+- **Fullstack Pipeline**: The same exact Zod schema validates user input via `react-hook-form` in `apps/web/mobile`, validates the incoming payload inside the `packages/api` Elysia handlers, and constructs the eventual API OpenAPI definitions.
 
 ## Consequences
 

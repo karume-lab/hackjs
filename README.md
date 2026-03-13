@@ -6,7 +6,7 @@
   <em>This is an image of a hacksaw</em>
 </p>
 
-A fullstack JavaScript/TypeScript monorepo template for rapidly building Web and Mobile MVPs using modern tools. It bridges Next.js on the web and React Native (Expo) on mobile, connected via end-to-end type-safe RPC (oRPC).
+A fullstack JavaScript/TypeScript monorepo template for rapidly building Web and Mobile MVPs using modern tools. It bridges Next.js on the web and React Native (Expo) on mobile, connected via end-to-end type-safe RPC (Elysia + Eden Treaty).
 
 > [!NOTE]
 > This template is designed for **MVPs and prototyping** — it prioritizes developer velocity over production-grade hardening. Use it as a starting point to validate ideas quickly, then harden as needed.
@@ -24,7 +24,7 @@ Learn how to build with HackJS by following the <a href="https://code2tutorial.c
 - **Mobile App:** React Native (Expo Router) — Native mobile development with shared logic and file-based routing.
 - **Database & ORM:** Drizzle ORM + SQLite — Lightweight, local-first database with a type-safe, developer-friendly ORM.
 - **Authentication:** Better Auth — A comprehensive authentication framework designed for safety and ease of integration.
-- **Communication:** oRPC — Optimized Remote Procedure Call for seamless, end-to-end type safety between services.
+- **Communication:** Elysia + Eden Treaty — High-performance, Bun-native RPC for seamless, end-to-end type safety between services.
 - **API Documentation:** OpenAPI & Scalar — Automatically generated API schema and a beautiful developer-friendly reference UI.
 - **State Management:** TanStack Query & nuqs — Robust server-state synchronization and type-safe URL search params.
 - **Validation:** Zod & drizzle-zod — Schema-first validation for runtime safety and database schema inference.
@@ -39,7 +39,7 @@ Learn how to build with HackJS by following the <a href="https://code2tutorial.c
 │   ├── web/                     # Next.js App Router (Dashboard & API)
 │   └── mobile/                  # React Native / Expo (Native Client)
 ├── packages/
-│   ├── api/                     # oRPC (End-to-end type-safety bridge)
+│   ├── api/                     # Elysia API (End-to-end type-safety bridge)
 │   ├── auth/                    # Better Auth (Authentication logic)
 │   ├── db/                      # Drizzle ORM + SQLite (Database layer)
 │   ├── types/                   # Shared TypeScript interfaces
@@ -79,10 +79,16 @@ Push your schema to the database and start the database studio:
 
 ```bash
 # Push schema changes
-bun --cwd packages/db db:push
+bun db:push
+
+# Generate migrations
+bun db:generate
 
 # Open Drizzle Studio to inspect data
-bun --cwd packages/db db:studio
+bun db:studio
+
+# Seed the database
+bun db:seed
 ```
 
 ## Usage
@@ -95,25 +101,35 @@ Start all dev servers (Next.js + Expo) in parallel:
 bun dev
 ```
 
-Or run individually:
+Or run individual apps:
 
 ```bash
-# Web only
-bun --cwd apps/web dev
+# Web only (Next.js)
+bun dev:web
 
-# Mobile (Expo development server)
-bun start
+# Mobile only (Expo)
+bun dev:mobile
+```
 
+### Mobile Specifics
+
+```bash
 # Android emulator/device
-bun android
+bun android:mobile
 
 # iOS simulator
-bun ios
+bun ios:mobile
+
+# Get local IP (for mobile connection)
+bun get-ip:mobile
+
+# Check mobile environment health
+bun doctor:mobile
 ```
 
 ### API Documentation
 
-The API documentation is automatically generated from your oRPC procedures. HackJS uses Fumadocs for a beautiful, interactive documentation experience.
+The API documentation is automatically generated from your Elysia routes using the Swagger plugin. HackJS uses Fumadocs for a beautiful, interactive documentation experience.
 
 - **OpenAPI Schema:** `http://localhost:3000/api/openapi.json`
 - **Interactive Reference:** `http://localhost:3000/docs/api/reference`
@@ -122,7 +138,7 @@ The API documentation is automatically generated from your oRPC procedures. Hack
 
 HackJS maintains Architecture Decision Records (ADRs) to document key technical decisions. These can be found in the `/docs` directory:
 
-- [ADR 001: oRPC for Type Safety](docs/adr-001-orpc.md)
+- [ADR 001: Elysia for Type Safety](docs/adr-001-orpc.md)
 - [ADR 002: Better Auth](docs/adr-002-better-auth.md)
 - [ADR 003: Drizzle ORM](docs/adr-003-drizzle-orm.md)
 - [ADR 004: Turborepo & Bun](docs/adr-004-turborepo-bun.md)
@@ -154,13 +170,52 @@ bun ui:mobile [component-name]
 
 ### Code Quality
 
+Run checks across the entire monorepo:
+
 ```bash
-# Format and lint fix the entire workspace
+# Format and lint fix all apps and packages
 bun clean
 
 # Run linter checks
 bun lint
+
+# Run type checks
+bun typecheck
 ```
+
+Or target specific apps:
+
+```bash
+# Lint web app only
+bun lint:web
+
+# Typecheck mobile app only
+bun typecheck:mobile
+```
+
+## Available Scripts
+
+| Script | Description |
+| :--- | :--- |
+| `bun dev` | Start all apps in watch mode |
+| `bun build` | Build all apps and packages |
+| `bun lint` | Lint all apps and packages |
+| `bun typecheck` | Typecheck all apps and packages |
+| `bun clean` | Fix linting/formatting issues across the repo |
+| **Web App** | |
+| `bun dev:web` | Start Next.js development server |
+| `bun build:web` | Build Next.js for production |
+| `bun lint:web` | Lint web app |
+| **Mobile App** | |
+| `bun dev:mobile` | Start Expo development server |
+| `bun android:mobile` | Run on Android |
+| `bun ios:mobile` | Run on iOS |
+| `bun doctor:mobile` | Run Expo doctor |
+| **Database** | |
+| `bun db:push` | Push schema to database |
+| `bun db:generate` | Generate migration files |
+| `bun db:studio` | Open Drizzle Studio |
+| `bun db:seed` | Seed the database |
 
 ## Deployment
 

@@ -27,7 +27,7 @@ export default function Home() {
     {
       title: "End-to-End Type Safety",
       description:
-        "Seamless synchronization between server and client with oRPC. Say goodbye to manual types.",
+        "Seamless synchronization between server and client with Elysia + Eden Treaty. Say goodbye to manual types.",
       icon: <ShieldCheck className="size-6 text-primary" />,
     },
     {
@@ -109,7 +109,7 @@ export default function Home() {
 
             <p className="mb-10 max-w-2xl mx-auto text-lg leading-relaxed text-muted-foreground sm:text-xl">
               The ultimate monorepo template for modern robust applications. Featuring Turborepo,
-              Next.js, React Native, oRPC, and Drizzle.
+              Next.js, React Native, Elysia, and Drizzle.
             </p>
 
             <div className="flex flex-col gap-4 w-full sm:w-auto sm:flex-row justify-center items-center">

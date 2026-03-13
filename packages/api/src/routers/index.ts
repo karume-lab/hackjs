@@ -1,6 +1,4 @@
-import { pubOS } from "@repo/api/os";
 import { adminRouter } from "@repo/api/routers/admin";
+import { Elysia } from "elysia";
 
-export const router = pubOS.router({
-  admin: adminRouter,
-});
+export const router = new Elysia().use(adminRouter);

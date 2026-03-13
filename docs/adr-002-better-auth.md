@@ -16,7 +16,7 @@ We considered alternatives like NextAuth.js (Auth.js) and Supabase Auth. While N
 ## Decision
 We elected to use **Better Auth** as our universal authentication provider, managed centrally in \`packages/auth\`.
 
-- **Runtime Agnostic**: Better Auth works seamlessly across Node, Bun, and edge runtimes, meaning it easily plugs into our oRPC/Next.js backend.
+- **Runtime Agnostic**: Better Auth works seamlessly across Node, Bun, and edge runtimes, meaning it easily plugs into our Elysia/Next.js backend.
 - **Expo/React Native Support**: Better Auth provides robust API endpoints that our React Native client can consume directly with standard fetch requests and secure token storage, removing the need for complex webview workarounds.
 - **Framework Independent Core**: The authentication logic resides in \`packages/auth\`, decoupled from Next.js. The Next.js \`app/api/auth/[...all]/route.ts\` merely re-exports the Better Auth handler.
 - **Drizzle Integration**: Better Auth natively supports Drizzle ORM, allowing us to keep our user tables and session tables directly inside \`packages/db\` with full type safety.

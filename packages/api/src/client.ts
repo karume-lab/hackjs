@@ -1,13 +1,5 @@
-import { createORPCClient } from "@orpc/client";
-import { RPCLink } from "@orpc/client/fetch";
-import { createORPCReactQueryUtils } from "@orpc/react-query";
-import type { RouterClient } from "@orpc/server";
-import type { router } from "@repo/api/routers";
-import { getBaseUrl } from "@repo/utils";
+import { treaty } from "@elysiajs/eden";
+import type { App } from "@repo/api";
 
-export const client = createORPCClient<RouterClient<typeof router>>(
-  new RPCLink({ url: `${getBaseUrl()}/api/orpc` }),
-);
-
-export const orpc = createORPCReactQueryUtils(client);
-export const orpcUtils = orpc;
+export type { App };
+export const createClient = (baseUrl: string) => treaty<App>(baseUrl);

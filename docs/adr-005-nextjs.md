@@ -18,7 +18,7 @@ We chose the **Next.js App Router** for our primary web application (`apps/web`)
 
 - **React Server Components (RSC)**: The App Router fundamentally shifts the rendering paradigm, allowing us to fetch data securely on the server without exposing secrets or shipping bloated JavaScript to the browser.
 - **Server Actions**: Mutations can be handled directly via Server Actions, allowing forms to work seamlessly while keeping business logic out of client bundles.
-- **Ecosystem Dominance**: Next.js is heavily supported by the community, Vercel, and modern UI libraries (Shadcn, oRPC, Better Auth), making integration trivial.
+- **Ecosystem Dominance**: Next.js is heavily supported by the community, Vercel, and modern UI libraries (Shadcn, Elysia, Better Auth), making integration trivial.
 - **Routing**: The file-system based routing using nested layouts provides a clean declarative way to structure complex user interfaces.
 
 ## Consequences

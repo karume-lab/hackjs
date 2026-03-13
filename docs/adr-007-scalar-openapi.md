@@ -9,14 +9,14 @@ description: "Automated API Documentation via Scalar and OpenAPI."
 Accepted
 
 ## Context
-Given our backend heavily utilizes oRPC to construct an API for our internal web and mobile clients, the external (or broader internal team) narrative of how to converse with the API often decays. 
+Given our backend heavily utilizes Elysia to construct an API for our internal web and mobile clients, the external (or broader internal team) narrative of how to converse with the API often decays. 
 
 Historically, maintaining a REST API references (Swagger docs, Postman collections) requires distinct duplication of effort. Whenever a route or validator is changed, a manual update to the documentation site would follow, invariably leading to out-of-sync documentation.
 
 ## Decision
-We elected to adopt **Scalar** paired with oRPC's native **OpenAPI** generation to create a fully automatic, highly-designed API reference page.
+We elected to adopt **Scalar** paired with Elysia's native **OpenAPI** generation to create a fully automatic, highly-designed API reference page.
 
-- **OpenAPI Standards**: Our internal oRPC type definitions and Zod schemas inherently compile into a standard OpenAPI JSON spec via `@orpc/openapi`. This specification is served dynamically.
+- **OpenAPI Standards**: Our internal Elysia route definitions and Zod schemas inherently compile into a standard OpenAPI JSON spec via `@elysiajs/swagger`. This specification is served dynamically.
 - **Scalar UI**: Scalar provides a best-in-class, developer-friendly interface that feels modern, fast, and interactive.
 - **Next.js Integration**: The Scalar React components (`@scalar/nextjs-api-reference`) allow us to embed the entire documentation suite directly inside a Next.js route without requiring an Iframe or an external host.
 
@@ -29,4 +29,4 @@ We elected to adopt **Scalar** paired with oRPC's native **OpenAPI** generation 
 
 ### Negative Outcomes / Challenges
 - **Custom Zod Limitations**: Highly custom Zod validations (e.g., chained super-refines) may not express perfectly into the OpenAPI standard format.
-- **Route Visibility**: Not all internal oRPC endpoints generally need to be exposed; deliberate configuration is required to hide or tag internal-only routes.
+- **Route Visibility**: Not all internal Elysia endpoints generally need to be exposed; deliberate configuration is required to hide or tag internal-only routes.

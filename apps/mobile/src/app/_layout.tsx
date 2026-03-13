@@ -16,7 +16,12 @@ export {
 
 export default function RootLayout() {
   const { theme } = useUniwind();
-  const [queryClient] = useState(() => new QueryClient());
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: { queries: { staleTime: 60 * 1000 } },
+      }),
+  );
   const { data: session } = authClient.useSession();
   const navTheme = useNavTheme();
 

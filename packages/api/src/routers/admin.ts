@@ -1,35 +1,22 @@
-import { adminOS } from "@repo/api/os";
 import { auth } from "@repo/auth";
 import { db, schema } from "@repo/db";
-import { selectUserSchema } from "@repo/validators";
 import { eq, sql } from "drizzle-orm";
-import { z } from "zod";
+import { Elysia, t } from "elysia";
 
-export const adminRouter = adminOS.router({
-  // ---> Users <---
-  getUsers: adminOS
-    .input(
-      z
-        .object({
-          limit: z.number().min(1).max(1000).default(10),
-          page: z.number().min(1).default(1),
-        })
-        .optional()
-        .default({ limit: 10, page: 1 }),
-    )
-    .output(
-      z.object({
-        data: z.array(selectUserSchema),
-        metadata: z.object({
-          totalCount: z.number(),
-          page: z.number(),
-          totalPages: z.number(),
-        }),
-      }),
-    )
-    .route({ description: "Get a paginated list of all users", tags: ["Admin"] })
-    .handler(async ({ input }) => {
-      const { limit, page } = input;
+export const adminRouter = new Elysia({ prefix: "/admin" })
+  .derive(async ({ request }) => {
+    // Rederive just to be safe, or assume inheriting from global
+    // But since BetterAuth session might be shared, let's rely on global context
+    const session = await auth.api.getSession({ headers: request.headers });
+    if (!session?.user) throw new Error("UNAUTHORIZED");
+    if (session.user.role !== "admin") throw new Error("FORBIDDEN: Admin access required");
+    return { user: session.user };
+  })
+  .get(
+    "/users",
+    async ({ query }) => {
+      const limit = query.limit || 10;
+      const page = query.page || 1;
       const offset = (page - 1) * limit;
 
       const data = await db.query.user.findMany({
@@ -52,55 +39,30 @@ export const adminRouter = adminOS.router({
           totalPages,
         },
       };
-    }),
-  getUser: adminOS
-    .input(z.object({ id: z.string() }))
-    .output(selectUserSchema.nullable())
-    .route({ description: "Get a single user by ID", tags: ["Admin"] })
-    .handler(async ({ input }) => {
-      const u = await db.query.user.findFirst({
-        where: eq(schema.user.id, input.id),
-      });
-      if (!u) throw new Error("User not found");
-      return u;
-    }),
-  updateUserRole: adminOS
-    .input(z.object({ id: z.string(), role: z.enum(["admin", "user"]) }))
-    .output(z.array(selectUserSchema))
-    .route({ description: "Update a user's role", tags: ["Admin"] })
-    .handler(async ({ input }) => {
-      return await db
-        .update(schema.user)
-        .set({ role: input.role })
-        .where(eq(schema.user.id, input.id))
-        .returning();
-    }),
-  createUser: adminOS
-    .input(
-      z.object({
-        name: z.string().min(2),
-        email: z.email(),
-        password: z.string().min(6),
-        role: z.enum(["admin", "user"]).default("user"),
+    },
+    {
+      query: t.Object({
+        limit: t.Optional(t.Numeric({ default: 10 })),
+        page: t.Optional(t.Numeric({ default: 1 })),
       }),
-    )
-    .output(selectUserSchema)
-    .route({ description: "Create a new user with a specific role", tags: ["Admin"] })
-    .handler(async ({ input }) => {
-      // Use BetterAuth to properly hash the new password and run internal user creation routines
+      detail: { tags: ["Admin"], description: "Get paginated list of all users" },
+    },
+  )
+  .post(
+    "/users",
+    async ({ body }) => {
       const result = await auth.api.signUpEmail({
         body: {
-          email: input.email,
-          password: input.password,
-          name: input.name,
+          email: body.email,
+          password: body.password,
+          name: body.name,
         },
         asResponse: false,
       });
 
       const createdUser = result.user;
 
-      // Update their role appropriately (BetterAuth defaults to nothing/user)
-      if (input.role === "admin") {
+      if (body.role === "admin") {
         await db
           .update(schema.user)
           .set({ role: "admin" })
@@ -108,16 +70,51 @@ export const adminRouter = adminOS.router({
       }
 
       return createdUser;
-    }),
-  deleteUser: adminOS
-    .input(z.object({ id: z.string() }))
-    .output(z.array(selectUserSchema))
-    .route({ description: "Delete a user and all their associated data", tags: ["Admin"] })
-    .handler(async ({ input }) => {
-      // Must also clear their sessions/accounts to avoid orphans
-      await db.delete(schema.session).where(eq(schema.session.userId, input.id));
-      await db.delete(schema.account).where(eq(schema.account.userId, input.id));
-
-      return await db.delete(schema.user).where(eq(schema.user.id, input.id)).returning();
-    }),
-});
+    },
+    {
+      body: t.Object({
+        name: t.String(),
+        email: t.String(),
+        password: t.String(),
+        role: t.Optional(t.Union([t.Literal("admin"), t.Literal("user")])),
+      }),
+      detail: { tags: ["Admin"], description: "Create a new user with a specific role" },
+    },
+  )
+  .get(
+    "/users/:id",
+    async ({ params: { id } }) => {
+      const u = await db.query.user.findFirst({
+        where: eq(schema.user.id, id),
+      });
+      if (!u) throw new Error("User not found");
+      return u;
+    },
+    {
+      params: t.Object({ id: t.String() }),
+      detail: { tags: ["Admin"], description: "Get a single user by ID" },
+    },
+  )
+  .put(
+    "/users/:id/role",
+    async ({ params: { id }, body: { role } }) => {
+      return await db.update(schema.user).set({ role }).where(eq(schema.user.id, id)).returning();
+    },
+    {
+      params: t.Object({ id: t.String() }),
+      body: t.Object({ role: t.Union([t.Literal("admin"), t.Literal("user")]) }),
+      detail: { tags: ["Admin"], description: "Update a user's role" },
+    },
+  )
+  .delete(
+    "/users/:id",
+    async ({ params: { id } }) => {
+      await db.delete(schema.session).where(eq(schema.session.userId, id));
+      await db.delete(schema.account).where(eq(schema.account.userId, id));
+      return await db.delete(schema.user).where(eq(schema.user.id, id)).returning();
+    },
+    {
+      params: t.Object({ id: t.String() }),
+      detail: { tags: ["Admin"], description: "Delete a user" },
+    },
+  );

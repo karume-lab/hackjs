@@ -16,7 +16,7 @@ We must handle API requests optimally (caching, deduplication, retry) alongside 
 ## Decision
 We adopted **TanStack Query (React Query)** for server state and **nuqs** for client/URL state management.
 
-- **TanStack Query**: oRPC naturally binds to React Query, providing us an out-of-the-box system for fetching, caching, and updating asynchronous backend data seamlessly in both React Native and Next.js.
+- **TanStack Query**: Elysia + Eden Treaty naturally binds to TanStack Query via our custom factories, providing us an out-of-the-box system for fetching, caching, and updating asynchronous backend data seamlessly in both React Native and Next.js.
 - **nuqs**: Instead of relying on `React.useState` for complex UI table states (like active tabs, search pagination, filters), we use `nuqs` to synchronize state with the URL Search Params. This makes every state in our Next.js web application linkable, shareable, and refresh-safe.
 
 ## Consequences

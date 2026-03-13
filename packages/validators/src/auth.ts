@@ -1,9 +1,13 @@
-import * as schema from "@repo/db/schema";
-import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 
-export const selectUserSchema = createSelectSchema(schema.user).extend({
+export const selectUserSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  email: z.string(),
+  emailVerified: z.boolean(),
   image: z.string().nullish(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
   role: z.string().nullish(),
   banned: z.boolean().nullish(),
   banReason: z.string().nullish(),
@@ -15,14 +19,11 @@ export const signInSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
-export const signUpSchema = createInsertSchema(schema.user)
-  .pick({
-    name: true,
-    email: true,
-  })
-  .extend({
-    password: z.string().min(6, "Password must be at least 6 characters"),
-  });
+export const signUpSchema = z.object({
+  name: z.string(),
+  email: z.string(),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
 
 export const createUserSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),

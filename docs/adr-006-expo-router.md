@@ -23,7 +23,7 @@ We decided to adopt **React Native** via **Expo (and Expo Router)** for `apps/mo
 ## Consequences
 
 ### Positive Outcomes
-- **True Shared Logic**: Nearly 100% of our business rules, data-fetching layers (oRPC), and form validation schemas (Zod) are shared exactly as-is.
+- **True Shared Logic**: Nearly 100% of our business rules, data-fetching layers (Elysia), and form validation schemas (Zod) are shared exactly as-is.
 - **File System Routing**: Using Expo Router makes context switching between Next.js and React Native seamless for developers since both use nested layout files.
 - **Pre-build Workflows**: Native SDK upgrades are handled by Expo, significantly reducing iOS/Android specific technical debt.
 
