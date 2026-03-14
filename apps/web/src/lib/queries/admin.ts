@@ -1,3 +1,4 @@
+import { QUERY_KEYS } from "@repo/api/keys";
 import { createMutationOptions, createQueryOptions } from "@repo/api/query";
 import type { createUserSchema } from "@repo/validators";
 import type { z } from "zod";
@@ -6,7 +7,7 @@ import { api } from "@/lib/api";
 export type CreateUserInput = z.infer<typeof createUserSchema>;
 
 export const adminUsersQuery = (page: number, limit: number) =>
-  createQueryOptions(["admin", "users", String(page), String(limit)], async () => {
+  createQueryOptions(QUERY_KEYS.admin.users.list(page, limit), async () => {
     const { data, error } = await api.admin.users.get({
       query: { page, limit },
     });
@@ -15,7 +16,7 @@ export const adminUsersQuery = (page: number, limit: number) =>
   });
 
 export const adminUserQuery = (id: string) =>
-  createQueryOptions(["admin", "user", id], async () => {
+  createQueryOptions(QUERY_KEYS.admin.users.detail(id), async () => {
     const { data, error } = await api.admin.users({ id }).get();
     if (error) throw error.value;
     return data;

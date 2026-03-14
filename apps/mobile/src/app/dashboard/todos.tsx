@@ -1,3 +1,5 @@
+import { QUERY_KEYS } from "@repo/api/keys";
+import type { Todo } from "@repo/db/types";
 import { Button } from "@repo/ui/mobile";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as Haptics from "expo-haptics";
@@ -19,13 +21,6 @@ import { ThemeSwitch } from "@/components/shared/ThemeSwitch";
 import { SignOutButton } from "@/features/auth/components/SignOutButton";
 import { api } from "@/lib/api";
 
-interface Todo {
-  id: string;
-  title: string;
-  completed: boolean;
-  createdAt: string | Date;
-}
-
 export default function TodosScreen() {
   const queryClient = useQueryClient();
   const [newTodo, setNewTodo] = useState("");
@@ -36,7 +31,7 @@ export default function TodosScreen() {
     isRefetching,
     refetch,
   } = useQuery({
-    queryKey: ["mobile-todos"],
+    queryKey: QUERY_KEYS.todos.all(),
     queryFn: async () => {
       const { data, error } = await api.todos.get();
       if (error) throw error;
@@ -52,7 +47,7 @@ export default function TodosScreen() {
     },
     onSuccess: (created) => {
       if (created) {
-        queryClient.setQueryData(["mobile-todos"], (old: Todo[] | undefined) =>
+        queryClient.setQueryData(QUERY_KEYS.todos.all(), (old: Todo[] | undefined) =>
           old ? [created, ...old] : [created],
         );
         setNewTodo("");
@@ -73,7 +68,7 @@ export default function TodosScreen() {
       return { id, completed: !completed };
     },
     onSuccess: ({ id, completed }) => {
-      queryClient.setQueryData(["mobile-todos"], (old: Todo[] | undefined) =>
+      queryClient.setQueryData(QUERY_KEYS.todos.all(), (old: Todo[] | undefined) =>
         old?.map((t) => (t.id === id ? { ...t, completed } : t)),
       );
     },
@@ -91,7 +86,7 @@ export default function TodosScreen() {
       return id;
     },
     onSuccess: (id) => {
-      queryClient.setQueryData(["mobile-todos"], (old: Todo[] | undefined) =>
+      queryClient.setQueryData(QUERY_KEYS.todos.all(), (old: Todo[] | undefined) =>
         old?.filter((t) => t.id !== id),
       );
     },

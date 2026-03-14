@@ -24,6 +24,7 @@
     "@repo/api": "workspace:*",
     "@repo/assets": "workspace:*",
     "@repo/auth": "workspace:*",
+    "@repo/db": "workspace:*",
     "@repo/types": "workspace:*",
     "@repo/ui": "workspace:*",
     "@repo/validators": "workspace:*",

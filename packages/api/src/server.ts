@@ -27,4 +27,3 @@ const routes = new Elysia()
 export const app = new Elysia().group("/api", (app) => app.use(routes));
 
 export type App = typeof app;
-export * from "@repo/api/query";

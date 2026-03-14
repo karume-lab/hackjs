@@ -1,5 +1,7 @@
 "use client";
 
+import { QUERY_KEYS } from "@repo/api/keys";
+import type { Todo } from "@repo/db/types";
 import { Button } from "@repo/ui/web/components/ui/button";
 import { Card, CardContent } from "@repo/ui/web/components/ui/card";
 import { Input } from "@repo/ui/web/components/ui/input";
@@ -13,23 +15,16 @@ import { ThemeSwitch } from "@/components/shared/ThemeSwitch";
 import { SignOutButton } from "@/features/auth/components/SignOutButton";
 import { api } from "@/lib/api";
 
-interface Todo {
-  id: string;
-  title: string;
-  completed: boolean;
-  createdAt: string | Date;
-}
-
 export const DashboardTodosClient = ({ hideNav = false }: { hideNav?: boolean }) => {
   const queryClient = useQueryClient();
   const [newTodo, setNewTodo] = useState("");
 
   const { data: todos, isLoading } = useQuery({
-    queryKey: ["todos"],
+    queryKey: QUERY_KEYS.todos.all(),
     queryFn: async () => {
       const { data, error } = await api.todos.get();
       if (error) throw error;
-      return data;
+      return data as Todo[];
     },
   });
 
@@ -41,7 +36,7 @@ export const DashboardTodosClient = ({ hideNav = false }: { hideNav?: boolean })
     },
     onSuccess: (created) => {
       if (created) {
-        queryClient.setQueryData(["todos"], (old: Todo[] | undefined) =>
+        queryClient.setQueryData(QUERY_KEYS.todos.all(), (old: Todo[] | undefined) =>
           old ? [created, ...old] : [created],
         );
         setNewTodo("");
@@ -60,7 +55,7 @@ export const DashboardTodosClient = ({ hideNav = false }: { hideNav?: boolean })
       return { id, completed: !completed };
     },
     onSuccess: ({ id, completed }) => {
-      queryClient.setQueryData(["todos"], (old: Todo[] | undefined) =>
+      queryClient.setQueryData(QUERY_KEYS.todos.all(), (old: Todo[] | undefined) =>
         old?.map((t) => (t.id === id ? { ...t, completed } : t)),
       );
     },
@@ -76,7 +71,7 @@ export const DashboardTodosClient = ({ hideNav = false }: { hideNav?: boolean })
       return id;
     },
     onSuccess: (id) => {
-      queryClient.setQueryData(["todos"], (old: Todo[] | undefined) =>
+      queryClient.setQueryData(QUERY_KEYS.todos.all(), (old: Todo[] | undefined) =>
         old?.filter((t) => t.id !== id),
       );
       toast.success("Todo deleted");

@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { QUERY_KEYS } from "@repo/api/keys";
 import { authClient } from "@repo/auth/client";
 import { Button, PasswordInput, Text } from "@repo/ui/mobile";
 import { type SignUpValues, signUpSchema } from "@repo/validators";
@@ -37,7 +38,7 @@ export default function SignUpScreen() {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["session"] });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.auth.session() });
       router.replace("/dashboard");
     },
     onError: (error) => {

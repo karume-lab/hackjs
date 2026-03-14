@@ -1,3 +1,4 @@
+import { QUERY_KEYS } from "@repo/api/keys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import {
@@ -22,7 +23,7 @@ export const useCreateUser = () => {
     ...createUserMutation(),
     onSuccess: () => {
       toast.success("User successfully created and registered");
-      qc.invalidateQueries({ queryKey: ["admin", "users"] });
+      qc.invalidateQueries({ queryKey: QUERY_KEYS.admin.users.all() });
     },
     onError: (err: unknown) => {
       const error = err as Error;
@@ -37,8 +38,8 @@ export const useUpdateUserRole = () => {
     ...updateUserRoleMutation(),
     onSuccess: (_, vars) => {
       toast.success("User role updated successfully");
-      qc.invalidateQueries({ queryKey: ["admin", "user", vars.id] });
-      qc.invalidateQueries({ queryKey: ["admin", "users"] });
+      qc.invalidateQueries({ queryKey: QUERY_KEYS.admin.users.detail(vars.id) });
+      qc.invalidateQueries({ queryKey: QUERY_KEYS.admin.users.all() });
     },
     onError: (err: unknown) => {
       const error = err as Error;
@@ -53,7 +54,7 @@ export const useDeleteUser = () => {
     ...deleteUserMutation(),
     onSuccess: () => {
       toast.success("User deleted successfully");
-      qc.invalidateQueries({ queryKey: ["admin", "users"] });
+      qc.invalidateQueries({ queryKey: QUERY_KEYS.admin.users.all() });
     },
     onError: (err: unknown) => {
       const error = err as Error;

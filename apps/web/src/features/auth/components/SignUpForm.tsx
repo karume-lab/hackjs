@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { QUERY_KEYS } from "@repo/api/keys";
 import { authClient } from "@repo/auth/client";
 import { Button } from "@repo/ui/web/components/ui/button";
 import {
@@ -51,7 +52,7 @@ export const SignUpForm = () => {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["session"] });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.auth.session() });
       toast.success("Account created successfully!");
 
       const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";

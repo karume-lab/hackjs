@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { QUERY_KEYS } from "@repo/api/keys";
 import { authClient } from "@repo/auth/client";
 import { Button } from "@repo/ui/web/components/ui/button";
 import {
@@ -49,7 +50,7 @@ export const SignInForm = () => {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["session"] });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.auth.session() });
       toast.success("Welcome back!");
       const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
       router.push(callbackUrl as Route);

@@ -1,5 +1,7 @@
 "use client";
 
+import { QUERY_KEYS } from "@repo/api/keys";
+import type { TodoWithUser } from "@repo/db/types";
 import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/web/components/ui/avatar";
 import { Badge } from "@repo/ui/web/components/ui/badge";
 import {
@@ -23,11 +25,11 @@ import { api } from "@/lib/api";
 
 export const AdminTodosClient = () => {
   const { data: todos, isLoading } = useQuery({
-    queryKey: ["admin-todos"],
+    queryKey: QUERY_KEYS.admin.todos.all(),
     queryFn: async () => {
       const { data, error } = await api.admin.todos.get();
       if (error) throw error;
-      return data.data;
+      return data.data as TodoWithUser[];
     },
   });
 

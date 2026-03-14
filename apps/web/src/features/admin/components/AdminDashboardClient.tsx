@@ -1,5 +1,6 @@
 "use client";
 
+import { QUERY_KEYS } from "@repo/api/keys";
 import { authClient } from "@repo/auth/client";
 import {
   Card,
@@ -24,7 +25,7 @@ import { api } from "@/lib/api";
 export const AdminDashboardClient = () => {
   // Fetch users for statistics
   const { data: usersData, isLoading: isUsersLoading } = useQuery({
-    queryKey: ["admin-users-stats"],
+    queryKey: QUERY_KEYS.admin.users.stats(),
     queryFn: async () => {
       const response = await authClient.admin.listUsers({
         query: { limit: 1000 },
@@ -36,7 +37,7 @@ export const AdminDashboardClient = () => {
 
   // Fetch todos for statistics
   const { data: todosData, isLoading: isTodosLoading } = useQuery({
-    queryKey: ["admin-todos-stats"],
+    queryKey: QUERY_KEYS.admin.todos.stats(),
     queryFn: async () => {
       const { data, error } = await api.admin.todos.get({
         query: { limit: 1000 },

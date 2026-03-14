@@ -1,5 +1,6 @@
 "use client";
 
+import type { User as SystemUser } from "@repo/db/types";
 import { Button } from "@repo/ui/web/components/ui/button";
 import { DataTable } from "@repo/ui/web/components/ui/data-table";
 import type { ColumnDef, PaginationState } from "@tanstack/react-table";
@@ -7,8 +8,6 @@ import { Edit, Loader2, Shield, Trash2, User } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useAdminUsers, useDeleteUser, useUpdateUserRole } from "@/lib/hooks/use-admin-users";
-
-type SystemUser = { id: string; name: string; email: string; role: string | null; createdAt: Date };
 
 export const AdminUsersClient = () => {
   const [pagination, setPagination] = useState<PaginationState>({

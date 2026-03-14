@@ -1,4 +1,4 @@
-export const createQueryOptions = <T>(key: string[], fetcher: () => Promise<T>) => ({
+export const createQueryOptions = <T>(key: readonly unknown[], fetcher: () => Promise<T>) => ({
   queryKey: key,
   queryFn: fetcher,
 });
