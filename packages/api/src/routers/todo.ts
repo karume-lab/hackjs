@@ -1,8 +1,8 @@
+import { TodoSchema } from "@repo/api/routers/types";
 import { auth } from "@repo/auth";
 import { db, schema } from "@repo/db";
 import { and, eq } from "drizzle-orm";
 import { Elysia, t } from "elysia";
-import { TodoSchema } from "./types";
 
 export const todoRouter = new Elysia({ prefix: "/todos" })
   .derive(async ({ request }) => {
