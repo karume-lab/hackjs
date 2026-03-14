@@ -31,6 +31,7 @@ import {
   SidebarRail,
   useSidebar,
 } from "@repo/ui/web/components/ui/sidebar";
+import { cn } from "@repo/ui/web/lib/utils";
 import {
   ChevronRight,
   ChevronsUpDown,
@@ -117,7 +118,15 @@ export const DashboardSidebar = ({ ...props }: React.ComponentProps<typeof Sideb
                       <Collapsible asChild defaultOpen={isActive} className="group/collapsible">
                         <SidebarMenuItem>
                           <CollapsibleTrigger asChild>
-                            <SidebarMenuButton tooltip={item.title} isActive={isActive}>
+                            <SidebarMenuButton
+                              tooltip={item.title}
+                              isActive={pathname === item.url}
+                              className={cn(
+                                isAnyChildActive &&
+                                  !isCollapsed &&
+                                  "text-sidebar-primary font-semibold",
+                              )}
+                            >
                               {item.icon && <item.icon />}
                               <span>{item.title}</span>
                               <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />

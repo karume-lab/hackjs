@@ -32,6 +32,7 @@ import {
   SidebarRail,
   useSidebar,
 } from "@repo/ui/web/components/ui/sidebar";
+import { cn } from "@repo/ui/web/lib/utils";
 import {
   BookOpen,
   ChevronRight,
@@ -164,6 +165,8 @@ export const NavMain = ({
   }[];
 }) => {
   const pathname = usePathname();
+  const { state } = useSidebar();
+  const isCollapsed = state === "collapsed";
 
   return (
     <SidebarGroup>
@@ -182,7 +185,13 @@ export const NavMain = ({
             >
               <SidebarMenuItem>
                 <CollapsibleTrigger asChild>
-                  <SidebarMenuButton tooltip={item.title} isActive={isActive}>
+                  <SidebarMenuButton
+                    tooltip={item.title}
+                    isActive={pathname === item.url}
+                    className={cn(
+                      isAnyChildActive && !isCollapsed && "text-sidebar-primary font-semibold",
+                    )}
+                  >
                     {item.icon && <item.icon />}
                     <span>{item.title}</span>
                     <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
