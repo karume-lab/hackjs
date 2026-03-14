@@ -17,7 +17,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/web/component
 import type { MDXComponents } from "mdx/types";
 import { Steps } from "@/components/mdx/steps";
 
-export function useMDXComponents(components: MDXComponents): MDXComponents {
+export const useMDXComponents = (components: MDXComponents): MDXComponents => {
   return {
     ...components,
     Steps,
@@ -39,4 +39,4 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     AlertTitle,
     AlertDescription,
   };
-}
+};

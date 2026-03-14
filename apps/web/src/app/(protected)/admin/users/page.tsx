@@ -1,5 +1,7 @@
 import { AdminUsersClient } from "@/features/admin/components/AdminUsersClient";
 
-export default function AdminUsersPage() {
+const AdminUsersPage = () => {
   return <AdminUsersClient />;
-}
+};
+
+export default AdminUsersPage;

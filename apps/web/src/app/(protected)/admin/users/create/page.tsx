@@ -1,5 +1,7 @@
 import { AdminUserCreateClient } from "@/features/admin/components/AdminUserCreateClient";
 
-export default function AdminUserCreatePage() {
+const AdminUserCreatePage = () => {
   return <AdminUserCreateClient />;
-}
+};
+
+export default AdminUserCreatePage;

@@ -21,7 +21,7 @@ import { useQuery } from "@tanstack/react-query";
 import { CheckCircle2, Clock, Loader2 } from "lucide-react";
 import { api } from "@/lib/api";
 
-export function AdminTodosClient() {
+export const AdminTodosClient = () => {
   const { data: todos, isLoading } = useQuery({
     queryKey: ["admin-todos"],
     queryFn: async () => {
@@ -114,4 +114,4 @@ export function AdminTodosClient() {
       </Card>
     </div>
   );
-}
+};

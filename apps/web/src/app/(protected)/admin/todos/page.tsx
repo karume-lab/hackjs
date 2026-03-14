@@ -1,5 +1,7 @@
 import { AdminTodosClient } from "@/features/admin/components/AdminTodosClient";
 
-export default function AdminTodosPage() {
+const AdminTodosPage = () => {
   return <AdminTodosClient />;
-}
+};
+
+export default AdminTodosPage;

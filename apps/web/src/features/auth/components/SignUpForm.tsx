@@ -25,7 +25,7 @@ import type { z } from "zod";
 
 type SignUpFormValues = z.infer<typeof signUpSchema>;
 
-export function SignUpForm() {
+export const SignUpForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const queryClient = useQueryClient();
@@ -150,4 +150,4 @@ export function SignUpForm() {
       </CardFooter>
     </Card>
   );
-}
+};

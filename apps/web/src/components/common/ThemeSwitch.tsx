@@ -4,7 +4,7 @@ import { Button } from "@repo/ui/web/components/ui/button";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 
-export function ThemeSwitch() {
+export const ThemeSwitch = () => {
   const { theme, setTheme } = useTheme();
 
   return (
@@ -19,4 +19,4 @@ export function ThemeSwitch() {
       <span className="sr-only">Toggle theme</span>
     </Button>
   );
-}
+};

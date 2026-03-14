@@ -2,7 +2,7 @@ import { cn } from "@repo/ui/mobile/lib/utils";
 import * as LabelPrimitive from "@rn-primitives/label";
 import { Platform } from "react-native";
 
-function Label({
+const Label = ({
   className,
   onPress,
   onLongPress,
@@ -10,7 +10,7 @@ function Label({
   onPressOut,
   disabled,
   ...props
-}: LabelPrimitive.TextProps & React.RefAttributes<LabelPrimitive.TextRef>) {
+}: LabelPrimitive.TextProps & React.RefAttributes<LabelPrimitive.TextRef>) => {
   return (
     <LabelPrimitive.Root
       className={cn(
@@ -36,6 +36,6 @@ function Label({
       />
     </LabelPrimitive.Root>
   );
-}
+};
 
 export { Label };

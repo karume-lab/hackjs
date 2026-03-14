@@ -10,7 +10,7 @@ import { useAdminUsers, useDeleteUser, useUpdateUserRole } from "@/lib/hooks/use
 
 type SystemUser = { id: string; name: string; email: string; role: string | null; createdAt: Date };
 
-export function AdminUsersClient() {
+export const AdminUsersClient = () => {
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
@@ -152,4 +152,4 @@ export function AdminUsersClient() {
       />
     </div>
   );
-}
+};

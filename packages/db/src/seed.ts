@@ -3,7 +3,7 @@ import todosData from "@repo/db/mock-data/todos.json";
 import usersData from "@repo/db/mock-data/users.json";
 import { hashPassword } from "better-auth/crypto";
 
-async function seed() {
+const seed = async () => {
   console.log("Starting database seeding process...");
 
   console.log("Cleaning up existing data...");
@@ -48,7 +48,7 @@ async function seed() {
   console.log("Users, accounts, and todos successfully seeded.");
   console.log("Database seeding finalized completely.");
   process.exit(0);
-}
+};
 
 seed().catch((error) => {
   console.error("Seeding failed:", error);

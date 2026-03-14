@@ -1,7 +1,7 @@
 import { cn } from "@repo/ui/mobile/lib/utils";
 import { Platform, TextInput, type TextInputProps } from "react-native";
 
-function Input({ className, ...props }: TextInputProps & React.RefAttributes<TextInput>) {
+const Input = ({ className, ...props }: TextInputProps & React.RefAttributes<TextInput>) => {
   return (
     <TextInput
       className={cn(
@@ -24,6 +24,6 @@ function Input({ className, ...props }: TextInputProps & React.RefAttributes<Tex
       {...props}
     />
   );
-}
+};
 
 export { Input };

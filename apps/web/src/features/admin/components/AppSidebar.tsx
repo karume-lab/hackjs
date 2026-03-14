@@ -46,7 +46,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import SiteLogo from "@/components/common/SiteLogo";
 
-export function NavProjects({
+export const NavProjects = ({
   projects,
 }: {
   projects: {
@@ -54,7 +54,7 @@ export function NavProjects({
     url: Route | string;
     icon: React.ElementType;
   }[];
-}) {
+}) => {
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>Resources</SidebarGroupLabel>
@@ -72,9 +72,9 @@ export function NavProjects({
       </SidebarMenu>
     </SidebarGroup>
   );
-}
+};
 
-export function NavUser({
+export const NavUser = ({
   user,
 }: {
   user: {
@@ -82,7 +82,7 @@ export function NavUser({
     email: string;
     avatar: string;
   };
-}) {
+}) => {
   const { isMobile } = useSidebar();
   const router = useRouter();
 
@@ -132,16 +132,16 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleSignOut}>
               <LogOut />
-              Log out
+              Sign Out
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
     </SidebarMenu>
   );
-}
+};
 
-export function NavMain({
+export const NavMain = ({
   items,
 }: {
   items: {
@@ -154,7 +154,7 @@ export function NavMain({
       url: Route | string;
     }[];
   }[];
-}) {
+}) => {
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
@@ -193,7 +193,7 @@ export function NavMain({
       </SidebarMenu>
     </SidebarGroup>
   );
-}
+};
 
 const data = {
   navMain: [
@@ -255,7 +255,7 @@ const data = {
   ],
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
   const { data: session, isPending } = authClient.useSession();
   const { state } = useSidebar();
 
@@ -301,4 +301,4 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarRail />
     </Sidebar>
   );
-}
+};

@@ -1,5 +1,3 @@
-"use client";
-
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import {
@@ -10,15 +8,15 @@ import {
   updateUserRoleMutation,
 } from "@/lib/queries/admin";
 
-export function useAdminUsers(page: number, limit: number) {
+export const useAdminUsers = (page: number, limit: number) => {
   return useQuery(adminUsersQuery(page, limit));
-}
+};
 
-export function useAdminUser(id: string) {
+export const useAdminUser = (id: string) => {
   return useQuery(adminUserQuery(id));
-}
+};
 
-export function useCreateUser() {
+export const useCreateUser = () => {
   const qc = useQueryClient();
   return useMutation({
     ...createUserMutation(),
@@ -31,9 +29,9 @@ export function useCreateUser() {
       toast.error(error.message || "Failed to create user record");
     },
   });
-}
+};
 
-export function useUpdateUserRole() {
+export const useUpdateUserRole = () => {
   const qc = useQueryClient();
   return useMutation({
     ...updateUserRoleMutation(),
@@ -47,9 +45,9 @@ export function useUpdateUserRole() {
       toast.error(error.message || "Failed to edit user");
     },
   });
-}
+};
 
-export function useDeleteUser() {
+export const useDeleteUser = () => {
   const qc = useQueryClient();
   return useMutation({
     ...deleteUserMutation(),
@@ -62,4 +60,4 @@ export function useDeleteUser() {
       toast.error(error.message || "An error occurred");
     },
   });
-}
+};

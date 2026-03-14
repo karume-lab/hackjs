@@ -20,7 +20,7 @@ interface Todo {
   createdAt: string | Date;
 }
 
-export function DashboardTodosClient() {
+export const DashboardTodosClient = () => {
   const queryClient = useQueryClient();
   const [newTodo, setNewTodo] = useState("");
 
@@ -225,4 +225,4 @@ export function DashboardTodosClient() {
       </main>
     </div>
   );
-}
+};

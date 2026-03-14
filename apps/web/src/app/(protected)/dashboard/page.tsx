@@ -10,7 +10,7 @@ import Link from "next/link";
 import { ThemeSwitch } from "@/components/common/ThemeSwitch";
 import { SignOutButton } from "@/features/auth/components/SignOutButton";
 
-export default function DashboardPage() {
+const DashboardPage = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <nav className="border-b border-border bg-card px-4 py-4 sm:px-6 lg:px-8">
@@ -62,4 +62,6 @@ export default function DashboardPage() {
       </main>
     </div>
   );
-}
+};
+
+export default DashboardPage;

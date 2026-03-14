@@ -6,7 +6,7 @@ import { Platform } from "react-native";
 
 const DEFAULT_HIT_SLOP = 24;
 
-function Checkbox({
+const Checkbox = ({
   className,
   checkedClassName,
   indicatorClassName,
@@ -17,7 +17,7 @@ function Checkbox({
     checkedClassName?: string;
     indicatorClassName?: string;
     iconClassName?: string;
-  }) {
+  }) => {
   return (
     <CheckboxPrimitive.Root
       className={cn(
@@ -45,6 +45,6 @@ function Checkbox({
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
   );
-}
+};
 
 export { Checkbox };

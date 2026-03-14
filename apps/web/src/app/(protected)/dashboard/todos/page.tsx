@@ -1,5 +1,7 @@
 import { DashboardTodosClient } from "@/features/todos/components/DashboardTodosClient";
 
-export default function TodosPage() {
+const TodosPage = () => {
   return <DashboardTodosClient />;
-}
+};
+
+export default TodosPage;

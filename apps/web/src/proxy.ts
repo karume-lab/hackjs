@@ -1,7 +1,7 @@
 import { auth } from "@repo/auth";
 import { type NextRequest, NextResponse } from "next/server";
 
-export default async function proxy(request: NextRequest) {
+const proxy = async (request: NextRequest) => {
   const { pathname } = request.nextUrl;
 
   const session = await auth.api.getSession({
@@ -34,7 +34,9 @@ export default async function proxy(request: NextRequest) {
   }
 
   return NextResponse.next();
-}
+};
+
+export default proxy;
 
 export const config = {
   matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],

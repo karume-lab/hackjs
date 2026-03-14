@@ -1,5 +1,7 @@
 import { AdminDashboardClient } from "@/features/admin/components/AdminDashboardClient";
 
-export default function AdminDashboardPage() {
+const AdminDashboardPage = () => {
   return <AdminDashboardClient />;
-}
+};
+
+export default AdminDashboardPage;

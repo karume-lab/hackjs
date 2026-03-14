@@ -30,7 +30,7 @@ import { useCreateUser } from "@/lib/hooks/use-admin-users";
 
 type CreateUserFormValues = z.infer<typeof createUserSchema>;
 
-export function AdminUserCreateClient() {
+export const AdminUserCreateClient = () => {
   const router = useRouter();
 
   const form = useForm<CreateUserFormValues>({
@@ -160,4 +160,4 @@ export function AdminUserCreateClient() {
       </Card>
     </div>
   );
-}
+};

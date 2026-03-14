@@ -14,13 +14,13 @@ interface SignOutButtonProps {
   label?: string;
 }
 
-export function SignOutButton({
+export const SignOutButton = ({
   variant = "secondary",
   size = "default",
   className = "",
   showIcon = false,
   label = "Sign out",
-}: SignOutButtonProps) {
+}: SignOutButtonProps) => {
   const router = useRouter();
   const [isPending, setIsPending] = useState(false);
 
@@ -42,4 +42,4 @@ export function SignOutButton({
       {isPending ? "Signing out..." : label}
     </Button>
   );
-}
+};

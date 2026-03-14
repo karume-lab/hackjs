@@ -16,75 +16,74 @@ import Link from "next/link";
 import SiteLogo from "@/components/common/SiteLogo";
 import { ThemeSwitch } from "@/components/common/ThemeSwitch";
 
-export default function Home() {
-  const features = [
-    {
-      title: "Blazing Fast Performance",
-      description:
-        "Powered by Next.js 16 and Turbopack for instant feedback and optimal Lighthouse scores.",
-      icon: <Zap className="size-6 text-primary" />,
-    },
-    {
-      title: "End-to-End Type Safety",
-      description:
-        "Seamless synchronization between server and client with Elysia + Eden Treaty. Say goodbye to manual types.",
-      icon: <ShieldCheck className="size-6 text-primary" />,
-    },
-    {
-      title: "Monorepo Ready",
-      description:
-        "Built on Turborepo to efficiently scale sharing code between web, mobile, and APIs.",
-      icon: <Layers className="size-6 text-primary" />,
-    },
-    {
-      title: "Cross-Platform",
-      description:
-        "Includes a complete React Native Expo setup alongside Next.js for maximum reach.",
-      icon: <Smartphone className="size-6 text-primary" />,
-    },
-    {
-      title: "Production Ready",
-      description: "Out-of-the-box Drizzle ORM, authentication, and optimized Docker deployments.",
-      icon: <Rocket className="size-6 text-primary" />,
-    },
-    {
-      title: "Edge Compatible",
-      description: "Deploy everywhere with Edge functions and automatic global distribution.",
-      icon: <Globe className="size-6 text-primary" />,
-    },
-  ];
+const features = [
+  {
+    title: "Blazing Fast Performance",
+    description:
+      "Powered by Next.js 16 and Turbopack for instant feedback and optimal Lighthouse scores.",
+    icon: <Zap className="size-6 text-primary" />,
+  },
+  {
+    title: "End-to-End Type Safety",
+    description:
+      "Seamless synchronization between server and client with Elysia + Eden Treaty. Say goodbye to manual types.",
+    icon: <ShieldCheck className="size-6 text-primary" />,
+  },
+  {
+    title: "Monorepo Ready",
+    description:
+      "Built on Turborepo to efficiently scale sharing code between web, mobile, and APIs.",
+    icon: <Layers className="size-6 text-primary" />,
+  },
+  {
+    title: "Cross-Platform",
+    description: "Includes a complete React Native Expo setup alongside Next.js for maximum reach.",
+    icon: <Smartphone className="size-6 text-primary" />,
+  },
+  {
+    title: "Production Ready",
+    description: "Out-of-the-box Drizzle ORM, authentication, and optimized Docker deployments.",
+    icon: <Rocket className="size-6 text-primary" />,
+  },
+  {
+    title: "Edge Compatible",
+    description: "Deploy everywhere with Edge functions and automatic global distribution.",
+    icon: <Globe className="size-6 text-primary" />,
+  },
+];
 
-  const testimonials = [
-    {
-      quote:
-        "A solid fullstack template with a great Next.js and Turborepo foundation. Honestly, a really impressive setup.",
-      author: "Bob",
-      role: "Developer, Denmark",
-      initial: "B",
-    },
-    {
-      quote:
-        "The sheer velocity this template gives us is incredible. We went from idea to production in under a week.",
-      author: "Sarah Jenkins",
-      role: "CTO at StartupX",
-      initial: "S",
-    },
-    {
-      quote:
-        "Finally, a stack that doesn't compromise on type safety or developer experience. Highly recommended!",
-      author: "Michael Chen",
-      role: "Fullstack Engineer",
-      initial: "M",
-    },
-    {
-      quote:
-        "The Expo integration alongside web is seamless. Sharing components and logic has never been easier.",
-      author: "Elena Rodriguez",
-      role: "Lead Mobile Dev",
-      initial: "E",
-    },
-  ];
+const testimonials = [
+  {
+    quote:
+      "A solid fullstack template with a great Next.js and Turborepo foundation. Honestly, a really impressive setup.",
+    author: "Bob",
+    role: "Developer, Denmark",
+    initial: "B",
+  },
+  {
+    quote:
+      "The sheer velocity this template gives us is incredible. We went from idea to production in under a week.",
+    author: "Sarah Jenkins",
+    role: "CTO at StartupX",
+    initial: "S",
+  },
+  {
+    quote:
+      "Finally, a stack that doesn't compromise on type safety or developer experience. Highly recommended!",
+    author: "Michael Chen",
+    role: "Fullstack Engineer",
+    initial: "M",
+  },
+  {
+    quote:
+      "The Expo integration alongside web is seamless. Sharing components and logic has never been easier.",
+    author: "Elena Rodriguez",
+    role: "Lead Mobile Dev",
+    initial: "E",
+  },
+];
 
+const Home = () => {
   return (
     <div className="flex min-h-screen flex-col bg-background font-sans text-foreground">
       <div className="absolute top-4 right-4 sm:top-8 sm:right-8 z-50 flex items-center gap-2">
@@ -321,4 +320,6 @@ export default function Home() {
       </footer>
     </div>
   );
-}
+};
+
+export default Home;

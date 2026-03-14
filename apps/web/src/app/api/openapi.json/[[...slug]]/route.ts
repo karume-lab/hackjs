@@ -1,5 +1,5 @@
 import { app } from "@repo/api";
 
-export async function GET(request: Request) {
+export const GET = async (request: Request) => {
   return app.handle(request);
-}
+};
