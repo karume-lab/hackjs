@@ -40,6 +40,7 @@ import {
   LayoutDashboard,
   LogOut,
   Settings2,
+  User,
 } from "lucide-react";
 import type { Route } from "next";
 import Link from "next/link";
@@ -130,8 +131,15 @@ export const NavUser = ({
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
+            <DropdownMenuItem asChild>
+              <Link href={"/dashboard/profile" as Route} className="cursor-pointer">
+                <User className="mr-2 h-4 w-4" />
+                Account Settings
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleSignOut}>
-              <LogOut />
+              <LogOut className="mr-2 h-4 w-4" />
               Sign Out
             </DropdownMenuItem>
           </DropdownMenuContent>

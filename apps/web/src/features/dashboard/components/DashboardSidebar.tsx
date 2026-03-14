@@ -31,7 +31,14 @@ import {
   SidebarRail,
   useSidebar,
 } from "@repo/ui/web/components/ui/sidebar";
-import { ChevronRight, ChevronsUpDown, LayoutDashboard, ListTodo, LogOut } from "lucide-react";
+import {
+  ChevronRight,
+  ChevronsUpDown,
+  LayoutDashboard,
+  ListTodo,
+  LogOut,
+  User,
+} from "lucide-react";
 import type { Route } from "next";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -54,6 +61,11 @@ const navMain: NavItem[] = [
     url: "/dashboard",
     icon: ListTodo,
     isActive: true,
+  },
+  {
+    title: "Profile",
+    url: "/dashboard/profile" as Route,
+    icon: User,
   },
 ];
 
@@ -187,11 +199,18 @@ export const DashboardSidebar = ({ ...props }: React.ComponentProps<typeof Sideb
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
-                      <Link href="/dashboard" className="cursor-pointer">
-                        <LayoutDashboard className="mr-2 h-4 w-4" />
-                        Dashboard
+                      <Link href={"/dashboard/profile" as Route} className="cursor-pointer">
+                        <User className="mr-2 h-4 w-4" />
+                        Account Settings
                       </Link>
                     </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/dashboard" className="cursor-pointer">
+                        <LayoutDashboard className="mr-2 h-4 w-4" />
+                        Return to Tasks
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
                     <DropdownMenuItem
                       onClick={handleSignOut}
                       className="text-destructive focus:text-destructive cursor-pointer"

@@ -35,3 +35,8 @@ export const createUserSchema = z.object({
 export const updateUserSchema = z.object({
   role: z.enum(["admin", "user"]),
 });
+
+export const updateProfileSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  image: z.url("Please enter a valid URL").optional().or(z.literal("")),
+});
