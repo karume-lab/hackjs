@@ -2,6 +2,7 @@ import { auth } from "@repo/auth";
 import { db, schema } from "@repo/db";
 import { and, eq } from "drizzle-orm";
 import { Elysia, t } from "elysia";
+import { TodoSchema } from "./types";
 
 export const todoRouter = new Elysia({ prefix: "/todos" })
   .derive(async ({ request }) => {
@@ -19,6 +20,7 @@ export const todoRouter = new Elysia({ prefix: "/todos" })
     },
     {
       detail: { tags: ["Todos"], description: "Get all todos for the current user" },
+      response: t.Array(TodoSchema),
     },
   )
   .post(
@@ -31,6 +33,7 @@ export const todoRouter = new Elysia({ prefix: "/todos" })
           userId: user.id,
         })
         .returning();
+      if (!created) throw new Error("Failed to create todo");
       return created;
     },
     {
@@ -38,6 +41,7 @@ export const todoRouter = new Elysia({ prefix: "/todos" })
         title: t.String({ minLength: 1 }),
       }),
       detail: { tags: ["Todos"], description: "Create a new todo" },
+      response: TodoSchema,
     },
   )
   .patch(
@@ -51,6 +55,7 @@ export const todoRouter = new Elysia({ prefix: "/todos" })
         })
         .where(and(eq(schema.todo.id, id), eq(schema.todo.userId, user.id)))
         .returning();
+      if (!updated) throw new Error("Todo not found or unauthorized");
       return updated;
     },
     {
@@ -60,6 +65,7 @@ export const todoRouter = new Elysia({ prefix: "/todos" })
         completed: t.Optional(t.Boolean()),
       }),
       detail: { tags: ["Todos"], description: "Update a todo" },
+      response: TodoSchema,
     },
   )
   .delete(
@@ -73,5 +79,6 @@ export const todoRouter = new Elysia({ prefix: "/todos" })
     {
       params: t.Object({ id: t.String() }),
       detail: { tags: ["Todos"], description: "Delete a todo" },
+      response: t.Object({ success: t.Boolean() }),
     },
   );

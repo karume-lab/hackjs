@@ -1,3 +1,8 @@
+import {
+  PaginatedTodoWithUserResponseSchema,
+  PaginatedUserResponseSchema,
+  UserSchema,
+} from "@repo/api/routers/types";
 import { auth } from "@repo/auth";
 import { db, schema } from "@repo/db";
 import { eq, sql } from "drizzle-orm";
@@ -5,8 +10,6 @@ import { Elysia, t } from "elysia";
 
 export const adminRouter = new Elysia({ prefix: "/admin" })
   .derive(async ({ request }) => {
-    // Rederive just to be safe, or assume inheriting from global
-    // But since BetterAuth session might be shared, let's rely on global context
     const session = await auth.api.getSession({ headers: request.headers });
     if (!session?.user) throw new Error("UNAUTHORIZED");
     if (session.user.role !== "admin") throw new Error("FORBIDDEN: Admin access required");
@@ -46,6 +49,7 @@ export const adminRouter = new Elysia({ prefix: "/admin" })
         page: t.Optional(t.Numeric({ default: 1 })),
       }),
       detail: { tags: ["Admin"], description: "Get paginated list of all users" },
+      response: PaginatedUserResponseSchema,
     },
   )
   .post(
@@ -69,7 +73,20 @@ export const adminRouter = new Elysia({ prefix: "/admin" })
           .where(eq(schema.user.id, createdUser.id));
       }
 
-      return createdUser;
+      const user = await db.query.user.findFirst({
+        where: eq(schema.user.id, createdUser.id),
+      });
+
+      if (!user) throw new Error("Failed to retrieve created user");
+
+      return {
+        ...user,
+        image: user.image ?? null,
+        role: user.role ?? null,
+        banned: user.banned ?? false,
+        banReason: user.banReason ?? null,
+        banExpires: user.banExpires ?? null,
+      };
     },
     {
       body: t.Object({
@@ -82,6 +99,7 @@ export const adminRouter = new Elysia({ prefix: "/admin" })
         tags: ["Admin"],
         description: "Create a new user with a specific role",
       },
+      response: UserSchema,
     },
   )
   .get(
@@ -96,17 +114,25 @@ export const adminRouter = new Elysia({ prefix: "/admin" })
     {
       params: t.Object({ id: t.String() }),
       detail: { tags: ["Admin"], description: "Get a single user by ID" },
+      response: UserSchema,
     },
   )
   .put(
     "/users/:id/role",
     async ({ params: { id }, body: { role } }) => {
-      return await db.update(schema.user).set({ role }).where(eq(schema.user.id, id)).returning();
+      const [updated] = await db
+        .update(schema.user)
+        .set({ role })
+        .where(eq(schema.user.id, id))
+        .returning();
+      if (!updated) throw new Error("User not found");
+      return updated;
     },
     {
       params: t.Object({ id: t.String() }),
       body: t.Object({ role: t.Union([t.Literal("admin"), t.Literal("user")]) }),
       detail: { tags: ["Admin"], description: "Update a user's role" },
+      response: UserSchema,
     },
   )
   .delete(
@@ -114,11 +140,14 @@ export const adminRouter = new Elysia({ prefix: "/admin" })
     async ({ params: { id } }) => {
       await db.delete(schema.session).where(eq(schema.session.userId, id));
       await db.delete(schema.account).where(eq(schema.account.userId, id));
-      return await db.delete(schema.user).where(eq(schema.user.id, id)).returning();
+      const [deleted] = await db.delete(schema.user).where(eq(schema.user.id, id)).returning();
+      if (!deleted) throw new Error("User not found");
+      return deleted;
     },
     {
       params: t.Object({ id: t.String() }),
       detail: { tags: ["Admin"], description: "Delete a user" },
+      response: UserSchema,
     },
   )
   .get(
@@ -158,5 +187,6 @@ export const adminRouter = new Elysia({ prefix: "/admin" })
         page: t.Optional(t.Numeric({ default: 1 })),
       }),
       detail: { tags: ["Admin"], description: "Get all todos from all users" },
+      response: PaginatedTodoWithUserResponseSchema,
     },
   );

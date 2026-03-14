@@ -40,8 +40,7 @@ export default function DashboardScreen() {
         </View>
 
         <TouchableOpacity
-          // biome-ignore lint/suspicious/noExplicitAny: Expo router dynamic route
-          onPress={() => router.push("/dashboard/todos" as any)}
+          onPress={() => router.push("/dashboard/todos")}
           className="bg-card border border-border rounded-2xl p-6 flex-row items-center shadow-sm"
         >
           <View className="bg-primary/10 p-3 rounded-xl mr-4">
