@@ -1,7 +1,6 @@
 "use client";
 
 import { authClient } from "@repo/auth/client";
-import { Button } from "@repo/ui/web/components/ui/button";
 import {
   Card,
   CardContent,
@@ -9,208 +8,203 @@ import {
   CardHeader,
   CardTitle,
 } from "@repo/ui/web/components/ui/card";
+import { useQuery } from "@tanstack/react-query";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@repo/ui/web/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/web/components/ui/tabs";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Activity, Ban, Loader2, Shield, Unlock, Users } from "lucide-react";
-import { toast } from "sonner";
+  BarChart3,
+  ListTodo,
+  Loader2,
+  ShieldAlert,
+  TrendingUp,
+  UserCheck,
+  Users,
+  Zap,
+} from "lucide-react";
+import { api } from "@/lib/api";
 
 export const AdminDashboardClient = () => {
-  const queryClient = useQueryClient();
-
-  // Fetch users with Better Auth admin client
+  // Fetch users for statistics
   const { data: usersData, isLoading: isUsersLoading } = useQuery({
-    queryKey: ["admin-users"],
+    queryKey: ["admin-users-stats"],
     queryFn: async () => {
       const response = await authClient.admin.listUsers({
-        query: {
-          limit: 100,
-        },
+        query: { limit: 1000 },
       });
       if (response.error) throw new Error(response.error.message || "Failed to fetch users");
       return response.data;
     },
   });
 
-  // Ban user mutation
-  const banUserMutation = useMutation({
-    mutationFn: async (userId: string) => {
-      const response = await authClient.admin.banUser({
-        userId,
+  // Fetch todos for statistics
+  const { data: todosData, isLoading: isTodosLoading } = useQuery({
+    queryKey: ["admin-todos-stats"],
+    queryFn: async () => {
+      const { data, error } = await api.admin.todos.get({
+        query: { limit: 1000 },
       });
-      if (response.error) throw new Error(response.error.message);
-      return response.data;
+      if (error) throw error;
+      return data.data;
     },
-    onSuccess: () => {
-      toast.success("User banned successfully");
-      queryClient.invalidateQueries({ queryKey: ["admin-users"] });
-    },
-    onError: (err) => toast.error(err.message),
   });
 
-  // Unban user mutation
-  const unbanUserMutation = useMutation({
-    mutationFn: async (userId: string) => {
-      const response = await authClient.admin.unbanUser({
-        userId,
-      });
-      if (response.error) throw new Error(response.error.message);
-      return response.data;
-    },
-    onSuccess: () => {
-      toast.success("User unbanned successfully");
-      queryClient.invalidateQueries({ queryKey: ["admin-users"] });
-    },
-    onError: (err) => toast.error(err.message),
-  });
+  const isLoading = isUsersLoading || isTodosLoading;
 
   const users = usersData?.users || [];
-  const bannedCount = users.filter((u) => u.banned).length;
+  const todos = todosData || [];
+
+  const totalUsers = users.length;
+  const bannedUsers = users.filter((u) => u.banned).length;
+  const activeUsers = totalUsers - bannedUsers;
+
+  const totalTodos = todos.length;
+  const completedTodos = todos.filter((t) => t.completed).length;
+  const pendingTodos = totalTodos - completedTodos;
+  const completionRate = totalTodos > 0 ? Math.round((completedTodos / totalTodos) * 100) : 0;
+  const avgTodosPerUser = totalUsers > 0 ? (totalTodos / totalUsers).toFixed(1) : "0";
+
+  // New Engagement Metric: Users who have at least one todo
+  const usersWithTasks = new Set(todos.map((t) => t.userId)).size;
+  const activationRate = totalUsers > 0 ? Math.round((usersWithTasks / totalUsers) * 100) : 0;
 
   return (
-    <div className="flex-1 space-y-4 p-4 pt-2">
-      <div className="flex items-center justify-between space-y-2">
-        <h2 className="text-3xl font-bold tracking-tight text-foreground">Admin Dashboard</h2>
+    <div className="flex-1 space-y-6 p-4 pt-6">
+      <div className="flex flex-col gap-2">
+        <h2 className="text-3xl font-bold tracking-tight">Platform Overview</h2>
+        <p className="text-muted-foreground">
+          Real-time statistics and performance metrics for the HackJS application.
+        </p>
       </div>
-      <Tabs defaultValue="overview" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="users">User Management</TabsTrigger>
-        </TabsList>
-        <TabsContent value="overview" className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Total Users</CardTitle>
-                <Users className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  {isUsersLoading ? <Loader2 className="animate-spin h-5 w-5" /> : users.length}
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Active Sessions</CardTitle>
-                <Activity className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  {isUsersLoading ? (
-                    <Loader2 className="animate-spin h-5 w-5" />
-                  ) : (
-                    users.filter((u) => !u.banned).length
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Banned Accounts</CardTitle>
-                <Shield className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  {isUsersLoading ? <Loader2 className="animate-spin h-5 w-5" /> : bannedCount}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
 
-        <TabsContent value="users" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>User Permissions</CardTitle>
-              <CardDescription>Manage your platform's user access and roles.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              {isUsersLoading ? (
-                <div className="flex justify-center p-8">
-                  <Loader2 className="h-8 w-8 animate-spin" />
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <Card className="hover:shadow-md transition-shadow">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+            <Users className="h-4 w-4 text-primary" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {isLoading ? <Loader2 className="animate-spin h-4 w-4" /> : totalUsers}
+            </div>
+            <p className="text-xs text-muted-foreground mt-1">
+              Registered accounts across platform
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="hover:shadow-md transition-shadow">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Active Accounts</CardTitle>
+            <UserCheck className="h-4 w-4 text-emerald-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {isLoading ? <Loader2 className="animate-spin h-4 w-4" /> : activeUsers}
+            </div>
+            <p className="text-xs text-muted-foreground mt-1">Non-banned platform users</p>
+          </CardContent>
+        </Card>
+
+        <Card className="hover:shadow-md transition-shadow">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Banned Accounts</CardTitle>
+            <ShieldAlert className="h-4 w-4 text-destructive" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {isLoading ? <Loader2 className="animate-spin h-4 w-4" /> : bannedUsers}
+            </div>
+            <p className="text-xs text-muted-foreground mt-1">Currently restricted access</p>
+          </CardContent>
+        </Card>
+
+        <Card className="hover:shadow-md transition-shadow">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">User Activation</CardTitle>
+            <Zap className="h-4 w-4 text-amber-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {isLoading ? <Loader2 className="animate-spin h-4 w-4" /> : `${activationRate}%`}
+            </div>
+            <p className="text-xs text-muted-foreground mt-1">Members with at least one task</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <Card className="col-span-1 md:col-span-2">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <ListTodo className="h-5 w-5 text-primary" />
+              Task Statistics
+            </CardTitle>
+            <CardDescription>Aggregate metrics for user-created todos</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-4 md:grid-cols-3 py-4">
+              <div className="flex flex-col gap-1">
+                <span className="text-sm text-muted-foreground">Total Tasks</span>
+                <span className="text-3xl font-bold">{isLoading ? "..." : totalTodos}</span>
+              </div>
+              <div className="flex flex-col gap-1">
+                <span className="text-sm text-muted-foreground">Completed</span>
+                <span className="text-3xl font-bold text-emerald-500">
+                  {isLoading ? "..." : completedTodos}
+                </span>
+              </div>
+              <div className="flex flex-col gap-1">
+                <span className="text-sm text-muted-foreground">Pending</span>
+                <span className="text-3xl font-bold text-amber-500">
+                  {isLoading ? "..." : pendingTodos}
+                </span>
+              </div>
+            </div>
+
+            <div className="mt-6 flex flex-col gap-4">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="font-medium">Task Completion Progress</span>
+                  <span className="text-muted-foreground">{completionRate}%</span>
                 </div>
-              ) : (
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Email</TableHead>
-                      <TableHead>Name</TableHead>
-                      <TableHead>Role</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {users.map((user) => (
-                      <TableRow key={user.id}>
-                        <TableCell className="font-medium">{user.email}</TableCell>
-                        <TableCell>{user.name}</TableCell>
-                        <TableCell>
-                          <span
-                            className={
-                              user.role === "admin"
-                                ? "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-500 px-2 py-1 rounded-full text-xs font-semibold"
-                                : "bg-muted text-muted-foreground px-2 py-1 rounded-full text-xs font-medium"
-                            }
-                          >
-                            {user.role || "user"}
-                          </span>
-                        </TableCell>
-                        <TableCell>
-                          {user.banned ? (
-                            <span className="text-red-500 font-medium text-xs">Banned</span>
-                          ) : (
-                            <span className="text-green-500 font-medium text-xs">Active</span>
-                          )}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          {user.banned ? (
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="text-green-600 hover:text-green-700"
-                              onClick={() => unbanUserMutation.mutate(user.id)}
-                              loading={
-                                unbanUserMutation.isPending &&
-                                unbanUserMutation.variables === user.id
-                              }
-                            >
-                              <Unlock className="w-4 h-4 mr-2" />
-                              Unban
-                            </Button>
-                          ) : (
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="text-destructive hover:text-destructive hover:bg-destructive/10"
-                              onClick={() => banUserMutation.mutate(user.id)}
-                              loading={
-                                banUserMutation.isPending && banUserMutation.variables === user.id
-                              }
-                              disabled={user.role === "admin"}
-                            >
-                              <Ban className="w-4 h-4 mr-2" />
-                              Ban
-                            </Button>
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              )}
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+                <div className="h-2 w-full bg-secondary rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-primary transition-all duration-500"
+                    style={{ width: `${completionRate}%` }}
+                  />
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <BarChart3 className="h-5 w-5 text-primary" />
+              User Engagement
+            </CardTitle>
+            <CardDescription>How users interact with tasks</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="flex items-center gap-4">
+              <div className="p-2 bg-primary/10 rounded-full">
+                <TrendingUp className="h-5 w-5 text-primary" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-sm font-medium">Avg Tasks per User</span>
+                <span className="text-2xl font-bold">{isLoading ? "..." : avgTodosPerUser}</span>
+              </div>
+            </div>
+
+            <div className="pt-4 border-t space-y-4">
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-muted-foreground italic text-xs">
+                  These metrics are refreshed in real-time.
+                </span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };
