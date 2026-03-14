@@ -1,5 +1,6 @@
 import { createClient } from "@repo/api/client";
+import { getBaseUrl } from "@repo/utils";
 
-export const api = createClient(
-  typeof window === "undefined" ? `${process.env.NEXT_PUBLIC_APP_URL}/api` : "/api",
-);
+const client = createClient(getBaseUrl());
+
+export const api = client.api;

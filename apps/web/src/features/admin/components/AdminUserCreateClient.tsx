@@ -12,6 +12,7 @@ import {
   FormMessage,
 } from "@repo/ui/web/components/ui/form";
 import { Input } from "@repo/ui/web/components/ui/input";
+import { PasswordInput } from "@repo/ui/web/components/ui/password-input";
 import {
   Select,
   SelectContent,
@@ -29,7 +30,7 @@ import { useCreateUser } from "@/lib/hooks/use-admin-users";
 
 type CreateUserFormValues = z.infer<typeof createUserSchema>;
 
-export function AdminUserCreateContent() {
+export function AdminUserCreateClient() {
   const router = useRouter();
 
   const form = useForm<CreateUserFormValues>({
@@ -110,7 +111,7 @@ export function AdminUserCreateContent() {
                     <FormItem>
                       <FormLabel>Secure Password</FormLabel>
                       <FormControl>
-                        <Input type="password" placeholder="Minimum 6 Characters" {...field} />
+                        <PasswordInput placeholder="Minimum 6 Characters" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

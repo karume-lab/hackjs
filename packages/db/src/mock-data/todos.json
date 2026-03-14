@@ -1,0 +1,32 @@
+[
+  {
+    "id": "a3f8c2d1-7b4e-4f9a-8c6d-2e1b5a9f3c7d",
+    "title": "Build a stunning dashboard",
+    "completed": true,
+    "userId": "76953f93-1811-4999-9e8c-572242133e38"
+  },
+  {
+    "id": "b9e1d4f6-3a7c-4b2e-9f8d-1c5a7b3e6f9d",
+    "title": "Fix BetterAuth schema generation",
+    "completed": true,
+    "userId": "76953f93-1811-4999-9e8c-572242133e38"
+  },
+  {
+    "id": "c2b5e8a3-6f1d-4c9b-7e4a-3d8f2c1b5e7a",
+    "title": "Implement mobile todo CRUD",
+    "completed": false,
+    "userId": "76953f93-1811-4999-9e8c-572242133e38"
+  },
+  {
+    "id": "d7f4a1e9-2c8b-4d6f-3a9e-8b1c7d4f2a6e",
+    "title": "Learn Drizzle ORM relations",
+    "completed": true,
+    "userId": "96fd54e2-a0b4-47fd-864c-f72439c2789f"
+  },
+  {
+    "id": "e1c9b6d4-8a3f-4e7c-2b5d-9f6a1e8c3b7f",
+    "title": "Explore Expo Router",
+    "completed": false,
+    "userId": "96fd54e2-a0b4-47fd-864c-f72439c2789f"
+  }
+]

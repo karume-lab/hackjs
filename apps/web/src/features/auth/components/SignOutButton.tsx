@@ -16,7 +16,7 @@ interface SignOutButtonProps {
 
 export function SignOutButton({
   variant = "secondary",
-  size = "sm",
+  size = "default",
   className = "",
   showIcon = false,
   label = "Sign out",
@@ -38,7 +38,7 @@ export function SignOutButton({
       disabled={isPending}
       className={className}
     >
-      {showIcon && <LogOut className="mr-2 h-4 w-4" />}
+      {showIcon && <LogOut className="mr-2" />}
       {isPending ? "Signing out..." : label}
     </Button>
   );

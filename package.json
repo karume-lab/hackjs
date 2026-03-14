@@ -39,6 +39,7 @@
     "db:studio": "bun --filter @repo/db db:studio",
     "db:migrate": "bun --filter @repo/db db:migrate",
     "db:seed": "bun --filter @repo/db db:seed",
+    "db:generate-auth": "bun --filter @repo/auth db:generate-auth",
     "ui:mobile": "cd packages/ui/src/mobile && bunx @react-native-reusables/cli@latest add",
     "ui:web": "bunx shadcn@latest add --cwd packages/ui/src/web",
     "postinstall": "lefthook install",

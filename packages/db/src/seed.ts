@@ -1,12 +1,13 @@
 import { db, schema } from "@repo/db";
+import todosData from "@repo/db/mock-data/todos.json";
 import usersData from "@repo/db/mock-data/users.json";
 import { hashPassword } from "better-auth/crypto";
-import dayjs from "dayjs";
 
 async function seed() {
   console.log("Starting database seeding process...");
 
   console.log("Cleaning up existing data...");
+  await db.delete(schema.todo);
   await db.delete(schema.account);
   await db.delete(schema.session);
   await db.delete(schema.user);
@@ -18,8 +19,8 @@ async function seed() {
 
     await db.insert(schema.user).values({
       ...user,
-      createdAt: dayjs(user.createdAt).toDate(),
-      updatedAt: dayjs(user.updatedAt).toDate(),
+      createdAt: new Date(user.createdAt),
+      updatedAt: new Date(user.updatedAt),
     });
 
     const hashedPassword = await hashPassword(password);
@@ -29,12 +30,22 @@ async function seed() {
       accountId: user.id,
       providerId: "credential",
       password: hashedPassword,
-      createdAt: dayjs(user.createdAt).toDate(),
-      updatedAt: dayjs(user.updatedAt).toDate(),
+      createdAt: new Date(user.createdAt),
+      updatedAt: new Date(user.updatedAt),
     });
   }
 
-  console.log("Users and accounts successfully seeded.");
+  console.log(`Inserting ${todosData.length} mock todos...`);
+
+  for (const todo of todosData) {
+    await db.insert(schema.todo).values({
+      ...todo,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+  }
+
+  console.log("Users, accounts, and todos successfully seeded.");
   console.log("Database seeding finalized completely.");
   process.exit(0);
 }

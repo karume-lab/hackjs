@@ -78,7 +78,10 @@ export const adminRouter = new Elysia({ prefix: "/admin" })
         password: t.String(),
         role: t.Optional(t.Union([t.Literal("admin"), t.Literal("user")])),
       }),
-      detail: { tags: ["Admin"], description: "Create a new user with a specific role" },
+      detail: {
+        tags: ["Admin"],
+        description: "Create a new user with a specific role",
+      },
     },
   )
   .get(
@@ -116,5 +119,44 @@ export const adminRouter = new Elysia({ prefix: "/admin" })
     {
       params: t.Object({ id: t.String() }),
       detail: { tags: ["Admin"], description: "Delete a user" },
+    },
+  )
+  .get(
+    "/todos",
+    async ({ query }) => {
+      const limit = query.limit || 50;
+      const page = query.page || 1;
+      const offset = (page - 1) * limit;
+
+      const data = await db.query.todo.findMany({
+        with: {
+          user: true,
+        },
+        orderBy: (todos, { desc }) => [desc(todos.createdAt)],
+        limit,
+        offset,
+      });
+
+      const countResult = await db
+        .select({ count: sql<number>`cast(count(*) as int)` })
+        .from(schema.todo);
+      const totalCount = countResult[0]?.count || 0;
+      const totalPages = Math.ceil(totalCount / limit);
+
+      return {
+        data,
+        metadata: {
+          totalCount,
+          page,
+          totalPages,
+        },
+      };
+    },
+    {
+      query: t.Object({
+        limit: t.Optional(t.Numeric({ default: 50 })),
+        page: t.Optional(t.Numeric({ default: 1 })),
+      }),
+      detail: { tags: ["Admin"], description: "Get all todos from all users" },
     },
   );

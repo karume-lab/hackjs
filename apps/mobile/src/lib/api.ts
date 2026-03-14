@@ -1,4 +1,6 @@
 import { createClient } from "@repo/api/client";
 import { getBaseUrl } from "@repo/utils";
 
-export const api = createClient(`${getBaseUrl()}/api`);
+const client = createClient(getBaseUrl());
+
+export const api = client.api;

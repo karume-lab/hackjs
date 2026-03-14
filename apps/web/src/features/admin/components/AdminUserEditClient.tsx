@@ -31,7 +31,7 @@ import { useAdminUser, useUpdateUserRole } from "@/lib/hooks/use-admin-users";
 
 type UpdateFormValues = z.infer<typeof updateUserSchema>;
 
-export function AdminUserEditContent({ userId }: { userId: string }) {
+export function AdminUserEditClient({ userId }: { userId: string }) {
   const router = useRouter();
 
   const { data: user, isLoading } = useAdminUser(userId);

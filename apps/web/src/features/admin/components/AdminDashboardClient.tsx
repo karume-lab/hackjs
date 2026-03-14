@@ -22,7 +22,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Activity, Ban, Loader2, Shield, Unlock, Users } from "lucide-react";
 import { toast } from "sonner";
 
-export function AdminDashboardContent() {
+export function AdminDashboardClient() {
   const queryClient = useQueryClient();
 
   // Fetch users with Better Auth admin client

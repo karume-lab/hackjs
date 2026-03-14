@@ -11,14 +11,21 @@ export const auth = betterAuth({
       ...schema,
     },
   }),
+  baseURL:
+    process.env.BETTER_AUTH_URL ??
+    process.env.NEXT_PUBLIC_APP_URL ??
+    `http://localhost:${process.env.PORT || "3000"}`,
   emailAndPassword: {
     enabled: true,
   },
   trustedOrigins: [
-    process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000",
+    process.env.NEXT_PUBLIC_APP_URL ?? `http://localhost:${process.env.PORT || "3000"}`,
     process.env.EXPO_PUBLIC_APP_URL ?? "",
     "exp://",
-    ...getLocalIPs().flatMap((ip) => [`http://${ip}:3000`, `http://${ip}:8081`]),
+    ...getLocalIPs().flatMap((ip) => [
+      `http://${ip}:${process.env.PORT || "3000"}`,
+      `http://${ip}:8081`,
+    ]),
   ],
   advanced: {
     crossSubDomainCookies: {

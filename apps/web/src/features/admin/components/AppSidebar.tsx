@@ -221,6 +221,10 @@ const data = {
           title: "Users",
           url: "/admin/users",
         },
+        {
+          title: "Todos",
+          url: "/admin/todos",
+        },
       ],
     },
     {

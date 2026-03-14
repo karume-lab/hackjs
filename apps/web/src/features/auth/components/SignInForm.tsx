@@ -13,6 +13,7 @@ import {
 } from "@repo/ui/web/components/ui/card";
 import { Input } from "@repo/ui/web/components/ui/input";
 import { Label } from "@repo/ui/web/components/ui/label";
+import { PasswordInput } from "@repo/ui/web/components/ui/password-input";
 import { signInSchema } from "@repo/validators";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Route } from "next";
@@ -102,9 +103,8 @@ export function SignInForm() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input
+              <PasswordInput
                 id="password"
-                type="password"
                 autoComplete="current-password"
                 placeholder="••••••••"
                 {...register("password")}

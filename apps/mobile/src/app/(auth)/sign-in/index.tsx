@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authClient } from "@repo/auth/client";
-import { Button, Input, Label, Text } from "@repo/ui/mobile";
+import { Button, Input, Label, PasswordInput, Text } from "@repo/ui/mobile";
 import { signInSchema } from "@repo/validators";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link, Stack, useRouter } from "expo-router";
@@ -95,9 +95,8 @@ export default function SignInScreen() {
                 control={control}
                 name="password"
                 render={({ field: { onChange, onBlur, value } }) => (
-                  <Input
+                  <PasswordInput
                     placeholder="••••••••"
-                    secureTextEntry
                     onBlur={onBlur}
                     onChangeText={onChange}
                     value={value}

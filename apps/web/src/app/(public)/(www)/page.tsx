@@ -87,8 +87,11 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen flex-col bg-background font-sans text-foreground">
-      <div className="absolute top-4 right-4 sm:top-8 sm:right-8 z-50">
+      <div className="absolute top-4 right-4 sm:top-8 sm:right-8 z-50 flex items-center gap-2">
         <ThemeSwitch />
+        <Button asChild>
+          <Link href="/sign-in">Sign in</Link>
+        </Button>
       </div>
 
       <main className="flex-1 w-full mx-auto">
@@ -260,20 +263,6 @@ export default function Home() {
               <li>
                 <Link href="/docs/architecture" className="hover:text-primary transition-colors">
                   Architecture
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="https://karume.vercel.app/blogs"
-                  target="_blank"
-                  className="hover:text-primary transition-colors"
-                >
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="hover:text-primary transition-colors">
-                  Showcase
                 </Link>
               </li>
             </ul>

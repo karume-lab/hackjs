@@ -1,9 +1,11 @@
+import cors from "@elysiajs/cors";
 import swagger from "@elysiajs/swagger";
 import { router } from "@repo/api/routers";
 import { auth } from "@repo/auth";
 import { Elysia } from "elysia";
 
-export const app = new Elysia()
+const routes = new Elysia()
+  .use(cors())
   .use(
     swagger({
       provider: "swagger-ui",
@@ -13,7 +15,7 @@ export const app = new Elysia()
           version: "1.0.0",
         },
       },
-      path: "/openapi.json", // Expose standard json here if needed
+      path: "/openapi.json",
     }),
   )
   .derive(async ({ request }) => {
@@ -21,6 +23,8 @@ export const app = new Elysia()
     return { session, user: session?.user ?? null };
   })
   .use(router);
+
+export const app = new Elysia().group("/api", (app) => app.use(routes));
 
 export type App = typeof app;
 export * from "@repo/api/query";

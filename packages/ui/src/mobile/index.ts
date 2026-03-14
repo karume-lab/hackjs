@@ -5,5 +5,6 @@ export * from "@repo/ui/mobile/components/ui/checkbox";
 export * from "@repo/ui/mobile/components/ui/icon";
 export * from "@repo/ui/mobile/components/ui/input";
 export * from "@repo/ui/mobile/components/ui/label";
+export * from "@repo/ui/mobile/components/ui/password-input";
 export * from "@repo/ui/mobile/components/ui/text";
 export * from "@repo/ui/mobile/lib/utils";

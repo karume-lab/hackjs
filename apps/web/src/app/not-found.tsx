@@ -1,7 +1,7 @@
-import { NotFoundContent } from "@/components/common/NotFoundContent";
+import { NotFoundClient } from "@/components/common/NotFoundClient";
 
 const NotFound = () => {
-  return <NotFoundContent />;
+  return <NotFoundClient />;
 };
 
 export default NotFound;

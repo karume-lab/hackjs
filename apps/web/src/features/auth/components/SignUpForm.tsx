@@ -13,6 +13,7 @@ import {
 } from "@repo/ui/web/components/ui/card";
 import { Input } from "@repo/ui/web/components/ui/input";
 import { Label } from "@repo/ui/web/components/ui/label";
+import { PasswordInput } from "@repo/ui/web/components/ui/password-input";
 import { signUpSchema } from "@repo/validators";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Route } from "next";
@@ -55,6 +56,7 @@ export function SignUpForm() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["session"] });
       toast.success("Account created successfully!");
+
       const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
       router.push(callbackUrl as Route);
     },
@@ -117,9 +119,8 @@ export function SignUpForm() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input
+              <PasswordInput
                 id="password"
-                type="password"
                 placeholder="••••••••"
                 autoComplete="new-password"
                 {...register("password")}
