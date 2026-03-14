@@ -131,8 +131,8 @@ export const SignUpForm = () => {
             </div>
           </div>
 
-          <Button type="submit" className="w-full" disabled={signUpMutation.isPending}>
-            {signUpMutation.isPending ? "Signing up..." : "Sign up"}
+          <Button type="submit" className="w-full" loading={signUpMutation.isPending}>
+            Sign up
           </Button>
         </form>
       </CardContent>

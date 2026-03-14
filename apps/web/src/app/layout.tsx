@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-import SEOConfig, { metadataConfig } from "@/components/common/SEOConfig";
+import SEOConfig, { metadataConfig } from "@/components/shared/SEOConfig";
 
 export const metadata: Metadata = metadataConfig;
 

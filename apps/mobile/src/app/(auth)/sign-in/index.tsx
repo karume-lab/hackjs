@@ -117,10 +117,10 @@ export default function SignInScreen() {
 
             <Button
               onPress={handleSubmit(onSubmit)}
-              disabled={signInMutation.isPending}
+              loading={signInMutation.isPending}
               className="mt-6"
             >
-              <Text>{signInMutation.isPending ? "Signing in..." : "Sign In"}</Text>
+              <Text>Sign In</Text>
             </Button>
           </View>
 

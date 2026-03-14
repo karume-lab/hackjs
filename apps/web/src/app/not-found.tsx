@@ -1,4 +1,4 @@
-import { NotFoundClient } from "@/components/common/NotFoundClient";
+import { NotFoundClient } from "@/components/shared/NotFoundClient";
 
 const NotFound = () => {
   return <NotFoundClient />;

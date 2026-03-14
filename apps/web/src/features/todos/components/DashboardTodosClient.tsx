@@ -9,7 +9,7 @@ import { CheckCircle2, Circle, ListTodo, Loader2, Plus, Trash2 } from "lucide-re
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
-import { ThemeSwitch } from "@/components/common/ThemeSwitch";
+import { ThemeSwitch } from "@/components/shared/ThemeSwitch";
 import { SignOutButton } from "@/features/auth/components/SignOutButton";
 import { api } from "@/lib/api";
 
@@ -133,16 +133,13 @@ export const DashboardTodosClient = () => {
                 className="border-none bg-transparent focus-visible:ring-0 text-lg placeholder:text-muted-foreground/50 h-12"
               />
               <Button
-                disabled={addMutation.isPending || !newTodo.trim()}
+                loading={addMutation.isPending}
+                disabled={!newTodo.trim()}
                 type="submit"
                 size="icon"
                 className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shrink-0 w-10 h-10 shadow-lg shadow-indigo-500/20"
               >
-                {addMutation.isPending ? (
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                ) : (
-                  <Plus className="w-5 h-5" />
-                )}
+                <Plus className="w-5 h-5" />
               </Button>
             </CardContent>
           </Card>
@@ -212,6 +209,7 @@ export const DashboardTodosClient = () => {
                         variant="ghost"
                         size="icon"
                         className="opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-red-500 hover:bg-red-500/10 transition-all rounded-lg w-8 h-8"
+                        loading={deleteMutation.isPending && deleteMutation.variables === todo.id}
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>

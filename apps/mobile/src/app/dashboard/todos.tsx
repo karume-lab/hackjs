@@ -1,7 +1,8 @@
+import { Button } from "@repo/ui/mobile";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as Haptics from "expo-haptics";
 import { Stack } from "expo-router";
-import { CheckCircle2, Circle, ListTodo, Loader2, Plus, Trash2 } from "lucide-react-native";
+import { CheckCircle2, Circle, ListTodo, Plus, Trash2 } from "lucide-react-native";
 import { useState } from "react";
 import {
   FlatList,
@@ -13,8 +14,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import Animated, { FadeInRight, FadeOutLeft, Layout } from "react-native-reanimated";
-import { ThemeSwitch } from "@/components/common/ThemeSwitch";
+import Animated, { FadeInRight, FadeOutLeft, LinearTransition } from "react-native-reanimated";
+import { ThemeSwitch } from "@/components/shared/ThemeSwitch";
 import { SignOutButton } from "@/features/auth/components/SignOutButton";
 import { api } from "@/lib/api";
 
@@ -142,19 +143,15 @@ export default function TodosScreen() {
             onChangeText={setNewTodo}
             onSubmitEditing={addTodo}
           />
-          <TouchableOpacity
+          <Button
             onPress={addTodo}
-            disabled={addMutation.isPending || !newTodo.trim()}
-            className={`w-10 h-10 rounded-xl items-center justify-center ${newTodo.trim() ? "bg-primary" : "bg-muted"}`}
+            loading={addMutation.isPending}
+            disabled={!newTodo.trim()}
+            size="icon"
+            className="rounded-xl w-10 h-10"
           >
-            {addMutation.isPending ? (
-              <View className="animate-spin">
-                <Loader2 size={20} color="white" />
-              </View>
-            ) : (
-              <Plus size={24} color="white" />
-            )}
-          </TouchableOpacity>
+            <Plus size={24} color="white" />
+          </Button>
         </View>
 
         <FlatList
@@ -165,7 +162,7 @@ export default function TodosScreen() {
             <Animated.View
               entering={FadeInRight}
               exiting={FadeOutLeft}
-              layout={Layout.springify()}
+              layout={LinearTransition.springify()}
               className={`flex-row items-center bg-card border border-border mb-3 p-4 rounded-2xl shadow-sm ${item.completed ? "opacity-60" : ""}`}
             >
               <TouchableOpacity
@@ -187,9 +184,14 @@ export default function TodosScreen() {
                 {item.title}
               </Text>
 
-              <TouchableOpacity onPress={() => deleteMutation.mutate(item.id)}>
+              <Button
+                onPress={() => deleteMutation.mutate(item.id)}
+                variant="ghost"
+                size="icon"
+                loading={deleteMutation.isPending && deleteMutation.variables === item.id}
+              >
                 <Trash2 size={20} color="#ff4444" />
-              </TouchableOpacity>
+              </Button>
             </Animated.View>
           )}
           ListEmptyComponent={() =>

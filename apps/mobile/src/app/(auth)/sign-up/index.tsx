@@ -130,10 +130,10 @@ export default function SignUpScreen() {
 
           <Button
             onPress={handleSubmit(onSubmit)}
-            disabled={signUpMutation.isPending}
+            loading={signUpMutation.isPending}
             className="mt-4"
           >
-            <Text>{signUpMutation.isPending ? "Creating..." : "Sign Up"}</Text>
+            <Text>Sign Up</Text>
           </Button>
 
           <View className="mt-4 flex-row justify-center gap-1">

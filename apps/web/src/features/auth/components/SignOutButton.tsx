@@ -35,11 +35,11 @@ export const SignOutButton = ({
       variant={variant}
       size={size}
       onClick={handleSignOut}
-      disabled={isPending}
+      loading={isPending}
       className={className}
     >
       {showIcon && <LogOut className="mr-2" />}
-      {isPending ? "Signing out..." : label}
+      {label}
     </Button>
   );
 };

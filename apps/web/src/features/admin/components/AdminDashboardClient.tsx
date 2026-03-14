@@ -178,7 +178,10 @@ export const AdminDashboardClient = () => {
                               size="sm"
                               className="text-green-600 hover:text-green-700"
                               onClick={() => unbanUserMutation.mutate(user.id)}
-                              disabled={unbanUserMutation.isPending}
+                              loading={
+                                unbanUserMutation.isPending &&
+                                unbanUserMutation.variables === user.id
+                              }
                             >
                               <Unlock className="w-4 h-4 mr-2" />
                               Unban
@@ -189,7 +192,10 @@ export const AdminDashboardClient = () => {
                               size="sm"
                               className="text-destructive hover:text-destructive hover:bg-destructive/10"
                               onClick={() => banUserMutation.mutate(user.id)}
-                              disabled={user.role === "admin" || banUserMutation.isPending}
+                              loading={
+                                banUserMutation.isPending && banUserMutation.variables === user.id
+                              }
+                              disabled={user.role === "admin"}
                             >
                               <Ban className="w-4 h-4 mr-2" />
                               Ban

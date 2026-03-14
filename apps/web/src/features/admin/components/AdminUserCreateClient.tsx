@@ -21,7 +21,7 @@ import {
   SelectValue,
 } from "@repo/ui/web/components/ui/select";
 import { createUserSchema } from "@repo/validators";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -147,10 +147,7 @@ export const AdminUserCreateClient = () => {
                 <Button type="button" variant="outline" onClick={() => router.push("/admin/users")}>
                   Cancel
                 </Button>
-                <Button type="submit" disabled={!isDirty || createUserMutation.isPending}>
-                  {createUserMutation.isPending && (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  )}
+                <Button type="submit" disabled={!isDirty} loading={createUserMutation.isPending}>
                   Finalize Provisioning
                 </Button>
               </div>

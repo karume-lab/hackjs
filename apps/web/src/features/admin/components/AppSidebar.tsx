@@ -44,7 +44,7 @@ import {
 import type { Route } from "next";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import SiteLogo from "@/components/common/SiteLogo";
+import SiteLogo from "@/components/shared/SiteLogo";
 
 export const NavProjects = ({
   projects,

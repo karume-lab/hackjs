@@ -150,10 +150,7 @@ export const AdminUserEditClient = ({ userId }: { userId: string }) => {
                 <Button type="button" variant="outline" onClick={() => router.push("/admin/users")}>
                   Cancel
                 </Button>
-                <Button type="submit" disabled={!isDirty || updateRoleMutation.isPending}>
-                  {updateRoleMutation.isPending && (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  )}
+                <Button type="submit" disabled={!isDirty} loading={updateRoleMutation.isPending}>
                   Save Permissions
                 </Button>
               </div>

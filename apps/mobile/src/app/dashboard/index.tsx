@@ -3,7 +3,7 @@ import { Stack, useRouter } from "expo-router";
 import { ListTodo } from "lucide-react-native";
 import { useEffect } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
-import { ThemeSwitch } from "@/components/common/ThemeSwitch";
+import { ThemeSwitch } from "@/components/shared/ThemeSwitch";
 import { SignOutButton } from "@/features/auth/components/SignOutButton";
 
 export default function DashboardScreen() {

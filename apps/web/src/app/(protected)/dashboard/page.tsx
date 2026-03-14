@@ -7,7 +7,7 @@ import {
 } from "@repo/ui/web/components/ui/card";
 import { ListTodo } from "lucide-react";
 import Link from "next/link";
-import { ThemeSwitch } from "@/components/common/ThemeSwitch";
+import { ThemeSwitch } from "@/components/shared/ThemeSwitch";
 import { SignOutButton } from "@/features/auth/components/SignOutButton";
 
 const DashboardPage = () => {

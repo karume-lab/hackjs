@@ -86,7 +86,9 @@ export const AdminUsersClient = () => {
                     role: user.role === "admin" ? "user" : "admin",
                   })
                 }
-                disabled={updateRoleMutation.isPending}
+                loading={
+                  updateRoleMutation.isPending && updateRoleMutation.variables?.id === user.id
+                }
               >
                 {user.role === "admin" ? (
                   <>
@@ -107,7 +109,9 @@ export const AdminUsersClient = () => {
                     deleteUserMutation.mutate({ id: user.id });
                   }
                 }}
-                disabled={deleteUserMutation.isPending}
+                loading={
+                  deleteUserMutation.isPending && deleteUserMutation.variables?.id === user.id
+                }
               >
                 <Trash2 className="w-4 h-4" />
               </Button>

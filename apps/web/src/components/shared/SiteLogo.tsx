@@ -8,7 +8,6 @@ const SiteLogo = ({ className }: { className?: string }) => {
       alt="HackJS Logo"
       src={Logo}
       className={cn("rounded-2xl bg-black dark:bg-transparent", className)}
-      style={{ height: "100%", width: "auto" }}
       priority={true}
     />
   );

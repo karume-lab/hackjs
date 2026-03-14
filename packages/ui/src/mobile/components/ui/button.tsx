@@ -88,18 +88,29 @@ const buttonTextVariants = cva(
   },
 );
 
+import { Spinner } from "@repo/ui/mobile/components/ui/spinner";
+
 type ButtonProps = React.ComponentProps<typeof Pressable> &
   React.RefAttributes<typeof Pressable> &
-  VariantProps<typeof buttonVariants>;
+  VariantProps<typeof buttonVariants> & {
+    loading?: boolean;
+  };
 
-const Button = ({ className, variant, size, ...props }: ButtonProps) => {
+const Button = ({ className, variant, size, loading, children, ...props }: ButtonProps) => {
   return (
     <TextClassContext.Provider value={buttonTextVariants({ variant, size })}>
       <Pressable
-        className={cn(props.disabled && "opacity-50", buttonVariants({ variant, size }), className)}
+        className={cn(
+          (props.disabled || loading) && "opacity-50",
+          buttonVariants({ variant, size }),
+          className,
+        )}
         role="button"
+        disabled={props.disabled || loading}
         {...props}
-      />
+      >
+        {loading ? <Spinner /> : children}
+      </Pressable>
     </TextClassContext.Provider>
   );
 };
