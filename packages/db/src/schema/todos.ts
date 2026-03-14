@@ -1,5 +1,5 @@
 import { user } from "@repo/db/schema/auth";
-import { relations } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const todo = sqliteTable("todo", {
@@ -11,10 +11,12 @@ export const todo = sqliteTable("todo", {
   userId: text("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
-  createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull().default(new Date()),
+  createdAt: integer("created_at", { mode: "timestamp_ms" })
+    .notNull()
+    .default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`),
   updatedAt: integer("updated_at", { mode: "timestamp_ms" })
     .notNull()
-    .default(new Date())
+    .default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
     .$onUpdate(() => new Date()),
 });
 

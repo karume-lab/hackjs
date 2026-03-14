@@ -5,7 +5,8 @@ import {
 } from "@repo/api/routers/types";
 import { auth } from "@repo/auth";
 import { db, schema } from "@repo/db";
-import { eq, sql } from "drizzle-orm";
+import { TODO_STATUSES } from "@repo/types";
+import { and, eq, like, or, sql } from "drizzle-orm";
 import { Elysia, t } from "elysia";
 
 export const adminRouter = new Elysia({ prefix: "/admin" })
@@ -22,7 +23,15 @@ export const adminRouter = new Elysia({ prefix: "/admin" })
       const page = query.page || 1;
       const offset = (page - 1) * limit;
 
+      const where = query.search
+        ? or(
+            like(schema.user.name, `%${query.search}%`),
+            like(schema.user.email, `%${query.search}%`),
+          )
+        : undefined;
+
       const data = await db.query.user.findMany({
+        where,
         orderBy: (users, { desc }) => [desc(users.createdAt)],
         limit,
         offset,
@@ -30,7 +39,8 @@ export const adminRouter = new Elysia({ prefix: "/admin" })
 
       const countResult = await db
         .select({ count: sql<number>`cast(count(*) as int)` })
-        .from(schema.user);
+        .from(schema.user)
+        .where(where);
       const totalCount = countResult[0]?.count || 0;
       const totalPages = Math.ceil(totalCount / limit);
 
@@ -47,6 +57,7 @@ export const adminRouter = new Elysia({ prefix: "/admin" })
       query: t.Object({
         limit: t.Optional(t.Numeric({ default: 10 })),
         page: t.Optional(t.Numeric({ default: 1 })),
+        search: t.Optional(t.String()),
       }),
       detail: { tags: ["Admin"], description: "Get paginated list of all users" },
       response: PaginatedUserResponseSchema,
@@ -157,10 +168,20 @@ export const adminRouter = new Elysia({ prefix: "/admin" })
       const page = query.page || 1;
       const offset = (page - 1) * limit;
 
+      const conditions = [];
+      if (query.search) {
+        conditions.push(like(schema.todo.title, `%${query.search}%`));
+      }
+      if (query.status !== undefined) {
+        conditions.push(eq(schema.todo.completed, query.status === "completed"));
+      }
+      const where = conditions.length > 0 ? and(...conditions) : undefined;
+
       const data = await db.query.todo.findMany({
         with: {
           user: true,
         },
+        where,
         orderBy: (todos, { desc }) => [desc(todos.createdAt)],
         limit,
         offset,
@@ -168,7 +189,8 @@ export const adminRouter = new Elysia({ prefix: "/admin" })
 
       const countResult = await db
         .select({ count: sql<number>`cast(count(*) as int)` })
-        .from(schema.todo);
+        .from(schema.todo)
+        .where(where);
       const totalCount = countResult[0]?.count || 0;
       const totalPages = Math.ceil(totalCount / limit);
 
@@ -185,6 +207,8 @@ export const adminRouter = new Elysia({ prefix: "/admin" })
       query: t.Object({
         limit: t.Optional(t.Numeric({ default: 50 })),
         page: t.Optional(t.Numeric({ default: 1 })),
+        search: t.Optional(t.String()),
+        status: t.Optional(t.Union(TODO_STATUSES.map((s) => t.Literal(s)))),
       }),
       detail: { tags: ["Admin"], description: "Get all todos from all users" },
       response: PaginatedTodoWithUserResponseSchema,

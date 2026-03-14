@@ -1,4 +1,5 @@
 import { RootProvider } from "fumadocs-ui/provider/next";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import "fumadocs-ui/style.css";
 import "@repo/ui/web/globals.css";
 import { Toaster } from "@repo/ui/web/components/ui/sonner";
@@ -36,9 +37,11 @@ const RootLayout = ({
           disableTransitionOnChange
         >
           <QueryProvider>
-            <SEOConfig />
-            <RootProvider>{children}</RootProvider>
-            <Toaster richColors />
+            <NuqsAdapter>
+              <SEOConfig />
+              <RootProvider>{children}</RootProvider>
+              <Toaster richColors />
+            </NuqsAdapter>
           </QueryProvider>
         </ThemeProvider>
       </body>

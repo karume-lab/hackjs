@@ -1,15 +1,16 @@
 import { QUERY_KEYS } from "@repo/api/keys";
 import { createMutationOptions, createQueryOptions } from "@repo/api/query";
+import type { TodoStatus } from "@repo/types";
 import type { createUserSchema } from "@repo/validators";
 import type { z } from "zod";
 import { api } from "@/lib/api";
 
 export type CreateUserInput = z.infer<typeof createUserSchema>;
 
-export const adminUsersQuery = (page: number, limit: number) =>
-  createQueryOptions(QUERY_KEYS.admin.users.list(page, limit), async () => {
+export const adminUsersQuery = (page: number, limit: number, search?: string) =>
+  createQueryOptions(QUERY_KEYS.admin.users.list(page, limit, search), async () => {
     const { data, error } = await api.admin.users.get({
-      query: { page, limit },
+      query: { page, limit, search: search || undefined },
     });
     if (error) throw error.value;
     return data;
@@ -32,6 +33,20 @@ export const createUserMutation = () =>
 export const updateUserRoleMutation = () =>
   createMutationOptions(async ({ id, role }: { id: string; role: "admin" | "user" }) => {
     const { data, error } = await api.admin.users({ id }).role.put({ role });
+    if (error) throw error.value;
+    return data;
+  });
+
+export const adminTodosQuery = (
+  page: number,
+  limit: number,
+  search?: string,
+  status?: TodoStatus,
+) =>
+  createQueryOptions(QUERY_KEYS.admin.todos.list(page, limit, search, status), async () => {
+    const { data, error } = await api.admin.todos.get({
+      query: { page, limit, search: search || undefined, status: status },
+    });
     if (error) throw error.value;
     return data;
   });

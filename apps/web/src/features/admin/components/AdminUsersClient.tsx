@@ -1,27 +1,47 @@
 "use client";
 
 import type { User as SystemUser } from "@repo/db/types";
+import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/web/components/ui/avatar";
+import { Badge } from "@repo/ui/web/components/ui/badge";
 import { Button } from "@repo/ui/web/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader } from "@repo/ui/web/components/ui/card";
 import { DataTable } from "@repo/ui/web/components/ui/data-table";
-import type { ColumnDef, PaginationState } from "@tanstack/react-table";
+import type { ColumnDef, OnChangeFn, PaginationState } from "@tanstack/react-table";
 import { Edit, Loader2, Shield, Trash2, User } from "lucide-react";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { parseAsInteger, useQueryState } from "nuqs";
+import { useMemo } from "react";
 import { useAdminUsers, useDeleteUser, useUpdateUserRole } from "@/lib/hooks/use-admin-users";
 
 export const AdminUsersClient = () => {
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 10,
-  });
-
-  const { data: response, isLoading } = useAdminUsers(
-    pagination.pageIndex + 1,
-    pagination.pageSize,
+  const [page, setPage] = useQueryState(
+    "page",
+    parseAsInteger.withDefault(1).withOptions({ shallow: false }),
   );
+  const [limit, setLimit] = useQueryState(
+    "limit",
+    parseAsInteger.withDefault(10).withOptions({ shallow: false }),
+  );
+  const [search, setSearch] = useQueryState("search", { defaultValue: "", shallow: false });
+  const [view, setView] = useQueryState("view", { defaultValue: "table", shallow: false });
+
+  const { data: response, isLoading } = useAdminUsers(page, limit, search);
 
   const updateRoleMutation = useUpdateUserRole();
   const deleteUserMutation = useDeleteUser();
+
+  const pagination = {
+    pageIndex: page - 1,
+    pageSize: limit,
+  };
+
+  const onPaginationChange: OnChangeFn<PaginationState> = (updaterOrValue) => {
+    const nextPagination =
+      typeof updaterOrValue === "function" ? updaterOrValue(pagination) : updaterOrValue;
+
+    setPage(nextPagination.pageIndex + 1);
+    setLimit(nextPagination.pageSize);
+  };
 
   const columns: ColumnDef<SystemUser>[] = useMemo(
     () => [
@@ -151,7 +171,74 @@ export const AdminUsersClient = () => {
         data={(response?.data as SystemUser[]) || []}
         pageCount={response?.metadata?.totalPages || 0}
         pagination={pagination}
-        onPaginationChange={setPagination}
+        onPaginationChange={onPaginationChange}
+        searchKey="users"
+        searchValue={search}
+        onSearchChange={setSearch}
+        viewMode={view as "table" | "grid"}
+        onViewModeChange={(v) => setView(v)}
+        renderCard={(user) => (
+          <Card
+            key={user.id}
+            className="overflow-hidden transition-all hover:shadow-md border-border/50"
+          >
+            <CardHeader className="p-4 pb-0 flex flex-row items-center justify-between space-y-0">
+              <Badge
+                variant={user.role === "admin" ? "default" : "secondary"}
+                className={
+                  user.role === "admin"
+                    ? "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-500"
+                    : ""
+                }
+              >
+                {user.role || "user"}
+              </Badge>
+              <div className="flex gap-1">
+                <Link href={`/admin/users/${user.id}`}>
+                  <Button variant="ghost" size="icon" className="h-8 w-8">
+                    <Edit className="h-4 w-4 text-zinc-500" />
+                  </Button>
+                </Link>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8 text-red-500 hover:text-red-600 hover:bg-red-50"
+                  onClick={() => {
+                    if (confirm("Are you sure?")) deleteUserMutation.mutate({ id: user.id });
+                  }}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="p-4 flex flex-col items-center text-center">
+              <Avatar className="h-16 w-16 mb-3 border-2 border-background shadow-sm">
+                <AvatarImage src={user.image ?? undefined} alt={user.name} />
+                <AvatarFallback className="text-xl">{user.name.charAt(0)}</AvatarFallback>
+              </Avatar>
+              <h3 className="font-bold text-base truncate w-full">{user.name}</h3>
+              <p className="text-xs text-muted-foreground truncate w-full">{user.email}</p>
+            </CardContent>
+            <CardFooter className="p-4 pt-0">
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full h-8 text-xs"
+                onClick={() =>
+                  updateRoleMutation.mutate({
+                    id: user.id,
+                    role: user.role === "admin" ? "user" : "admin",
+                  })
+                }
+                loading={
+                  updateRoleMutation.isPending && updateRoleMutation.variables?.id === user.id
+                }
+              >
+                {user.role === "admin" ? "Demote to User" : "Promote to Admin"}
+              </Button>
+            </CardFooter>
+          </Card>
+        )}
       />
     </div>
   );

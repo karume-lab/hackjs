@@ -19,6 +19,7 @@
     "@elysiajs/swagger": "^1.3.1",
     "@repo/auth": "workspace:*",
     "@repo/db": "workspace:*",
+    "@repo/types": "workspace:*",
     "@repo/validators": "workspace:*",
     "drizzle-orm": "latest",
     "elysia": "latest"

@@ -11,7 +11,5 @@
     "clean": "biome check --write --no-errors-on-unmatched .",
     "typecheck": "tsc --noEmit"
   },
-  "dependencies": {
-    "@repo/api": "workspace:*"
-  }
+  "dependencies": {}
 }

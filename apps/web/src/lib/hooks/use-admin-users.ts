@@ -9,8 +9,8 @@ import {
   updateUserRoleMutation,
 } from "@/lib/queries/admin";
 
-export const useAdminUsers = (page: number, limit: number) => {
-  return useQuery(adminUsersQuery(page, limit));
+export const useAdminUsers = (page: number, limit: number, search?: string) => {
+  return useQuery(adminUsersQuery(page, limit, search));
 };
 
 export const useAdminUser = (id: string) => {
