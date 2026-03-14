@@ -20,7 +20,7 @@ interface Todo {
   createdAt: string | Date;
 }
 
-export const DashboardTodosClient = () => {
+export const DashboardTodosClient = ({ hideNav = false }: { hideNav?: boolean }) => {
   const queryClient = useQueryClient();
   const [newTodo, setNewTodo] = useState("");
 
@@ -93,23 +93,33 @@ export const DashboardTodosClient = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-indigo-900/10 via-background to-background">
-      <nav className="border-b border-border bg-card/50 backdrop-blur-xl sticky top-0 z-50 px-4 py-4 sm:px-6 lg:px-8">
-        <div className="mx-auto flex max-w-4xl items-center justify-between gap-4">
-          <Link href="/dashboard" className="flex items-center gap-2">
-            <div className="p-2 bg-indigo-600 rounded-lg">
-              <ListTodo className="w-5 h-5 text-white" />
+    <div
+      className={
+        hideNav
+          ? ""
+          : "min-h-screen bg-background text-foreground bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-indigo-900/10 via-background to-background"
+      }
+    >
+      {!hideNav && (
+        <nav className="border-b border-border bg-card/50 backdrop-blur-xl sticky top-0 z-50 px-4 py-4 sm:px-6 lg:px-8">
+          <div className="mx-auto flex max-w-4xl items-center justify-between gap-4">
+            <Link href="/dashboard" className="flex items-center gap-2">
+              <div className="p-2 bg-indigo-600 rounded-lg">
+                <ListTodo className="w-5 h-5 text-white" />
+              </div>
+              <h1 className="text-xl font-bold tracking-tight text-card-foreground">Momentum</h1>
+            </Link>
+            <div className="flex items-center gap-2">
+              <ThemeSwitch />
+              <SignOutButton />
             </div>
-            <h1 className="text-xl font-bold tracking-tight text-card-foreground">Momentum</h1>
-          </Link>
-          <div className="flex items-center gap-2">
-            <ThemeSwitch />
-            <SignOutButton />
           </div>
-        </div>
-      </nav>
+        </nav>
+      )}
 
-      <main className="mx-auto mt-12 max-w-2xl px-4 sm:px-6 lg:px-8 pb-20">
+      <main
+        className={`mx-auto max-w-2xl px-4 sm:px-6 lg:px-8 pb-20 ${hideNav ? "pt-4" : "mt-12"}`}
+      >
         <header className="mb-8 space-y-2">
           <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
             Tasks
