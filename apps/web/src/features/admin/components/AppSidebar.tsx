@@ -41,6 +41,8 @@ import {
   LogOut,
   Settings2,
 } from "lucide-react";
+import type { Route } from "next";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import SiteLogo from "@/components/common/SiteLogo";
 
@@ -49,7 +51,7 @@ export function NavProjects({
 }: {
   projects: {
     name: string;
-    url: string;
+    url: Route | string;
     icon: React.ElementType;
   }[];
 }) {
@@ -60,10 +62,10 @@ export function NavProjects({
         {projects.map((item) => (
           <SidebarMenuItem key={item.name}>
             <SidebarMenuButton asChild>
-              <a href={item.url} target="_blank" rel="noreferrer">
+              <Link href={item.url as Route} target="_blank" rel="noreferrer">
                 <item.icon />
                 <span>{item.name}</span>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         ))}
@@ -144,12 +146,12 @@ export function NavMain({
 }: {
   items: {
     title: string;
-    url: string;
+    url: Route | string;
     icon?: React.ElementType;
     isActive?: boolean;
     items?: {
       title: string;
-      url: string;
+      url: Route | string;
     }[];
   }[];
 }) {
@@ -177,9 +179,9 @@ export function NavMain({
                   {item.items?.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
                       <SidebarMenuSubButton asChild>
-                        <a href={subItem.url}>
+                        <Link href={subItem.url as Route}>
                           <span>{subItem.title}</span>
-                        </a>
+                        </Link>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                   ))}
@@ -194,11 +196,6 @@ export function NavMain({
 }
 
 const data = {
-  user: {
-    name: "Daniel Karume",
-    email: "daniel@HackJS.org",
-    avatar: "/avatars/shadcn.jpg",
-  },
   navMain: [
     {
       title: "Dashboard",
@@ -259,16 +256,16 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { data: session } = authClient.useSession();
+  const { data: session, isPending } = authClient.useSession();
   const { state } = useSidebar();
 
   const user = session?.user
     ? {
         name: session.user.name,
         email: session.user.email,
-        avatar: session.user.image ?? "/avatars/shadcn.jpg",
+        avatar: session.user.image ?? "",
       }
-    : data.user;
+    : null;
 
   const isCollapsed = state === "collapsed";
 
@@ -289,7 +286,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={user} />
+        {isPending ? (
+          <div className="flex items-center gap-2 px-4 py-2">
+            <div className="h-8 w-8 animate-pulse rounded-full bg-sidebar-accent" />
+            <div className="flex-1 space-y-1">
+              <div className="h-3 w-20 animate-pulse rounded bg-sidebar-accent" />
+              <div className="h-2 w-24 animate-pulse rounded bg-sidebar-accent" />
+            </div>
+          </div>
+        ) : (
+          user && <NavUser user={user} />
+        )}
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
