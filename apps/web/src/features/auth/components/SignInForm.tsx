@@ -14,16 +14,13 @@ import {
 import { Input } from "@repo/ui/web/components/ui/input";
 import { Label } from "@repo/ui/web/components/ui/label";
 import { PasswordInput } from "@repo/ui/web/components/ui/password-input";
-import { signInSchema } from "@repo/validators";
+import { type SignInValues, signInSchema } from "@repo/validators";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Route } from "next";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import type { z } from "zod";
-
-type SignInFormValues = z.infer<typeof signInSchema>;
 
 export const SignInForm = () => {
   const router = useRouter();
@@ -34,7 +31,7 @@ export const SignInForm = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignInFormValues>({
+  } = useForm<SignInValues>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
       email: "",
@@ -43,7 +40,7 @@ export const SignInForm = () => {
   });
 
   const signInMutation = useMutation({
-    mutationFn: async (values: SignInFormValues) => {
+    mutationFn: async (values: SignInValues) => {
       const { data, error } = await authClient.signIn.email({
         email: values.email,
         password: values.password,
@@ -62,7 +59,7 @@ export const SignInForm = () => {
     },
   });
 
-  const onSubmit = (values: SignInFormValues) => {
+  const onSubmit = (values: SignInValues) => {
     signInMutation.mutate(values);
   };
 

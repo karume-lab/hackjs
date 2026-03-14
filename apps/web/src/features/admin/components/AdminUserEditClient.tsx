@@ -20,23 +20,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@repo/ui/web/components/ui/select";
-import { updateUserSchema } from "@repo/validators";
+import { type UpdateUserValues, updateUserSchema } from "@repo/validators";
 import dayjs from "dayjs";
 import { ArrowLeft, Loader2, ShieldAlert } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import type { z } from "zod";
 import { useAdminUser, useUpdateUserRole } from "@/lib/hooks/use-admin-users";
-
-type UpdateFormValues = z.infer<typeof updateUserSchema>;
 
 export const AdminUserEditClient = ({ userId }: { userId: string }) => {
   const router = useRouter();
 
   const { data: user, isLoading } = useAdminUser(userId);
 
-  const form = useForm<UpdateFormValues>({
+  const form = useForm<UpdateUserValues>({
     resolver: zodResolver(updateUserSchema),
     values: {
       role: (user?.role as "admin" | "user") || "user",
@@ -47,7 +44,7 @@ export const AdminUserEditClient = ({ userId }: { userId: string }) => {
 
   const { isDirty } = form.formState;
 
-  const onSubmit = (values: UpdateFormValues) => {
+  const onSubmit = (values: UpdateUserValues) => {
     updateRoleMutation.mutate({ id: userId, role: values.role });
   };
 

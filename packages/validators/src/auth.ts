@@ -38,5 +38,11 @@ export const updateUserSchema = z.object({
 
 export const updateProfileSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
-  image: z.url("Please enter a valid URL").optional().or(z.literal("")),
+  image: z.string().url("Please enter a valid URL").optional().or(z.literal("")),
 });
+
+export type SignInValues = z.infer<typeof signInSchema>;
+export type SignUpValues = z.infer<typeof signUpSchema>;
+export type CreateUserValues = z.infer<typeof createUserSchema>;
+export type UpdateUserValues = z.infer<typeof updateUserSchema>;
+export type UpdateProfileValues = z.infer<typeof updateProfileSchema>;

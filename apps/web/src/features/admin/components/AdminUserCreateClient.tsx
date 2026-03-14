@@ -20,20 +20,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@repo/ui/web/components/ui/select";
-import { createUserSchema } from "@repo/validators";
+import { type CreateUserValues, createUserSchema } from "@repo/validators";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import type { z } from "zod";
 import { useCreateUser } from "@/lib/hooks/use-admin-users";
-
-type CreateUserFormValues = z.infer<typeof createUserSchema>;
 
 export const AdminUserCreateClient = () => {
   const router = useRouter();
 
-  const form = useForm<CreateUserFormValues>({
+  const form = useForm<CreateUserValues>({
     resolver: zodResolver(createUserSchema),
     defaultValues: {
       name: "",
@@ -47,7 +44,7 @@ export const AdminUserCreateClient = () => {
 
   const { isDirty } = form.formState;
 
-  const onSubmit = (values: CreateUserFormValues) => {
+  const onSubmit = (values: CreateUserValues) => {
     createUserMutation.mutate(values);
   };
 

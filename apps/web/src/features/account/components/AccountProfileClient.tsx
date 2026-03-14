@@ -21,20 +21,17 @@ import {
 } from "@repo/ui/web/components/ui/form";
 import { Input } from "@repo/ui/web/components/ui/input";
 import { Label } from "@repo/ui/web/components/ui/label";
-import { updateProfileSchema } from "@repo/validators";
+import { type UpdateProfileValues, updateProfileSchema } from "@repo/validators";
 import { Camera, Check, Loader2, Mail, ShieldAlert, User } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import type { z } from "zod";
-
-type ProfileFormValues = z.infer<typeof updateProfileSchema>;
 
 export const AccountProfileClient = () => {
   const { data: session, isPending: isSessionLoading } = authClient.useSession();
   const [isUpdating, setIsUpdating] = useState(false);
 
-  const form = useForm<ProfileFormValues>({
+  const form = useForm<UpdateProfileValues>({
     resolver: zodResolver(updateProfileSchema),
     values: {
       name: session?.user.name || "",
@@ -42,7 +39,7 @@ export const AccountProfileClient = () => {
     },
   });
 
-  const onSubmit = async (values: ProfileFormValues) => {
+  const onSubmit = async (values: UpdateProfileValues) => {
     setIsUpdating(true);
     try {
       const { error } = await authClient.updateUser({

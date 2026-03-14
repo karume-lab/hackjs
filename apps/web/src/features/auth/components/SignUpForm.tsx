@@ -14,16 +14,13 @@ import {
 import { Input } from "@repo/ui/web/components/ui/input";
 import { Label } from "@repo/ui/web/components/ui/label";
 import { PasswordInput } from "@repo/ui/web/components/ui/password-input";
-import { signUpSchema } from "@repo/validators";
+import { type SignUpValues, signUpSchema } from "@repo/validators";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Route } from "next";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import type { z } from "zod";
-
-type SignUpFormValues = z.infer<typeof signUpSchema>;
 
 export const SignUpForm = () => {
   const router = useRouter();
@@ -34,7 +31,7 @@ export const SignUpForm = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignUpFormValues>({
+  } = useForm<SignUpValues>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
       name: "",
@@ -44,7 +41,7 @@ export const SignUpForm = () => {
   });
 
   const signUpMutation = useMutation({
-    mutationFn: async (values: SignUpFormValues) => {
+    mutationFn: async (values: SignUpValues) => {
       const { data, error } = await authClient.signUp.email({
         email: values.email,
         password: values.password,
@@ -65,7 +62,7 @@ export const SignUpForm = () => {
     },
   });
 
-  const onSubmit = (values: SignUpFormValues) => {
+  const onSubmit = (values: SignUpValues) => {
     signUpMutation.mutate(values);
   };
 

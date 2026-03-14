@@ -1,15 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authClient } from "@repo/auth/client";
 import { Button, PasswordInput, Text } from "@repo/ui/mobile";
-import { signUpSchema } from "@repo/validators";
+import { type SignUpValues, signUpSchema } from "@repo/validators";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link, Stack, useRouter } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
 import { Alert, TextInput, View } from "react-native";
 import { useCSSVariable } from "uniwind";
-import type { z } from "zod";
-
-type SignUpFormValues = z.infer<typeof signUpSchema>;
 
 export default function SignUpScreen() {
   const router = useRouter();
@@ -20,7 +17,7 @@ export default function SignUpScreen() {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignUpFormValues>({
+  } = useForm<SignUpValues>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
       name: "",
@@ -30,7 +27,7 @@ export default function SignUpScreen() {
   });
 
   const signUpMutation = useMutation({
-    mutationFn: async (values: SignUpFormValues) => {
+    mutationFn: async (values: SignUpValues) => {
       const { data, error } = await authClient.signUp.email({
         email: values.email,
         password: values.password,
@@ -48,7 +45,7 @@ export default function SignUpScreen() {
     },
   });
 
-  const onSubmit = (values: SignUpFormValues) => {
+  const onSubmit = (values: SignUpValues) => {
     signUpMutation.mutate(values);
   };
 

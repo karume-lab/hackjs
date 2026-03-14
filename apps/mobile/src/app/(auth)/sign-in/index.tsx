@@ -1,15 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authClient } from "@repo/auth/client";
 import { Button, Input, Label, PasswordInput, Text } from "@repo/ui/mobile";
-import { signInSchema } from "@repo/validators";
+import { type SignInValues, signInSchema } from "@repo/validators";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link, Stack, useRouter } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
 import { Alert, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import type { z } from "zod";
-
-type SignInFormValues = z.infer<typeof signInSchema>;
 
 export default function SignInScreen() {
   const router = useRouter();
@@ -19,7 +16,7 @@ export default function SignInScreen() {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignInFormValues>({
+  } = useForm<SignInValues>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
       email: "",
@@ -28,7 +25,7 @@ export default function SignInScreen() {
   });
 
   const signInMutation = useMutation({
-    mutationFn: async (values: SignInFormValues) => {
+    mutationFn: async (values: SignInValues) => {
       const { data, error } = await authClient.signIn.email({
         email: values.email,
         password: values.password,
@@ -45,7 +42,7 @@ export default function SignInScreen() {
     },
   });
 
-  const onSubmit = (values: SignInFormValues) => {
+  const onSubmit = (values: SignInValues) => {
     signInMutation.mutate(values);
   };
 
