@@ -1,23 +1,35 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import type { Todo } from "@repo/db/types";
 import { Button } from "@repo/ui/web/components/ui/button";
 import { Card, CardContent } from "@repo/ui/web/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@repo/ui/web/components/ui/form";
 import { Input } from "@repo/ui/web/components/ui/input";
 import { QUERY_KEYS } from "@repo/utils/query-keys";
+import { type TodoFormValues, todoSchema } from "@repo/validators";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
-import { CheckCircle2, Circle, ListTodo, Loader2, Plus, Trash2 } from "lucide-react";
-import Link from "next/link";
-import { useState } from "react";
+import { CheckCircle2, Circle, Loader2, Plus, Trash2 } from "lucide-react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { ThemeSwitch } from "@/components/shared/ThemeSwitch";
-import { SignOutButton } from "@/features/auth/components/SignOutButton";
 import { api } from "@/lib/api";
 
-export const DashboardTodosClient = ({ hideNav = false }: { hideNav?: boolean }) => {
+export const DashboardTodosClient = () => {
   const queryClient = useQueryClient();
-  const [newTodo, setNewTodo] = useState("");
+
+  const form = useForm<TodoFormValues>({
+    resolver: zodResolver(todoSchema),
+    defaultValues: {
+      title: "",
+    },
+  });
 
   const { data: todos, isLoading } = useQuery({
     queryKey: QUERY_KEYS.todos.all(),
@@ -39,7 +51,7 @@ export const DashboardTodosClient = ({ hideNav = false }: { hideNav?: boolean })
         queryClient.setQueryData(QUERY_KEYS.todos.all(), (old: Todo[] | undefined) =>
           old ? [created, ...old] : [created],
         );
-        setNewTodo("");
+        form.reset();
         toast.success("Todo added!");
       }
     },
@@ -81,40 +93,13 @@ export const DashboardTodosClient = ({ hideNav = false }: { hideNav?: boolean })
     },
   });
 
-  const addTodo = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newTodo.trim()) return;
-    addMutation.mutate(newTodo);
+  const onSubmit = (values: TodoFormValues) => {
+    addMutation.mutate(values.title);
   };
 
   return (
-    <div
-      className={
-        hideNav
-          ? ""
-          : "min-h-screen bg-background text-foreground bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-indigo-900/10 via-background to-background"
-      }
-    >
-      {!hideNav && (
-        <nav className="border-b border-border bg-card/50 backdrop-blur-xl sticky top-0 z-50 px-4 py-4 sm:px-6 lg:px-8">
-          <div className="mx-auto flex max-w-4xl items-center justify-between gap-4">
-            <Link href="/dashboard" className="flex items-center gap-2">
-              <div className="p-2 bg-indigo-600 rounded-lg">
-                <ListTodo className="w-5 h-5 text-white" />
-              </div>
-              <h1 className="text-xl font-bold tracking-tight text-card-foreground">Momentum</h1>
-            </Link>
-            <div className="flex items-center gap-2">
-              <ThemeSwitch />
-              <SignOutButton />
-            </div>
-          </div>
-        </nav>
-      )}
-
-      <main
-        className={`mx-auto max-w-2xl px-4 sm:px-6 lg:px-8 pb-20 ${hideNav ? "pt-4" : "mt-12"}`}
-      >
+    <div>
+      <main className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8 pb-20 mt-12">
         <header className="mb-8 space-y-2">
           <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
             Tasks
@@ -127,28 +112,40 @@ export const DashboardTodosClient = ({ hideNav = false }: { hideNav?: boolean })
           </p>
         </header>
 
-        <form onSubmit={addTodo} className="relative group mb-8">
-          <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl blur opacity-25 group-focus-within:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-          <Card className="relative border-border/50 bg-card/80 backdrop-blur-sm shadow-xl rounded-xl overflow-hidden">
-            <CardContent className="p-4 flex items-center gap-3">
-              <Input
-                value={newTodo}
-                onChange={(e) => setNewTodo(e.target.value)}
-                placeholder="What needs to be done?"
-                className="border-none bg-transparent focus-visible:ring-0 text-lg placeholder:text-muted-foreground/50 h-12"
-              />
-              <Button
-                loading={addMutation.isPending}
-                disabled={!newTodo.trim()}
-                type="submit"
-                size="icon"
-                className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shrink-0 w-10 h-10 shadow-lg shadow-indigo-500/20"
-              >
-                <Plus className="w-5 h-5" />
-              </Button>
-            </CardContent>
-          </Card>
-        </form>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="relative group mb-8">
+            <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl blur opacity-25 group-focus-within:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+            <Card className="relative border-border/50 bg-card/80 backdrop-blur-sm shadow-xl rounded-xl overflow-hidden">
+              <CardContent className="p-4 flex items-center gap-3">
+                <FormField
+                  control={form.control}
+                  name="title"
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder="What needs to be done?"
+                          className="border-none bg-transparent focus-visible:ring-0 text-lg placeholder:text-muted-foreground/50 h-12"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button
+                  loading={addMutation.isPending}
+                  disabled={!form.watch("title")?.trim()}
+                  type="submit"
+                  size="icon"
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shrink-0 w-10 h-10 shadow-lg shadow-indigo-500/20"
+                >
+                  <Plus className="w-5 h-5" />
+                </Button>
+              </CardContent>
+            </Card>
+          </form>
+        </Form>
 
         <div className="space-y-3">
           {isLoading ? (
