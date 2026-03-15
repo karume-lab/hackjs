@@ -23,7 +23,7 @@ export function ThemeSwitch() {
       variant="ghost"
       className="ios:size-9 web:mx-4 rounded-full"
     >
-      <Icon as={THEME_ICONS[theme ?? "light"]} className="size-5 text-foreground" />
+      <Icon as={THEME_ICONS[theme ?? "light"] ?? SunIcon} className="size-5 text-foreground" />
     </Button>
   );
 }

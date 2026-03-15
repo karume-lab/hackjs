@@ -1,11 +1,7 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": ["../../tsconfig.json", "../../tsconfig.paths.json"],
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@repo/ui/web/*": ["./src/web/*"],
-      "@repo/ui/mobile/*": ["./src/mobile/*"]
-    }
+    "baseUrl": "../.."
   },
   "include": ["src"],
   "exclude": ["node_modules"]

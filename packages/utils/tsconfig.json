@@ -1,11 +1,7 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": ["../../tsconfig.json", "../../tsconfig.paths.json"],
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@repo/utils": ["./src/index.ts"],
-      "@repo/utils/*": ["./src/*"]
-    }
+    "baseUrl": "../.."
   },
   "include": ["src"]
 }
