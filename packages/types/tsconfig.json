@@ -4,7 +4,9 @@
     "baseUrl": ".",
     "paths": {
       "@repo/types": ["./src/index.ts"],
-      "@repo/types/*": ["./src/*"]
+      "@repo/types/*": ["./src/*"],
+      "@repo/db": ["../db/src/index.ts"],
+      "@repo/db/*": ["../db/src/*"]
     }
   },
   "include": ["src"]

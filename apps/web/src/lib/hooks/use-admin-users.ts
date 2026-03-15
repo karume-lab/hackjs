@@ -1,4 +1,4 @@
-import { QUERY_KEYS } from "@repo/api/keys";
+import { QUERY_KEYS } from "@repo/utils/query-keys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import {

@@ -35,12 +35,13 @@ const features = [
   },
   {
     title: "Production Ready",
-    description: "Out-of-the-box Drizzle ORM, authentication, and optimized Docker deployments.",
+    description:
+      "Out-of-the-box Drizzle ORM, secure authentication, and a robust project architecture.",
     icon: <Rocket className="size-6 text-primary" />,
   },
   {
-    title: "Edge Compatible",
-    description: "Deploy everywhere with Edge functions and automatic global distribution.",
+    title: "Cloud Native",
+    description: "Optimized for modern serverless hosting and scalable backend workflows.",
     icon: <Globe className="size-6 text-primary" />,
   },
 ];

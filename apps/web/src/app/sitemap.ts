@@ -11,13 +11,13 @@ const generateSiteMap = (): MetadataRoute.Sitemap => {
       priority: 1,
     },
     {
-      url: `${baseUrl}/signin`,
+      url: `${baseUrl}/sign-in`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/signup`,
+      url: `${baseUrl}/sign-up`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.8,

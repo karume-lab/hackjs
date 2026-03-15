@@ -1,7 +1,6 @@
 import cors from "@elysiajs/cors";
 import swagger from "@elysiajs/swagger";
 import { router } from "@repo/api/routers";
-import { auth } from "@repo/auth";
 import { Elysia } from "elysia";
 
 const routes = new Elysia()
@@ -18,10 +17,6 @@ const routes = new Elysia()
       path: "/openapi.json",
     }),
   )
-  .derive(async ({ request }) => {
-    const session = await auth.api.getSession({ headers: request.headers });
-    return { session, user: session?.user ?? null };
-  })
   .use(router);
 
 export const app = new Elysia().group("/api", (app) => app.use(routes));

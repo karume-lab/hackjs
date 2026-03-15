@@ -1,21 +1,4 @@
-export interface User {
-  id: string;
-  email: string;
-  name: string;
-  image?: string | null;
-  role?: string | null;
-}
-
-export interface Session {
-  id: string;
-  expiresAt: Date;
-  token: string;
-  createdAt: Date;
-  updatedAt: Date;
-  ipAddress?: string | null;
-  userAgent?: string | null;
-  userId: string;
-}
+export type { Session, User } from "@repo/db/types";
 
 export interface AuthError {
   message: string;

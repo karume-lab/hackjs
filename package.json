@@ -43,11 +43,11 @@
     "ui:mobile": "cd packages/ui/src/mobile && bunx @react-native-reusables/cli@latest add",
     "ui:web": "bunx shadcn@latest add --cwd packages/ui/src/web",
     "postinstall": "lefthook install",
-    "reinstall-packages": "pkill -f turbo; pkill -f bun; find . -name 'node_modules' -type d -prune -exec rm -rf '{}' + || true; rm -f bun.lock; bun install"
+    "reinstall-packages": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' + || true; rm -f bun.lock; bun install"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
-    "@biomejs/biome": "latest",
+    "@biomejs/biome": "2.4.4",
     "@tailwindcss/postcss": "^4",
     "@types/bun": "latest",
     "@types/node": "^20",
@@ -56,7 +56,7 @@
     "drizzle-kit": "^0.31.9",
     "expo-doctor": "^1.17.14",
     "lefthook": "^2.1.1",
-    "turbo": "latest",
+    "turbo": "2.8.12",
     "typescript": "^5.0.0"
   },
   "dependencies": {

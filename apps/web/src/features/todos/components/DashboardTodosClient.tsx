@@ -1,10 +1,10 @@
 "use client";
 
-import { QUERY_KEYS } from "@repo/api/keys";
 import type { Todo } from "@repo/db/types";
 import { Button } from "@repo/ui/web/components/ui/button";
 import { Card, CardContent } from "@repo/ui/web/components/ui/card";
 import { Input } from "@repo/ui/web/components/ui/input";
+import { QUERY_KEYS } from "@repo/utils/query-keys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
 import { CheckCircle2, Circle, ListTodo, Loader2, Plus, Trash2 } from "lucide-react";

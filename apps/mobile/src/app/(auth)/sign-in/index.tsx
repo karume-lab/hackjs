@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { QUERY_KEYS } from "@repo/api/keys";
 import { authClient } from "@repo/auth/client";
 import { Button, Input, Label, PasswordInput, Text } from "@repo/ui/mobile";
+import { QUERY_KEYS } from "@repo/utils/query-keys";
 import { type SignInValues, signInSchema } from "@repo/validators";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link, Stack, useRouter } from "expo-router";

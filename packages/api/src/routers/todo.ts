@@ -7,7 +7,9 @@ import { Elysia, t } from "elysia";
 export const todoRouter = new Elysia({ prefix: "/todos" })
   .derive(async ({ request }) => {
     const session = await auth.api.getSession({ headers: request.headers });
-    if (!session?.user) throw new Error("UNAUTHORIZED");
+    if (!session?.user) {
+      throw new Response("Unauthorized", { status: 401 });
+    }
     return { user: session.user };
   })
   .get(
@@ -28,18 +30,13 @@ export const todoRouter = new Elysia({ prefix: "/todos" })
     async ({ user, body }) => {
       const [created] = await db
         .insert(schema.todo)
-        .values({
-          title: body.title,
-          userId: user.id,
-        })
+        .values({ title: body.title, userId: user.id })
         .returning();
-      if (!created) throw new Error("Failed to create todo");
+      if (!created) throw new Response("Failed to create todo", { status: 500 });
       return created;
     },
     {
-      body: t.Object({
-        title: t.String({ minLength: 1 }),
-      }),
+      body: t.Object({ title: t.String({ minLength: 1 }) }),
       detail: { tags: ["Todos"], description: "Create a new todo" },
       response: TodoSchema,
     },
@@ -49,13 +46,10 @@ export const todoRouter = new Elysia({ prefix: "/todos" })
     async ({ user, params: { id }, body }) => {
       const [updated] = await db
         .update(schema.todo)
-        .set({
-          ...body,
-          updatedAt: new Date(),
-        })
+        .set({ ...body, updatedAt: new Date() })
         .where(and(eq(schema.todo.id, id), eq(schema.todo.userId, user.id)))
         .returning();
-      if (!updated) throw new Error("Todo not found or unauthorized");
+      if (!updated) throw new Response("Todo not found or unauthorized", { status: 404 });
       return updated;
     },
     {

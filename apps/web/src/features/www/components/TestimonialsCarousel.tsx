@@ -16,14 +16,14 @@ const testimonials = [
     quote:
       "A solid fullstack template with a great Next.js and Turborepo foundation. Honestly, a really impressive setup.",
     author: "Bob",
-    role: "Developer, Denmark",
+    role: "Lead Engineer at Google",
     initial: "B",
   },
   {
     quote:
       "The sheer velocity this template gives us is incredible. We went from idea to production in under a week.",
     author: "Sarah Jenkins",
-    role: "CTO at StartupX",
+    role: "Lead Engineer at Meta",
     initial: "S",
   },
   {

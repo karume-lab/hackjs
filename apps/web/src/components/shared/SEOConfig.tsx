@@ -21,7 +21,6 @@ export const metadataConfig: Metadata = {
     "Starter Kit",
     "Fullstack",
     "TypeScript",
-    "Fullstack",
   ],
   authors: [{ name: "Daniel Karume", url: "https://github.com/karume-lab/HackJS" }],
   creator: "Daniel Karume",

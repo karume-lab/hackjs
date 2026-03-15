@@ -1,6 +1,16 @@
 "use client";
 
 import type { User as SystemUser } from "@repo/db/types";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@repo/ui/web/components/ui/alert-dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/web/components/ui/avatar";
 import { Badge } from "@repo/ui/web/components/ui/badge";
 import { Button } from "@repo/ui/web/components/ui/button";
@@ -10,7 +20,7 @@ import type { ColumnDef, OnChangeFn, PaginationState } from "@tanstack/react-tab
 import { Edit, Loader2, Shield, Trash2, User } from "lucide-react";
 import Link from "next/link";
 import { parseAsInteger, useQueryState } from "nuqs";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useAdminUsers, useDeleteUser, useUpdateUserRole } from "@/lib/hooks/use-admin-users";
 
 export const AdminUsersClient = () => {
@@ -24,6 +34,8 @@ export const AdminUsersClient = () => {
   );
   const [search, setSearch] = useQueryState("search", { defaultValue: "", shallow: false });
   const [view, setView] = useQueryState("view", { defaultValue: "table", shallow: false });
+
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
 
   const { data: response, isLoading } = useAdminUsers(page, limit, search);
 
@@ -123,11 +135,7 @@ export const AdminUsersClient = () => {
                 type="button"
                 variant="destructive"
                 size="sm"
-                onClick={() => {
-                  if (confirm("Are you sure you want to completely delete this user?")) {
-                    deleteUserMutation.mutate({ id: user.id });
-                  }
-                }}
+                onClick={() => setDeleteConfirmId(user.id)}
                 loading={
                   deleteUserMutation.isPending && deleteUserMutation.variables?.id === user.id
                 }
@@ -203,9 +211,7 @@ export const AdminUsersClient = () => {
                   variant="ghost"
                   size="icon"
                   className="h-8 w-8 text-red-500 hover:text-red-600 hover:bg-red-50"
-                  onClick={() => {
-                    if (confirm("Are you sure?")) deleteUserMutation.mutate({ id: user.id });
-                  }}
+                  onClick={() => setDeleteConfirmId(user.id)}
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>
@@ -240,6 +246,35 @@ export const AdminUsersClient = () => {
           </Card>
         )}
       />
+
+      <AlertDialog
+        open={!!deleteConfirmId}
+        onOpenChange={(open) => !open && setDeleteConfirmId(null)}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the user account and remove
+              their data from our servers.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              onClick={() => {
+                if (deleteConfirmId) {
+                  deleteUserMutation.mutate({ id: deleteConfirmId });
+                  setDeleteConfirmId(null);
+                }
+              }}
+            >
+              Delete User
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

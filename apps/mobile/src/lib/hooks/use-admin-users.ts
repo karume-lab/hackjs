@@ -1,3 +1,4 @@
+import { QUERY_KEYS } from "@repo/utils/query-keys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   adminUserQuery,
@@ -20,7 +21,7 @@ export function useCreateUser() {
   return useMutation({
     ...createUserMutation(),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["admin", "users"] });
+      qc.invalidateQueries({ queryKey: QUERY_KEYS.admin.users.all() });
     },
   });
 }
@@ -30,8 +31,8 @@ export function useUpdateUserRole() {
   return useMutation({
     ...updateUserRoleMutation(),
     onSuccess: (_, vars) => {
-      qc.invalidateQueries({ queryKey: ["admin", "user", vars.id] });
-      qc.invalidateQueries({ queryKey: ["admin", "users"] });
+      qc.invalidateQueries({ queryKey: QUERY_KEYS.admin.users.detail(vars.id) });
+      qc.invalidateQueries({ queryKey: QUERY_KEYS.admin.users.all() });
     },
   });
 }
@@ -41,7 +42,7 @@ export function useDeleteUser() {
   return useMutation({
     ...deleteUserMutation(),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["admin", "users"] });
+      qc.invalidateQueries({ queryKey: QUERY_KEYS.admin.users.all() });
     },
   });
 }

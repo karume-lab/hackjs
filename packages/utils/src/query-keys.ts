@@ -26,6 +26,7 @@ export const QUERY_KEYS = {
       detail: (id: string) => [...adminBase, "users", "detail", id] as const,
       stats: () => [...adminBase, "users", "stats"] as const,
     },
+    stats: () => [...adminBase, "stats"] as const,
     todos: {
       all: () => [...adminBase, "todos"] as const,
       lists: () => [...adminBase, "todos", "list"] as const,

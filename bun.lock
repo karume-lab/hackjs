@@ -23,7 +23,7 @@
       },
       "devDependencies": {
         "@babel/core": "^7.26.0",
-        "@biomejs/biome": "latest",
+        "@biomejs/biome": "2.4.4",
         "@tailwindcss/postcss": "^4",
         "@types/bun": "latest",
         "@types/node": "^20",
@@ -32,7 +32,7 @@
         "drizzle-kit": "^0.31.9",
         "expo-doctor": "^1.17.14",
         "lefthook": "^2.1.1",
-        "turbo": "latest",
+        "turbo": "2.8.12",
         "typescript": "^5.0.0",
       },
     },
@@ -150,8 +150,8 @@
         "@repo/db": "workspace:*",
         "@repo/types": "workspace:*",
         "@repo/validators": "workspace:*",
-        "drizzle-orm": "latest",
-        "elysia": "latest",
+        "drizzle-orm": "0.45.1",
+        "elysia": "1.4.27",
       },
     },
     "packages/assets": {
@@ -176,6 +176,9 @@
     },
     "packages/types": {
       "name": "@repo/types",
+      "dependencies": {
+        "@repo/db": "workspace:*",
+      },
     },
     "packages/ui": {
       "name": "@repo/ui",

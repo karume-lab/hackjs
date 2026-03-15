@@ -1,44 +1,53 @@
-import { QUERY_KEYS } from "@repo/api/keys";
-import { createMutationOptions, createQueryOptions } from "@repo/api/query";
+import { QUERY_KEYS } from "@repo/utils/query-keys";
 import type { createUserSchema } from "@repo/validators";
+import { queryOptions } from "@tanstack/react-query";
 import type { z } from "zod";
 import { api } from "@/lib/api";
 
 export type CreateUserInput = z.infer<typeof createUserSchema>;
 
 export const adminUsersQuery = (page: number, limit: number) =>
-  createQueryOptions(QUERY_KEYS.admin.users.list(page, limit), async () => {
-    const { data, error } = await api.admin.users.get({
-      query: { page, limit },
-    });
-    if (error) throw error.value;
-    return data;
+  queryOptions({
+    queryKey: QUERY_KEYS.admin.users.list(page, limit),
+    queryFn: async () => {
+      const { data, error } = await api.admin.users.get({
+        query: { page, limit },
+      });
+      if (error) throw error.value;
+      return data;
+    },
   });
 
 export const adminUserQuery = (id: string) =>
-  createQueryOptions(QUERY_KEYS.admin.users.detail(id), async () => {
-    const { data, error } = await api.admin.users({ id }).get();
-    if (error) throw error.value;
-    return data;
+  queryOptions({
+    queryKey: QUERY_KEYS.admin.users.detail(id),
+    queryFn: async () => {
+      const { data, error } = await api.admin.users({ id }).get();
+      if (error) throw error.value;
+      return data;
+    },
   });
 
-export const createUserMutation = () =>
-  createMutationOptions(async (input: CreateUserInput) => {
+export const createUserMutation = () => ({
+  mutationFn: async (input: CreateUserInput) => {
     const { data, error } = await api.admin.users.post(input);
     if (error) throw error.value;
     return data;
-  });
+  },
+});
 
-export const updateUserRoleMutation = () =>
-  createMutationOptions(async ({ id, role }: { id: string; role: "admin" | "user" }) => {
+export const updateUserRoleMutation = () => ({
+  mutationFn: async ({ id, role }: { id: string; role: "admin" | "user" }) => {
     const { data, error } = await api.admin.users({ id }).role.put({ role });
     if (error) throw error.value;
     return data;
-  });
+  },
+});
 
-export const deleteUserMutation = () =>
-  createMutationOptions(async ({ id }: { id: string }) => {
+export const deleteUserMutation = () => ({
+  mutationFn: async ({ id }: { id: string }) => {
     const { data, error } = await api.admin.users({ id }).delete();
     if (error) throw error.value;
     return data;
-  });
+  },
+});

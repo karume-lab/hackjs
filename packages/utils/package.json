@@ -5,7 +5,8 @@
   "module": "src/index.ts",
   "exports": {
     ".": "./src/index.ts",
-    "./get-ip": "./src/get-ip.ts"
+    "./get-ip": "./src/get-ip.ts",
+    "./query-keys": "./src/query-keys.ts"
   },
   "scripts": {
     "lint": "biome check .",

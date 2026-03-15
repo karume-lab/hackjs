@@ -1,7 +1,5 @@
 "use client";
 
-import { QUERY_KEYS } from "@repo/api/keys";
-import { authClient } from "@repo/auth/client";
 import {
   Card,
   CardContent,
@@ -9,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@repo/ui/web/components/ui/card";
+import { QUERY_KEYS } from "@repo/utils/query-keys";
 import { useQuery } from "@tanstack/react-query";
 import {
   BarChart3,
@@ -23,48 +22,25 @@ import {
 import { api } from "@/lib/api";
 
 export const AdminDashboardClient = () => {
-  // Fetch users for statistics
-  const { data: usersData, isLoading: isUsersLoading } = useQuery({
-    queryKey: QUERY_KEYS.admin.users.stats(),
+  // Fetch combined stats from the new endpoint
+  const { data: stats, isLoading } = useQuery({
+    queryKey: QUERY_KEYS.admin.stats(),
     queryFn: async () => {
-      const response = await authClient.admin.listUsers({
-        query: { limit: 1000 },
-      });
-      if (response.error) throw new Error(response.error.message || "Failed to fetch users");
-      return response.data;
-    },
-  });
-
-  // Fetch todos for statistics
-  const { data: todosData, isLoading: isTodosLoading } = useQuery({
-    queryKey: QUERY_KEYS.admin.todos.stats(),
-    queryFn: async () => {
-      const { data, error } = await api.admin.todos.get({
-        query: { limit: 1000 },
-      });
+      const { data, error } = await api.admin.stats.get();
       if (error) throw error;
-      return data.data;
+      return data;
     },
   });
 
-  const isLoading = isUsersLoading || isTodosLoading;
-
-  const users = usersData?.users || [];
-  const todos = todosData || [];
-
-  const totalUsers = users.length;
-  const bannedUsers = users.filter((u) => u.banned).length;
+  const totalUsers = stats?.users.total ?? 0;
+  const bannedUsers = stats?.users.banned ?? 0;
   const activeUsers = totalUsers - bannedUsers;
 
-  const totalTodos = todos.length;
-  const completedTodos = todos.filter((t) => t.completed).length;
+  const totalTodos = stats?.todos.total ?? 0;
+  const completedTodos = stats?.todos.completed ?? 0;
   const pendingTodos = totalTodos - completedTodos;
   const completionRate = totalTodos > 0 ? Math.round((completedTodos / totalTodos) * 100) : 0;
   const avgTodosPerUser = totalUsers > 0 ? (totalTodos / totalUsers).toFixed(1) : "0";
-
-  // New Engagement Metric: Users who have at least one todo
-  const usersWithTasks = new Set(todos.map((t) => t.userId)).size;
-  const activationRate = totalUsers > 0 ? Math.round((usersWithTasks / totalUsers) * 100) : 0;
 
   return (
     <div className="flex-1 space-y-6 p-4 pt-6">
@@ -119,14 +95,14 @@ export const AdminDashboardClient = () => {
 
         <Card className="hover:shadow-md transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">User Activation</CardTitle>
+            <CardTitle className="text-sm font-medium">Task Completion</CardTitle>
             <Zap className="h-4 w-4 text-amber-500" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {isLoading ? <Loader2 className="animate-spin h-4 w-4" /> : `${activationRate}%`}
+              {isLoading ? <Loader2 className="animate-spin h-4 w-4" /> : `${completionRate}%`}
             </div>
-            <p className="text-xs text-muted-foreground mt-1">Members with at least one task</p>
+            <p className="text-xs text-muted-foreground mt-1">Percentage of tasks finished</p>
           </CardContent>
         </Card>
       </div>

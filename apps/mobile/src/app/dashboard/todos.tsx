@@ -1,6 +1,6 @@
-import { QUERY_KEYS } from "@repo/api/keys";
 import type { Todo } from "@repo/db/types";
 import { Button } from "@repo/ui/mobile";
+import { QUERY_KEYS } from "@repo/utils/query-keys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as Haptics from "expo-haptics";
 import { Stack } from "expo-router";

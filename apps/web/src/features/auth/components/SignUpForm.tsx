@@ -1,7 +1,6 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { QUERY_KEYS } from "@repo/api/keys";
 import { authClient } from "@repo/auth/client";
 import { Button } from "@repo/ui/web/components/ui/button";
 import {
@@ -15,6 +14,7 @@ import {
 import { Input } from "@repo/ui/web/components/ui/input";
 import { Label } from "@repo/ui/web/components/ui/label";
 import { PasswordInput } from "@repo/ui/web/components/ui/password-input";
+import { QUERY_KEYS } from "@repo/utils/query-keys";
 import { type SignUpValues, signUpSchema } from "@repo/validators";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Route } from "next";

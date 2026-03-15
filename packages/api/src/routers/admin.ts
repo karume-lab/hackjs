@@ -5,6 +5,7 @@ import {
 } from "@repo/api/routers/types";
 import { auth } from "@repo/auth";
 import { db, schema } from "@repo/db";
+import type { TodoWithUser, User } from "@repo/db/types";
 import { TODO_STATUSES } from "@repo/types";
 import { and, eq, like, or, sql } from "drizzle-orm";
 import { Elysia, t } from "elysia";
@@ -12,8 +13,12 @@ import { Elysia, t } from "elysia";
 export const adminRouter = new Elysia({ prefix: "/admin" })
   .derive(async ({ request }) => {
     const session = await auth.api.getSession({ headers: request.headers });
-    if (!session?.user) throw new Error("UNAUTHORIZED");
-    if (session.user.role !== "admin") throw new Error("FORBIDDEN: Admin access required");
+    if (!session?.user) {
+      throw new Response("Unauthorized", { status: 401 });
+    }
+    if (session.user.role !== "admin") {
+      throw new Response("Forbidden: Admin access required", { status: 403 });
+    }
     return { user: session.user };
   })
   .get(
@@ -45,12 +50,8 @@ export const adminRouter = new Elysia({ prefix: "/admin" })
       const totalPages = Math.ceil(totalCount / limit);
 
       return {
-        data,
-        metadata: {
-          totalCount,
-          page,
-          totalPages,
-        },
+        data: data as User[],
+        metadata: { totalCount, page, totalPages },
       };
     },
     {
@@ -66,38 +67,22 @@ export const adminRouter = new Elysia({ prefix: "/admin" })
   .post(
     "/users",
     async ({ body }) => {
+      const { email, password, name, role } = body;
+
       const result = await auth.api.signUpEmail({
-        body: {
-          email: body.email,
-          password: body.password,
-          name: body.name,
-        },
+        body: { email, password, name },
         asResponse: false,
       });
 
-      const createdUser = result.user;
+      const [user] = await db
+        .update(schema.user)
+        .set({ role: role ?? "user" })
+        .where(eq(schema.user.id, result.user.id))
+        .returning();
 
-      if (body.role === "admin") {
-        await db
-          .update(schema.user)
-          .set({ role: "admin" })
-          .where(eq(schema.user.id, createdUser.id));
-      }
+      if (!user) throw new Response("Failed to retrieve created user", { status: 500 });
 
-      const user = await db.query.user.findFirst({
-        where: eq(schema.user.id, createdUser.id),
-      });
-
-      if (!user) throw new Error("Failed to retrieve created user");
-
-      return {
-        ...user,
-        image: user.image ?? null,
-        role: user.role ?? null,
-        banned: user.banned ?? false,
-        banReason: user.banReason ?? null,
-        banExpires: user.banExpires ?? null,
-      };
+      return user as User;
     },
     {
       body: t.Object({
@@ -106,21 +91,18 @@ export const adminRouter = new Elysia({ prefix: "/admin" })
         password: t.String(),
         role: t.Optional(t.Union([t.Literal("admin"), t.Literal("user")])),
       }),
-      detail: {
-        tags: ["Admin"],
-        description: "Create a new user with a specific role",
-      },
+      detail: { tags: ["Admin"], description: "Create a new user with a specific role" },
       response: UserSchema,
     },
   )
   .get(
     "/users/:id",
     async ({ params: { id } }) => {
-      const u = await db.query.user.findFirst({
+      const user = await db.query.user.findFirst({
         where: eq(schema.user.id, id),
       });
-      if (!u) throw new Error("User not found");
-      return u;
+      if (!user) throw new Response("User not found", { status: 404 });
+      return user as User;
     },
     {
       params: t.Object({ id: t.String() }),
@@ -136,8 +118,8 @@ export const adminRouter = new Elysia({ prefix: "/admin" })
         .set({ role })
         .where(eq(schema.user.id, id))
         .returning();
-      if (!updated) throw new Error("User not found");
-      return updated;
+      if (!updated) throw new Response("User not found", { status: 404 });
+      return updated as User;
     },
     {
       params: t.Object({ id: t.String() }),
@@ -149,16 +131,52 @@ export const adminRouter = new Elysia({ prefix: "/admin" })
   .delete(
     "/users/:id",
     async ({ params: { id } }) => {
-      await db.delete(schema.session).where(eq(schema.session.userId, id));
-      await db.delete(schema.account).where(eq(schema.account.userId, id));
-      const [deleted] = await db.delete(schema.user).where(eq(schema.user.id, id)).returning();
-      if (!deleted) throw new Error("User not found");
-      return deleted;
+      const existing = await db.query.user.findFirst({
+        where: eq(schema.user.id, id),
+      });
+      if (!existing) throw new Response("User not found", { status: 404 });
+
+      await auth.api.removeUser({ body: { userId: id } });
+      return { success: true };
     },
     {
       params: t.Object({ id: t.String() }),
       detail: { tags: ["Admin"], description: "Delete a user" },
-      response: UserSchema,
+      response: t.Object({ success: t.Boolean() }),
+    },
+  )
+  .get(
+    "/stats",
+    async () => {
+      const [userStats] = await db
+        .select({
+          total: sql<number>`cast(count(*) as int)`,
+          banned: sql<number>`cast(sum(case when banned=1 then 1 else 0 end) as int)`,
+        })
+        .from(schema.user);
+
+      const [todoStats] = await db
+        .select({
+          total: sql<number>`cast(count(*) as int)`,
+          completed: sql<number>`cast(sum(case when completed=1 then 1 else 0 end) as int)`,
+        })
+        .from(schema.todo);
+
+      if (!userStats || !todoStats) {
+        throw new Response("Failed to fetch stats", { status: 500 });
+      }
+
+      return {
+        users: { total: userStats.total, banned: userStats.banned },
+        todos: { total: todoStats.total, completed: todoStats.completed },
+      };
+    },
+    {
+      detail: { tags: ["Admin"], description: "Get administrative statistics" },
+      response: t.Object({
+        users: t.Object({ total: t.Number(), banned: t.Number() }),
+        todos: t.Object({ total: t.Number(), completed: t.Number() }),
+      }),
     },
   )
   .get(
@@ -178,9 +196,7 @@ export const adminRouter = new Elysia({ prefix: "/admin" })
       const where = conditions.length > 0 ? and(...conditions) : undefined;
 
       const data = await db.query.todo.findMany({
-        with: {
-          user: true,
-        },
+        with: { user: true },
         where,
         orderBy: (todos, { desc }) => [desc(todos.createdAt)],
         limit,
@@ -195,12 +211,8 @@ export const adminRouter = new Elysia({ prefix: "/admin" })
       const totalPages = Math.ceil(totalCount / limit);
 
       return {
-        data,
-        metadata: {
-          totalCount,
-          page,
-          totalPages,
-        },
+        data: data as TodoWithUser[],
+        metadata: { totalCount, page, totalPages },
       };
     },
     {
